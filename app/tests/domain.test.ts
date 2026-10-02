@@ -1,5 +1,5 @@
 import test from "node:test";
-import { providerPayload } from "./fixtures";
+import { providerPayload, actionScopeWorkspace } from "./fixtures";
 import assert from "node:assert/strict";
 import { raw, incidents } from "../src/lib/data";
 import {
@@ -21,6 +21,7 @@ import {
   emptyWorkspace,
   restoreWorkspace,
   overdue,
+  actionTrackerMetrics,
 } from "../src/lib/actions";
 import {
   utilityMetrics,
@@ -338,6 +339,37 @@ test("Versioned local state migration/reset and malformed-state recovery", () =>
   );
   assert.ok(restoreWorkspace("bad json", raw.version).notice);
   assert.deepEqual(emptyWorkspace(raw.version).actions, []);
+});
+test("Action metrics retain historical totals and provide only definition-matching evidence", () => {
+  const workspace = actionScopeWorkspace(raw.version),
+    original = JSON.stringify(workspace);
+  const result = actionTrackerMetrics(workspace, {
+    mode: "historical",
+    caseId: ko.tag,
+    asOf: historical.asOf,
+  });
+  assert.equal(result.actions.length, 9);
+  assert.deepEqual(
+    result.metrics.map((m) => m.value),
+    [9, 2, 4, 1],
+  );
+  assert.deepEqual(
+    result.metrics[1].evidence.actions.map((a) => a.id),
+    ["same-pending", "other-asset"],
+  );
+  assert.deepEqual(
+    result.metrics[2].evidence.actions.map((a) => a.id),
+    ["historical-closed", "same-closed", "other-cutoff", "legacy-closed"],
+  );
+  assert.deepEqual(result.metrics[3].evidence, {
+    actions: [],
+    episodes: { "historical-ack": "Acknowledged" },
+  });
+  assert.deepEqual(
+    result.metrics.slice(0, 3).map((m) => m.evidence.episodes),
+    [{}, {}, {}],
+  );
+  assert.equal(JSON.stringify(workspace), original);
 });
 test("Utility generator and forecast are deterministic, explicitly synthetic and isolated", () => {
   const samples = utilitySamples(DEFAULT_ASSUMPTIONS);

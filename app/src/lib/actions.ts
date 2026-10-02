@@ -4,8 +4,89 @@ import type {
   ActionState,
   Change,
   Hypothesis,
+  Mode,
 } from "./types";
 import { validSourceDate } from "./time";
+export type ActionMetricScope = { mode: Mode; caseId: string; asOf: string };
+export function actionTrackerMetrics(
+  workspace: Workspace,
+  scope: ActionMetricScope,
+) {
+  const actions = workspace.actions.filter(
+    (a) =>
+      scope.mode === "historical" ||
+      (a.analysisMode === "prospective" &&
+        a.caseId === scope.caseId &&
+        a.analysisAsOf === scope.asOf),
+  );
+  const episodes: Workspace["episodes"] =
+    scope.mode === "historical"
+      ? Object.fromEntries(
+          Object.entries(workspace.episodes).filter(
+            ([, state]) => state === "Acknowledged",
+          ),
+        )
+      : {};
+  const metric = (
+    label: string,
+    formula: string,
+    rows: WorkspaceAction[],
+    acknowledged: Workspace["episodes"] = {},
+  ) => {
+    const evidence = {
+      actions: rows.map((a) => ({
+        id: a.id,
+        state: a.state,
+        caseId: a.caseId,
+        analysisMode: a.analysisMode,
+        analysisAsOf: a.analysisAsOf,
+        reviewer: a.reviewer,
+        completionEvidence: a.completionEvidence,
+      })),
+      episodes: acknowledged,
+    };
+    return {
+      label,
+      formula,
+      value: evidence.actions.length + Object.keys(evidence.episodes).length,
+      evidence,
+    };
+  };
+  return {
+    actions,
+    description:
+      scope.mode === "prospective"
+        ? `Pre-event actions only: ${scope.caseId}, source-local cutoff ${scope.asOf}. Historical actions and episode acknowledgements are excluded.`
+        : "All local workspace actions across assets and review scopes. Action state and asset filters affect the list only.",
+    metrics: [
+      metric(
+        "Local action drafts",
+        "Count all local actions in this metric scope, across workflow states",
+        actions,
+      ),
+      metric(
+        "Pending verification",
+        "Count in-scope actions with state Pending Verification",
+        actions.filter((a) => a.state === "Pending Verification"),
+      ),
+      metric(
+        "Verified local closures",
+        "Count in-scope Closed actions with reviewer and completion evidence",
+        actions.filter(
+          (a) => a.state === "Closed" && a.reviewer && a.completionEvidence,
+        ),
+      ),
+      metric(
+        "Acknowledged local episodes",
+        scope.mode === "prospective"
+          ? "Zero: workspace episode acknowledgements have no asset/mode/cutoff provenance and are excluded from pre-event metrics"
+          : "Count locally Acknowledged episode IDs; Grouped and Open episodes are excluded",
+        [],
+        episodes,
+      ),
+    ],
+  };
+}
 export const STATES: ActionState[] = [
   "Draft",
   "Approved",

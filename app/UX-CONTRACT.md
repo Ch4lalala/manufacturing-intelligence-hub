@@ -29,6 +29,19 @@ Table selection and bulk mutation are not applicable. Charts and paginated sourc
 
 Five views and selected asset use URL query parameters. Register filters, sort, page and query use URL state and survive Back. Prospective mode permits Problem Tank condition episodes, Investigation and actions from the same asset/cutoff review. Executive Overview, Data Map and historical register are disabled with explicit reasons to prevent rendering outcome summaries during replay. Tank → Investigation carries asset, mode and exact source-local cutoff. Weekly date-only eligibility uses end-of-day; real calendar/time validation is shared. Historical cutoff limits observations only, with retrospective report context labeled separately. Mode changes cancel in-flight requests, clear analyses and source dialogs. No current report, future condition remarks, risk labels or register aggregates enter prospective rendering/analysis.
 
+## Action Tracker metric evidence scope
+
+`src/lib/actions.ts` owns `actionTrackerMetrics`: the action list's base dataset, card values and Definition & local evidence drawer all use this shared review scope. Prospective eligibility requires analysisMode exactly prospective, caseId equal to the active asset and analysisAsOf equal to the active source-local cutoff. Missing legacy scope metadata is excluded in prospective and retained in historical review. Reading metrics/drawers never migrates, resets or changes persisted workspace records.
+
+Historical card totals cover all local workspace actions across assets/review scopes, preserving the existing behavior. Action state/asset list filters affect the list only, not card totals or drawer datasets. Each drawer explains its specific card:
+
+- Local action drafts: every eligible action, across all workflow states (including Closed/Rejected/Cancelled).
+- Pending verification: only eligible actions in Pending Verification.
+- Verified local closures: only eligible Closed actions with reviewer and completion evidence, using the existing metric predicate.
+- Acknowledged local episodes: only Acknowledged episode IDs in historical review. Grouped/Open IDs and actions are excluded from this drawer. Prospective count is zero with empty actions/episodes because workspace acknowledgements lack asset/mode/cutoff provenance.
+
+Drawer metadata explains the review scope and list-filter distinction. Historical actions, other assets/cutoffs, legacy actions and their reviewer/completion text cannot enter prospective metric evidence. The shared SourceDialog, appearance, approval/closure transitions, persistence and source data are unchanged. Regression tests open every metric drawer, including zero-result, mixed-scope, filtered-list and narrow/keyboard states.
+
 ## Forms, overlays and feedback
 
 Fields have labels. Demo passcodes use shared SecretField: masked by default, accessible Show/Hide toggle, current-password autocomplete, associated persistent errors and retry. Passcodes are cleared on success and never persisted in workspace. Signed HttpOnly session is distinct from role simulation; rate/day/concurrency restrictions run on the server before provider fetch. No public live mode without shared quota backing. Analysis states explicitly distinguish not requested, blocked, attempted/failed and validated. Normal-only evidence has no inferred mechanism/action draft. Each hypothesis has its own supporting/counter evidence and linked drafts; acceptance is bound to content.

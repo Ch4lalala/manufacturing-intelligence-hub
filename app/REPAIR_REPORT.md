@@ -138,3 +138,63 @@ Sumber/KPI → priority episode KO → pre-event midnight/end-of-day → signal/
 Sumber konflik/threshold effective dates/ingestion history tetap unknown. Proposed trend triggers bukan fault detector tervalidasi. Validator factual bindings bukan causal proof; general narrative dapat memerlukan penolakan/manual review. Auth/quota single-process tidak memberikan enterprise identity/global cost enforcement. Real SumoPod dan deployed Vercel **NOT TESTED**. Safari/Firefox, physical devices, formal screen-reader/security/domain studies, slides/video/submission size/access juga belum diuji.
 
 Perubahan konkret siap direview secara lokal. Tidak diklaim production-ready, industrially safe, real forecasting proven atau live provider terintegrasi sukses tanpa bukti eksternal.
+
+## Action Tracker evidence scope repair — commit 0ad8649
+
+### Checkout dan reproduksi
+
+Checkout `main` di **0ad8649a3e8b18f69b86008b025e4d064672eea9** awalnya bersih. AGENTS aplikasi, dokumentasi Next yang terpasang, kontrak data/UX dan desain dibaca. Laporan A–D di atas adalah catatan pekerjaan sebelumnya; addendum ini mencatat repair drawer yang terbaru.
+
+Temuan Vercel berasal dari reproduksi terverifikasi yang disampaikan pengguna. Tidak ada URL Vercel yang diperiksa pada pekerjaan ini. Bug juga direproduksi sendiri secara lokal: tes membuka KO Investigation, replay, accept, create action, approve/start, submit completion evidence, reviewer-confirm closure, reload, lalu berpindah ke prospective cutoff **2026-04-22 23:59:59**. Angka nol tetapi drawer Local action drafts masih berisi historical Closed action, Engineering reviewer dan completion evidence. Assertion empty-array gagal sebelum perubahan. Bukti: [before browser JSON](verification/action-scope-before-browser.json), [before drawer](screenshots/action-scope-before-drawer.png).
+
+### Perubahan sebelum/sesudah
+
+| Bagian                  | Sebelum                                                                    | Sesudah                                                                                                                                                            |
+| ----------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Scope                   | Angka memfilter actions; drawer membaca workspace.actions/episodes global. | actionTrackerMetrics di src/lib/actions.ts menjadi sumber scope bersama untuk list base, angka dan evidence.                                                       |
+| Prospective             | Historical reviewer/completion dapat terbaca dari drawer meskipun count 0. | Hanya analysisMode prospective + caseId asset aktif + analysisAsOf cutoff aktif eligible. Scope lain/legacy tidak muncul; count 0 berarti actions/episodes kosong. |
+| Definisi drawer         | Semua action/status ditampilkan untuk semua metrik.                        | Drafts memuat semua state dalam metric scope; pending hanya Pending Verification; verified hanya Closed dengan reviewer dan completion evidence.                   |
+| Episodes                | Semua acknowledgement/group/open global bisa muncul pada prospective.      | Prospective count 0 dan evidence kosong. Historical acknowledgement drawer hanya memuat IDs berstatus Acknowledged, tanpa action/Grouped/Open.                     |
+| Historical/list filters | Metrik historical global, list dapat difilter.                             | Kontrak ini dipertahankan: list state/asset filters tidak mengubah angka atau dataset drawer. Scope dan perbedaan filter dijelaskan di drawer.                     |
+
+Tidak mengubah appearance/tokens/shared SourceDialog, workflow approval/closure, local persistence/schema/reset, data sumber atau guard AI. Pembacaan scope tidak menghapus/mereset historical actions; kembali ke historical tetap menampilkannya. Public live tetap disabled.
+
+### Files berubah
+
+- app/src/lib/actions.ts: helper scope, definisi metrik dan dataset evidence.
+- app/src/components/actions.tsx: konsumsi helper untuk angka/list base/drawer; menghapus pembacaan workspace global dari drawer.
+- app/tests/domain.test.ts, repair.test.ts, fixtures.ts: historical dan prospective scope/metric-subset/legacy/persistence regressions. Fixtures adalah data workspace sintetis untuk tes, tidak masuk baseline/AI.
+- app/tests/browser.spec.ts: actual UI closure → prospective empty drawer, seluruh drawer dengan mixed scopes, list filters, narrow viewport dan keyboard.
+- app/UX-CONTRACT.md, IMPLEMENTATION_STATUS.md, REPAIR_REPORT.md: definisi scope/filter dan hasil aktual.
+- verification/action-scope-before-browser.json, action-scope-domain-results.tap, action-scope-premium-audit.json, browser-results.json; screenshots/action-scope-*.png: bukti sebelum/sesudah. Unrelated existing captures dipertahankan.
+
+### Commands dan hasil aktual
+
+Dari handoff root: `python scripts/verify_package.py` tetap exit 1 untuk discrepancy CODEX_PROMPT.md lama; **22 originals/0 discrepancies**, **46 handoff/two size/hash discrepancies**. Tidak rerun extractor/normalizer atau menulis ulang manifest.
+
+Dari app:
+
+```bash
+# Before fix, reproduksi expected failure pada server production lokal yang ada:
+CALIBER_TEST_BASE_URL=http://127.0.0.1:3102 npm run test:browser -- --grep 'KO action loop'
+# Sesudah repair:
+npx prettier --write src/lib/actions.ts src/components/actions.tsx tests/fixtures.ts tests/domain.test.ts tests/repair.test.ts tests/browser.spec.ts
+npm run typecheck
+npm run lint
+npm test > verification/action-scope-domain-results.tap
+npm run build
+# Standalone dan .next/static disalin ke temporary runtime; jalankan dari situ:
+PORT=3103 HOSTNAME=127.0.0.1 AI_LIVE_MODE=disabled AI_API_KEY= AI_MODEL= node server.js
+CALIBER_TEST_BASE_URL=http://127.0.0.1:3103 npm run test:browser
+npm run format:check
+python /Users/acit/.codex/plugins/cache/openai-curated-remote/frontend-design-premium/1.4.0/skills/frontend-design-premium/scripts/audit_project.py /Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app --mode strict --output /Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/verification/action-scope-premium-audit.json
+git diff --check
+```
+
+Typecheck/lint/build/formatting PASS. **29/29 domain/API tests PASS**, **15/15 Chromium browser tests PASS** pada production build baru. Actual closure dan matched prospective fixtures membuka drawer yang sebenarnya, memeriksa ID/angka/reviewer/evidence/episode exclusions, serta list-filter independence. Browser juga mencakup seluruh lima views/assets, source/utility flows dan fallback seperti suite sebelumnya. Strict audit nol findings; drawer desktop/narrow screenshot diperiksa dan 390px bebas document overflow. Escape mengembalikan focus ke tombol drawer.
+
+Tidak mengulang fresh dependency install, normalisasi atau test:deploy 53-check karena tidak ada perubahan dependency/sumber/runtime packaging. Build preparation tetap memverifikasi runtime originals. next-env.d.ts awal dipulihkan persis setelah build; .env.local tidak dibuka/diedit. Server existing port 3100/3102 dipertahankan; test server/temp runtime milik repair pada 3103 dihentikan/dihapus setelah selesai.
+
+### Batas verifikasi
+
+Perbaikan **VERIFIED local production**, belum deployed/retested di Vercel. Tidak ada paid provider call atau live integration test. Public live tetap disabled. Firefox/Safari/physical devices/formal accessibility/security/domain validation tidak diuji ulang. Full browser suite menggunakan Chromium, dan mixed-scope cases menggunakan workspace fixtures sintetis selain actual historical closure loop. Scope pekerjaan hanya drawer/metric evidence; tidak ada push/deployment/submission.

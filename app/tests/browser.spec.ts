@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import fs from "node:fs";
+import { actionScopeWorkspace } from "./fixtures";
 fs.mkdirSync("screenshots", { recursive: true });
 async function ready(page: Page, view = "Executive Overview") {
   await expect(
@@ -19,6 +20,131 @@ async function noOverflow(page: Page) {
     ),
   ).toBe(true);
 }
+async function metricEvidence(page: Page, label: string, value: number) {
+  const card = page
+    .locator(".metric")
+    .filter({ has: page.getByText(label, { exact: true }) });
+  await expect(card.locator(".metric-value")).toHaveText(String(value));
+  await card
+    .getByRole("button", { name: "Definition & local evidence", exact: true })
+    .click();
+  const dialog = page.getByRole("dialog");
+  await expect(
+    dialog.getByRole("heading", { name: label, exact: true }),
+  ).toBeVisible();
+  return {
+    dialog,
+    evidence: JSON.parse(await dialog.locator("pre.excerpt").innerText()),
+  };
+}
+test("Action metric drawers explain only their scoped dataset; historical list filters do not change card totals", async ({
+  page,
+  request,
+}) => {
+  const bundle = await (await request.get("/api/case?asset=KO-3201")).json();
+  const workspace = actionScopeWorkspace(bundle.version);
+  await page.addInitScript(
+    (w) => localStorage.setItem("caliber-workspace-v1", JSON.stringify(w)),
+    workspace,
+  );
+  await goto(
+    page,
+    "/?view=actions&asset=KO-3201&actionAsset=HE-3301",
+    "Action Tracker",
+  );
+  await expect(page.locator(".action-card")).toHaveCount(1);
+  await page.getByLabel("Action state", { exact: true }).selectOption("Closed");
+  await expect(page.locator(".action-card")).toHaveCount(0);
+  const historical = await metricEvidence(page, "Local action drafts", 9);
+  expect(historical.evidence.actions.map((a: { id: string }) => a.id)).toEqual(
+    workspace.actions.map((a) => a.id),
+  );
+  await page.keyboard.press("Escape");
+  const historicalClosures = await metricEvidence(
+    page,
+    "Verified local closures",
+    4,
+  );
+  expect(
+    historicalClosures.evidence.actions.map((a: { id: string }) => a.id),
+  ).toEqual([
+    "historical-closed",
+    "same-closed",
+    "other-cutoff",
+    "legacy-closed",
+  ]);
+  await page.keyboard.press("Escape");
+  const historicalEpisodes = await metricEvidence(
+    page,
+    "Acknowledged local episodes",
+    1,
+  );
+  expect(historicalEpisodes.evidence).toMatchObject({
+    actions: [],
+    episodes: { "historical-ack": "Acknowledged" },
+  });
+  await page.keyboard.press("Escape");
+  await goto(
+    page,
+    "/?view=actions&asset=KO-3201&mode=prospective&asOf=2026-04-22%2023:59:59",
+    "Action Tracker",
+  );
+  await expect(page.locator(".action-card")).toHaveCount(5);
+  const definitions: [string, number, string[]][] = [
+    [
+      "Local action drafts",
+      5,
+      [
+        "same-draft",
+        "same-pending",
+        "same-closed",
+        "same-unreviewed",
+        "same-no-evidence",
+      ],
+    ],
+    ["Pending verification", 1, ["same-pending"]],
+    ["Verified local closures", 1, ["same-closed"]],
+    ["Acknowledged local episodes", 0, []],
+  ];
+  for (const [label, value, ids] of definitions) {
+    const { dialog, evidence } = await metricEvidence(page, label, value);
+    expect(evidence.actions.map((a: { id: string }) => a.id)).toEqual(ids);
+    expect(evidence.episodes).toEqual({});
+    await expect(dialog).toContainText("2026-04-22 23:59:59");
+    for (const id of [
+      "historical-closed",
+      "other-asset",
+      "other-cutoff",
+      "legacy-closed",
+      "historical-ack",
+    ])
+      await expect(dialog).not.toContainText(id);
+    if (label === "Verified local closures")
+      await page.screenshot({
+        path: "screenshots/action-scope-matched-drawer.png",
+      });
+    await page.keyboard.press("Escape");
+  }
+  expect(
+    await page.evaluate(() =>
+      JSON.parse(localStorage.getItem("caliber-workspace-v1")!),
+    ),
+  ).toEqual(JSON.parse(JSON.stringify(workspace)));
+  await page.setViewportSize({ width: 390, height: 900 });
+  await metricEvidence(page, "Verified local closures", 1);
+  await noOverflow(page);
+  await page.screenshot({ path: "screenshots/action-scope-drawer-390.png" });
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(
+    page
+      .locator(".metric")
+      .filter({
+        has: page.getByText("Verified local closures", { exact: true }),
+      })
+      .getByRole("button"),
+  ).toBeFocused();
+});
 test("Five operational views, desktop screenshots, source drawer keyboard and accessibility", async ({
   page,
 }) => {
@@ -277,6 +403,47 @@ test("KO action loop, gated approval/verification, persistence, rejection reason
     page.getByText(/Verified by Engineering reviewer/),
   ).toBeVisible();
   await expect(page.getByText(/Action change history/)).toBeVisible();
+  const historicalClosure = await metricEvidence(
+    page,
+    "Verified local closures",
+    1,
+  );
+  expect(historicalClosure.evidence.actions).toHaveLength(1);
+  expect(historicalClosure.evidence.actions[0].reviewer).toBe(
+    "Engineering reviewer",
+  );
+  expect(historicalClosure.evidence.actions[0].completionEvidence).toContain(
+    "Demo review EV-KO",
+  );
+  await page.keyboard.press("Escape");
+  await goto(
+    page,
+    "/?view=actions&asset=KO-3201&mode=prospective&asOf=2026-04-22%2023:59:59",
+    "Action Tracker",
+  );
+  for (const label of [
+    "Local action drafts",
+    "Pending verification",
+    "Verified local closures",
+    "Acknowledged local episodes",
+  ]) {
+    const { dialog, evidence } = await metricEvidence(page, label, 0);
+    // Same browser workspace still contains the historical Closed action.
+    // The actual drawer must match the zero-valued pre-event metric.
+    if (label === "Local action drafts")
+      await page.screenshot({
+        path: "screenshots/action-scope-zero-drawer.png",
+      });
+    expect(evidence.actions).toEqual([]);
+    expect(evidence.episodes).toEqual({});
+    await expect(dialog).not.toContainText("Demo review EV-KO");
+    await expect(dialog).not.toContainText("Engineering reviewer");
+    await page.keyboard.press("Escape");
+  }
+  await goto(page, "/?view=actions&asset=KO-3201", "Action Tracker");
+  await expect(
+    page.getByText(/Verified by Engineering reviewer/),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Reset prototype workspace" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page

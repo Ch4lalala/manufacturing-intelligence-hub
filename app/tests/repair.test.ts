@@ -14,7 +14,11 @@ import {
   compositionContext,
 } from "../src/lib/analysis";
 import { summarizeSignals, linkedActionDrafts } from "../src/lib/signals";
-import { reviewKey } from "../src/lib/actions";
+import {
+  reviewKey,
+  actionTrackerMetrics,
+  restoreWorkspace,
+} from "../src/lib/actions";
 import { sourceResponse } from "../src/lib/source-runtime";
 import {
   DemoLimiter,
@@ -35,7 +39,76 @@ import {
   POST as sessionPOST,
   DELETE as sessionDELETE,
 } from "../src/app/api/demo-session/route";
-import { providerPayload, fakeCompletion } from "./fixtures";
+import {
+  providerPayload,
+  fakeCompletion,
+  actionScopeWorkspace,
+} from "./fixtures";
+test("Prospective metric evidence shares the asset/mode/cutoff gate and excludes historical acknowledgements", () => {
+  const workspace = restoreWorkspace(
+    JSON.stringify(actionScopeWorkspace(raw.version)),
+    raw.version,
+  ).workspace;
+  const scope = {
+    mode: "prospective" as const,
+    caseId: "KO-3201",
+    asOf: "2026-04-22 23:59:59",
+  };
+  const original = JSON.stringify(workspace);
+  const result = actionTrackerMetrics(workspace, scope);
+  assert.deepEqual(
+    result.actions.map((a) => a.id),
+    [
+      "same-draft",
+      "same-pending",
+      "same-closed",
+      "same-unreviewed",
+      "same-no-evidence",
+    ],
+  );
+  assert.deepEqual(
+    result.metrics.map((m) => m.value),
+    [5, 1, 1, 0],
+  );
+  assert.deepEqual(
+    result.metrics[1].evidence.actions.map((a) => a.id),
+    ["same-pending"],
+  );
+  assert.deepEqual(
+    result.metrics[2].evidence.actions.map((a) => a.id),
+    ["same-closed"],
+  );
+  assert.deepEqual(result.metrics[3].evidence, { actions: [], episodes: {} });
+  assert.ok(
+    result.metrics.every((m) => Object.keys(m.evidence.episodes).length === 0),
+  );
+  const evidence = JSON.stringify(result.metrics.map((m) => m.evidence));
+  for (const id of [
+    "historical-closed",
+    "other-asset",
+    "other-cutoff",
+    "legacy-closed",
+    "historical-ack",
+  ])
+    assert.ok(!evidence.includes(id));
+  const onlyHistorical = {
+    ...workspace,
+    actions: workspace.actions.filter((a) => a.analysisMode === "historical"),
+  };
+  const empty = actionTrackerMetrics(onlyHistorical, scope);
+  assert.deepEqual(
+    empty.metrics.map((m) => m.value),
+    [0, 0, 0, 0],
+  );
+  assert.ok(
+    empty.metrics.every(
+      (m) =>
+        m.evidence.actions.length === 0 &&
+        Object.keys(m.evidence.episodes).length === 0,
+    ),
+  );
+  assert.equal(JSON.stringify(workspace), original);
+});
 const ko = raw.assets.find((a) => a.tag === "KO-3201")!;
 const make = (time = "2026-04-22 23:59:59") =>
   makeBundle(ko, incidents, raw.version, "prospective", time);

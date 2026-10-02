@@ -1,0 +1,161 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node@22/22.23.2/bin/node",
+      "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/node_modules/.bin/playwright",
+      "test",
+      "--grep",
+      "KO action loop"
+    ],
+    "configFile": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/playwright.config.ts",
+    "rootDir": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "browser.spec.ts"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "verification/browser-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://127.0.0.1:3102",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "browser.spec.ts",
+      "file": "browser.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "KO action loop, gated approval/verification, persistence, rejection reason and reset",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 1534,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 9\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"caseId\": \"KO-3201\",\u001b[39m\n\u001b[31m+     \"completionEvidence\": \"Demo review EV-KO: measurement units and sample timing reviewed; policy version requires an engineering sign-off. Verification recorded for the prototype exercise.\",\u001b[39m\n\u001b[31m+     \"id\": \"0849e6a9-f851-4400-a802-d4848b340c3b\",\u001b[39m\n\u001b[31m+     \"reviewer\": \"Engineering reviewer\",\u001b[39m\n\u001b[31m+     \"state\": \"Closed\",\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 9\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"caseId\": \"KO-3201\",\u001b[39m\n\u001b[31m+     \"completionEvidence\": \"Demo review EV-KO: measurement units and sample timing reviewed; policy version requires an engineering sign-off. Verification recorded for the prototype exercise.\",\u001b[39m\n\u001b[31m+     \"id\": \"0849e6a9-f851-4400-a802-d4848b340c3b\",\u001b[39m\n\u001b[31m+     \"reviewer\": \"Engineering reviewer\",\u001b[39m\n\u001b[31m+     \"state\": \"Closed\",\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/browser.spec.ts:299:30",
+                    "location": {
+                      "file": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/browser.spec.ts",
+                      "column": 30,
+                      "line": 299
+                    },
+                    "snippet": "  297 |     // The actual drawer must match the zero-valued pre-event metric.\n  298 |     if(label==='Local action drafts') await page.screenshot({path:'screenshots/action-scope-zero-drawer.png'});\n> 299 |     expect(evidence.actions).toEqual([]);\n      |                              ^\n  300 |     expect(evidence.episodes).toEqual({});\n  301 |     await expect(dialog).not.toContainText('Demo review EV-KO');\n  302 |     await expect(dialog).not.toContainText('Engineering reviewer');"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/browser.spec.ts",
+                        "column": 30,
+                        "line": 299
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 9\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"caseId\": \"KO-3201\",\u001b[39m\n\u001b[31m+     \"completionEvidence\": \"Demo review EV-KO: measurement units and sample timing reviewed; policy version requires an engineering sign-off. Verification recorded for the prototype exercise.\",\u001b[39m\n\u001b[31m+     \"id\": \"0849e6a9-f851-4400-a802-d4848b340c3b\",\u001b[39m\n\u001b[31m+     \"reviewer\": \"Engineering reviewer\",\u001b[39m\n\u001b[31m+     \"state\": \"Closed\",\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  297 |     // The actual drawer must match the zero-valued pre-event metric.\n  298 |     if(label==='Local action drafts') await page.screenshot({path:'screenshots/action-scope-zero-drawer.png'});\n> 299 |     expect(evidence.actions).toEqual([]);\n      |                              ^\n  300 |     expect(evidence.episodes).toEqual({});\n  301 |     await expect(dialog).not.toContainText('Demo review EV-KO');\n  302 |     await expect(dialog).not.toContainText('Engineering reviewer');\n    at /Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/browser.spec.ts:299:30"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-02T19:06:10.637Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/test-results/browser-KO-action-loop-gat-f5117--rejection-reason-and-reset/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/test-results/browser-KO-action-loop-gat-f5117--rejection-reason-and-reset/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/browser.spec.ts",
+                    "column": 30,
+                    "line": 299
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "fbeac1b2decfba2c3acd-ccf9d6ef3ccfccc39682",
+          "file": "browser.spec.ts",
+          "line": 208,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-02T19:06:10.217Z",
+    "duration": 2557.08,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

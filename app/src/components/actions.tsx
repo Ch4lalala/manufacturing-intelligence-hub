@@ -1,7 +1,12 @@
 "use client";
 import { useRef, useState } from "react";
 import type { ActionState, WorkspaceAction } from "@/lib/types";
-import { STATES, transition, overdue } from "@/lib/actions";
+import {
+  STATES,
+  transition,
+  overdue,
+  actionTrackerMetrics,
+} from "@/lib/actions";
 import { historicalActions } from "@/lib/evidence";
 import { useHub } from "./hub";
 import { Badge, Button, Field, Notice, Panel, Select, Modal } from "./ui";
@@ -11,19 +16,17 @@ export function Actions() {
   const [status, setStatus] = useState("");
   if (!bundle) return null;
   const clock = query.clock ?? "2026-10-02",
-    scoped = workspace.actions.filter(
-      (a) =>
-        bundle.mode === "historical" ||
-        (a.analysisMode === "prospective" &&
-          a.analysisAsOf === bundle.asOf &&
-          a.caseId === bundle.asset.tag),
-    ),
-    actions = scoped.filter(
+    metricScope = actionTrackerMetrics(workspace, {
+      mode: bundle.mode,
+      caseId: bundle.asset.tag,
+      asOf: bundle.asOf,
+    }),
+    all = metricScope.actions,
+    actions = all.filter(
       (a) =>
         (!status || a.state === status) &&
         (!query.actionAsset || a.caseId === query.actionAsset),
     );
-  const all = scoped;
   return (
     <>
       <Notice>
@@ -32,28 +35,7 @@ export function Actions() {
         actions.
       </Notice>
       <div className="metric-grid">
-        {[
-          { label: "Local action drafts", value: all.length },
-          {
-            label: "Pending verification",
-            value: all.filter((a) => a.state === "Pending Verification").length,
-          },
-          {
-            label: "Verified local closures",
-            value: all.filter(
-              (a) => a.state === "Closed" && a.reviewer && a.completionEvidence,
-            ).length,
-          },
-          {
-            label: "Acknowledged local episodes",
-            value:
-              bundle.mode === "historical"
-                ? Object.values(workspace.episodes).filter(
-                    (s) => s === "Acknowledged",
-                  ).length
-                : 0,
-          },
-        ].map((k) => (
+        {metricScope.metrics.map((k) => (
           <div className="metric" key={k.label}>
             <p className="metric-label">{k.label}</p>
             <p className="metric-value">{k.value}</p>
@@ -66,26 +48,17 @@ export function Actions() {
                   locators: [],
                   kind: "computed prototype workspace",
                   period: `Demo clock ${clock}`,
-                  formula: k.label.includes("closures")
-                    ? "Count Closed actions with reviewer and completion evidence"
-                    : k.label.includes("episodes")
-                      ? "Count locally Acknowledged source episode IDs"
-                      : "Count local workspace actions in the indicated state",
+                  formula: k.formula,
                   excerpt: JSON.stringify(
                     {
-                      actions: workspace.actions.map((a) => ({
-                        id: a.id,
-                        state: a.state,
-                        caseId: a.caseId,
-                        reviewer: a.reviewer,
-                        completionEvidence: a.completionEvidence,
-                      })),
-                      episodes: workspace.episodes,
+                      scope: metricScope.description,
+                      ...k.evidence,
                     },
                     null,
                     2,
                   ),
                   warnings: [
+                    "Metric totals and their evidence use the review scope; action state and asset filters affect the list only.",
                     "Local activity is not historical CAPA completion or a measured industrial benefit.",
                   ],
                 })

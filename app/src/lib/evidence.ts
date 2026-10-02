@@ -10,9 +10,10 @@ import type {
 import {
   assetMeta,
   qualifiedIncident,
-  eligibleTime,
   deriveEpisodes,
+  retrieve,
 } from "./domain";
+import { sourceTime, observationEligible } from "./time";
 import { qualityFor } from "./quality";
 export function reportEvidence(a: Asset): Evidence[] {
   return a.report.slides.flatMap((s) =>
@@ -40,22 +41,26 @@ export function makeBundle(
   version: string,
   mode: Mode,
   asOf: string,
+  applyHistoricalCutoff = false,
 ): Bundle {
+  asOf = sourceTime(asOf);
   const historical = mode === "historical";
+  const cutoff = !historical || applyHistoricalCutoff ? asOf : null;
   // Date-only samples become eligible at end-of-day, never assumed available
   // at midnight. Current event day and subsequent observations stay excluded.
   const conditions = a.conditions
-    .filter(
-      (c) =>
-        historical ||
-        (c.date < a.eventDate && eligibleTime(`${c.date} 23:59:59`, asOf)),
+    .filter((c) =>
+      observationEligible(c.date, "weekly", mode, cutoff, a.eventDate),
     )
     .map((c) => (historical ? c : { ...c, remark: null }));
-  const production = a.production.filter(
-    (p) =>
-      historical ||
-      (String(p.values.Timestamp).slice(0, 10) < a.eventDate &&
-        eligibleTime(String(p.values.Timestamp), asOf)),
+  const production = a.production.filter((p) =>
+    observationEligible(
+      String(p.values.Timestamp),
+      "hourly",
+      mode,
+      cutoff,
+      a.eventDate,
+    ),
   );
   const incident = historical ? qualifiedIncident(a, rows) : null;
   const evidence: Evidence[] = [
@@ -97,6 +102,15 @@ export function makeBundle(
       availability: null,
       category: "metadata",
     },
+    ...a.thresholds.map((threshold, index) => ({
+      id: `${a.tag}:threshold:${index}`,
+      locator: threshold.source,
+      excerpt: `${threshold.parameter}: ${threshold.limits_text}. Source-workbook replay; effective date unknown.`,
+      kind: "source" as const,
+      time: null,
+      availability: null,
+      category: "metadata" as const,
+    })),
     ...(historical ? reportEvidence(a) : []),
     ...(incident
       ? [
@@ -114,26 +128,30 @@ export function makeBundle(
   ];
   const meta = assetMeta(a);
   // Prospective output exposes only source-local observation scope; strips event/AR/report pointers.
+  const windows = {
+    hourlyWindow: production.length
+      ? `${production[0].values.Timestamp} to ${production.at(-1)!.values.Timestamp}`
+      : "No eligible hourly observations",
+    weeklyWindow: conditions.length
+      ? `${conditions[0].date} to ${conditions.at(-1)!.date}`
+      : "No eligible weekly observations",
+  };
   const scopedMeta = historical
-    ? meta
+    ? { ...meta, ...windows }
     : {
         ...meta,
         ar: "Unavailable in pre-event context",
         eventDate: "",
         linked_incident_id: "",
         reportFile: "",
-        hourlyWindow: production.length
-          ? `${production[0].values.Timestamp} to ${production.at(-1)!.values.Timestamp}`
-          : "No eligible hourly observations",
-        weeklyWindow: conditions.length
-          ? `${conditions[0].date} to ${conditions.at(-1)!.date}`
-          : "No eligible weekly observations",
+        ...windows,
       };
   return {
     version,
     asset: scopedMeta,
     mode,
     asOf,
+    observationCutoff: cutoff,
     conditions,
     production,
     summary: historical ? a.summary : [],
@@ -145,10 +163,37 @@ export function makeBundle(
       : a.tag === "KO-3201"
         ? [qualityFor(a)[0]]
         : [],
-    episodes: deriveEpisodes(scopedMeta, conditions, incident, mode),
+    episodes: deriveEpisodes(
+      scopedMeta,
+      conditions,
+      cutoff && a.eventDate > cutoff.slice(0, 10) ? null : incident,
+      mode,
+    ),
+    similarIncidents: historical
+      ? retrieve(
+          rows,
+          `${a.class} ${a.condition_headers.join(" ")} ${incident?.component ?? ""}`,
+          incident?.id,
+          undefined,
+          rows
+            .filter((r) =>
+              [
+                "PU-2101B",
+                "KO-3201",
+                "PM-4405B",
+                "HE-3301",
+                "BL-5702",
+              ].includes(r.tag),
+            )
+            .map((r) => r.id),
+        ).slice(0, 3)
+      : [],
     exclusions: historical
       ? [
           "Report availability dates are unknown. Findings are retrospective; no prior-prediction claim.",
+          cutoff
+            ? "Historical cutoff limits observations only. Completed RCA and register snapshots are retrospective context, not facts known at that cutoff."
+            : "Historical review shows the complete independent observation windows; the review reference is not an observation cutoff.",
         ]
       : [
           "Current event day and subsequent observations excluded. Date-only weekly samples are eligible at end-of-day; no midnight availability assumption.",

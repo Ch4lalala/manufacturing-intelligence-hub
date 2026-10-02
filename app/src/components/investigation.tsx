@@ -4,6 +4,10 @@ import type { Analysis, Incident } from "@/lib/types";
 import { retrieve } from "@/lib/domain";
 import { replay } from "@/lib/analysis";
 import { historicalActions } from "@/lib/evidence";
+import { linkedActionDrafts } from "@/lib/signals";
+import { DemoAccess } from "./demo-access";
+import { SignalPanel } from "./signal-panel";
+import { reviewKey } from "@/lib/actions";
 import { useHub } from "./hub";
 import {
   Badge,
@@ -35,6 +39,7 @@ export function Investigation() {
     [busy, setBusy] = useState(false),
     [failure, setFailure] = useState("");
   const [liveStatus, setLiveStatus] = useState("Live API not-tested");
+  const [liveAllowed, setLiveAllowed] = useState(false);
   const [weekly, setWeekly] = useState(0),
     [hourly, setHourly] = useState("PLANT_RATE"),
     [slide, setSlide] = useState(7);
@@ -75,14 +80,20 @@ export function Investigation() {
       const r = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ asset: a.tag, mode, asOf: bundle.asOf, live }),
+        body: JSON.stringify({
+          asset: a.tag,
+          mode,
+          asOf: bundle.asOf,
+          observationCutoff: !!bundle.observationCutoff,
+          live,
+        }),
         signal: AbortSignal.any([
           controller.signal,
           AbortSignal.timeout(20000),
         ]),
       });
-      if (!r.ok) throw new Error();
       const result = await r.json();
+      if (!r.ok && result.execution !== "replay") throw new Error();
       if (!controller.signal.aborted) {
         setAnalysis(result);
         if (result.execution === "live")
@@ -129,7 +140,7 @@ export function Investigation() {
             },
           ]}
         />
-        {mode === "prospective" && (
+        {(mode === "prospective" || bundle.observationCutoff) && (
           <Field
             label="As of (source-local; timezone unknown)"
             type="datetime-local"
@@ -137,13 +148,18 @@ export function Investigation() {
             onChange={(v) => setQuery({ asOf: v.replace("T", " ") })}
           />
         )}
+        {mode === "historical" && bundle.observationCutoff && (
+          <Button onClick={() => setQuery({ asOf: "", episodeAsOf: "" })}>
+            Show full historical observation windows
+          </Button>
+        )}
         <Badge>
           {mode === "historical"
             ? "Known historical outcome"
             : "Inspection required · no known outcome"}
         </Badge>
       </div>
-      {mode === "prospective" && (
+      {(mode === "prospective" || bundle.observationCutoff) && (
         <Panel
           title="Temporal evidence boundary"
           sub={`${bundle.asOf} · source-local eligibility checked before rendering and analysis`}
@@ -302,6 +318,7 @@ export function Investigation() {
             sub="Evidence-backed indications; no definitive diagnosis before inspection"
           >
             <p className="caption">{liveStatus}</p>
+            <DemoAccess onAccess={setLiveAllowed} />
             <div className="button-row">
               <Button
                 variant="primary"
@@ -316,7 +333,16 @@ export function Investigation() {
               </Button>
               <Button
                 busy={busy}
-                disabled={!bundle.conditions.length}
+                disabled={
+                  !liveAllowed || replay(bundle).signals.state !== "anomaly"
+                }
+                title={
+                  !liveAllowed
+                    ? "Unlock configured demo live access; evidence replay remains available"
+                    : replay(bundle).signals.state !== "anomaly"
+                      ? "Insufficient eligible anomaly evidence for composition"
+                      : undefined
+                }
                 onClick={() => run(true)}
               >
                 {busy ? "Live request running…" : "Request live AI composition"}
@@ -338,10 +364,11 @@ export function Investigation() {
             {failure && <Notice tone="error">{failure}</Notice>}
             {!analysis ? (
               <Notice>
-                Choose evidence replay to review deterministic candidates, or
-                explicitly request live composition. Missing credentials/model
-                select a visible replay result. Model output is constrained to
-                eligible, source-backed candidates; engineer review is required.
+                Choose evidence replay to review eligible observations and
+                signals, or explicitly request live composition. Missing
+                credentials/model select a visible replay result. Composed
+                hypotheses are engineering inferences; factual bindings and
+                citations are validated before review.
               </Notice>
             ) : (
               <>
@@ -359,8 +386,9 @@ export function Investigation() {
                   ))}
                 </div>
                 <p>{analysis.summary}</p>
+                <SignalPanel analysis={analysis} bundle={bundle} />
                 {analysis.hypotheses.map((h) => {
-                  const reviewId = `${a.tag}:${mode}:${analysis.asOf}:${h.id}`,
+                  const reviewId = reviewKey(a.tag, mode, analysis.asOf, h),
                     review = workspace.reviews[reviewId];
                   return (
                     <div className="hypothesis-card" key={h.id}>
@@ -375,6 +403,10 @@ export function Investigation() {
                       </Badge>{" "}
                       <Badge>Strength: {h.strength} · qualitative</Badge>
                       <h3>{h.title}</h3>
+                      <p>{h.explanation}</p>
+                      <p className="caption">
+                        {h.knowledgeBasis} · {h.strengthReason}
+                      </p>
                       <strong className="caption">Supporting evidence</strong>
                       <Citations
                         ids={h.evidenceIds}
@@ -453,34 +485,35 @@ export function Investigation() {
                         </Button>
                         {review && <Badge>{review} · simulated review</Badge>}
                       </div>
-                      {h.id === analysis.hypotheses[0]?.id &&
-                        analysis.actions.map((draft, i) => (
-                          <div className="quality-card" key={draft.title}>
-                            <h3>Proposed action: {draft.title}</h3>
-                            <p>{draft.guidance}</p>
-                            <p className="caption">
-                              Proposed role: {draft.proposedOwnerRole} ·
-                              approval required
-                            </p>
-                            <Citations
-                              ids={draft.evidenceIds}
-                              evidence={bundle.evidence}
-                            />
-                            <Button
-                              disabled={review !== "Accepted"}
-                              title={
-                                review !== "Accepted"
-                                  ? "Accept the linked finding/hypothesis first"
-                                  : undefined
-                              }
-                              onClick={() => createAction(draft, h, mode)}
-                            >
-                              {i === 0
+                      {linkedActionDrafts(analysis, h.id).map((draft, i) => (
+                        <div className="quality-card" key={draft.title}>
+                          <h3>Proposed action: {draft.title}</h3>
+                          <p>{draft.guidance}</p>
+                          <p className="caption">
+                            Proposed role: {draft.proposedOwnerRole} · approval
+                            required
+                          </p>
+                          <Citations
+                            ids={draft.evidenceIds}
+                            evidence={bundle.evidence}
+                          />
+                          <Button
+                            disabled={review !== "Accepted"}
+                            title={
+                              review !== "Accepted"
+                                ? "Accept the linked finding/hypothesis first"
+                                : undefined
+                            }
+                            onClick={() => createAction(draft, h, mode)}
+                          >
+                            {i === 0
+                              ? h.id === analysis.hypotheses[0]?.id
                                 ? "Create reviewed action draft"
-                                : "Create follow-up draft"}
-                            </Button>
-                          </div>
-                        ))}
+                                : `Create reviewed action draft · ${h.id}`
+                              : "Create follow-up draft"}
+                          </Button>
+                        </div>
+                      ))}
                     </div>
                   );
                 })}
@@ -493,9 +526,9 @@ export function Investigation() {
                   ))}
                   <p className="caption">
                     No streaming, embeddings or special response format is
-                    assumed. Narrative facts and actions must match validated
-                    candidates; sources carry numbers and units. API errors
-                    never count as live success.
+                    assumed. Observation numbers, units, times and assets bind
+                    to exact source/derived facts; engineering mechanisms remain
+                    inferences. API errors never count as live success.
                   </p>
                 </details>
               </>
@@ -600,6 +633,11 @@ export function Investigation() {
                 setQuery({
                   mode: mode === "historical" ? "prospective" : "historical",
                   incident: "",
+                  asOf:
+                    mode === "prospective"
+                      ? ""
+                      : (query.asOf ?? "2026-04-22 23:59:59"),
+                  episodeAsOf: "",
                 });
               }}
             >

@@ -23,7 +23,8 @@ const statusOptions = [
 ];
 export function Problems() {
   const h = useHub();
-  const tank = h.query.tank ?? "conditions";
+  const prospective = h.bundle?.mode === "prospective";
+  const tank = prospective ? "conditions" : (h.query.tank ?? "conditions");
   return (
     <>
       <div className="tabs" aria-label="Problem source">
@@ -31,6 +32,12 @@ export function Problems() {
           className={tank === "register" ? "selected" : ""}
           aria-pressed={tank === "register"}
           onClick={() => h.setQuery({ tank: "register" })}
+          disabled={prospective}
+          title={
+            prospective
+              ? "Register outcomes are unavailable in pre-event scope"
+              : undefined
+          }
         >
           Historical register · 380 records
         </Button>
@@ -256,25 +263,37 @@ function Episodes() {
     workspace,
     save,
     role,
-    navigate,
     openSource,
     catalog,
+    bundle,
   } = useHub();
   const [episodes, setEpisodes] = useState<Episode[]>([]),
-    [error, setError] = useState("");
+    [error, setError] = useState(""),
+    [loadedScope, setLoadedScope] = useState(""),
+    [attempt, setAttempt] = useState(0);
+  const mode = bundle?.mode ?? "historical";
+  const cutoff =
+    q.asOf ||
+    q.episodeAsOf ||
+    (mode === "prospective" ? bundle?.asOf : "") ||
+    "";
+  const scope = `${mode}:${cutoff}`;
   useEffect(() => {
     const c = new AbortController();
-    fetch(
-      `/api/episodes${q.episodeAsOf ? `?asOf=${encodeURIComponent(q.episodeAsOf)}` : ""}`,
-      { signal: AbortSignal.any([c.signal, AbortSignal.timeout(10000)]) },
-    )
+    const params = new URLSearchParams({ mode });
+    if (cutoff) params.set("asOf", cutoff);
+    fetch(`/api/episodes?${params}`, {
+      signal: AbortSignal.any([c.signal, AbortSignal.timeout(10000)]),
+    })
       .then((r) => {
         if (!r.ok) throw new Error();
         return r.json();
       })
       .then((e) => {
+        if (c.signal.aborted) return;
         setEpisodes(e);
         setError("");
+        setLoadedScope(scope);
       })
       .catch(() => {
         if (!c.signal.aborted)
@@ -283,8 +302,8 @@ function Episodes() {
           );
       });
     return () => c.abort();
-  }, [q.episodeAsOf]);
-  const items = episodes.filter(
+  }, [mode, cutoff, scope, attempt]);
+  const items = (loadedScope === scope ? episodes : []).filter(
     (e) =>
       (!q.episodeAsset || e.tag === q.episodeAsset) &&
       (!q.severity || e.severity === q.severity) &&
@@ -307,11 +326,31 @@ function Episodes() {
           acknowledgement, grouping and reopening preserve that same identity.
         </p>
         <p className="caption">
-          Default: all five supplied weekly windows, with distinct dates. A
-          replay cutoff filters samples before priority computation. Source
-          criticality is metadata; risk is excluded until the linked event date.
+          Weekly samples become eligible at source-local end-of-day. The same
+          mode and cutoff carry into Investigation. Pre-event excludes event-day
+          observations and all current-event outcomes. Historical cutoffs limit
+          observations only; completed reports remain explicitly retrospective
+          context.
         </p>
         <div className="filter-bar">
+          <Select
+            label="Episode analysis scope"
+            value={mode}
+            onChange={(v) =>
+              setQuery({
+                mode: v,
+                asOf:
+                  v === "prospective" ? cutoff || "2026-04-22 23:59:59" : "",
+                episodeAsOf: "",
+                tank: "conditions",
+                incident: "",
+              })
+            }
+            options={[
+              { value: "historical", label: "Historical review" },
+              { value: "prospective", label: "Pre-event replay" },
+            ]}
+          />
           <Select
             label="Episode asset"
             value={q.episodeAsset ?? ""}
@@ -360,8 +399,10 @@ function Episodes() {
           <Field
             label="Replay cutoff (source-local)"
             type="datetime-local"
-            value={(q.episodeAsOf ?? "").replace(" ", "T")}
-            onChange={(v) => setQuery({ episodeAsOf: v.replace("T", " ") })}
+            value={cutoff.replace(" ", "T")}
+            onChange={(v) =>
+              setQuery({ asOf: v.replace("T", " "), episodeAsOf: "" })
+            }
           />
           <Field
             label="Minimum eligible source risk"
@@ -378,13 +419,24 @@ function Episodes() {
                 episodeStatus: "",
                 episodeRisk: "",
                 episodeAsOf: "",
+                asOf: "",
               })
             }
           >
             Reset episode filters
           </Button>
         </div>
-        {error && <Notice tone="error">{error}</Notice>}
+        {error && (
+          <Notice tone="error">
+            {error}{" "}
+            <Button onClick={() => setAttempt((v) => v + 1)}>
+              Retry episodes
+            </Button>
+          </Notice>
+        )}
+        {loadedScope !== scope && !error && (
+          <p role="status">Loading eligible condition episodes…</p>
+        )}
         {items.map((e) => (
           <div className="episode-card" key={e.id}>
             <div className="episode-head">
@@ -403,7 +455,16 @@ function Episodes() {
             <div className="button-row">
               <Button
                 variant="primary"
-                onClick={() => navigate("investigation", e.tag)}
+                onClick={() =>
+                  setQuery({
+                    view: "investigation",
+                    asset: e.tag,
+                    mode,
+                    asOf: cutoff,
+                    episodeAsOf: "",
+                    incident: "",
+                  })
+                }
               >
                 Investigate {e.tag}
               </Button>
@@ -444,14 +505,12 @@ function Episodes() {
                 onClick={() =>
                   openSource({
                     title: `${e.tag} episode support`,
-                    locators: [
-                      {
-                        file: catalog.assets.find((a) => a.tag === e.tag)!
-                          .info_source.file,
-                        sheet: "Condition History",
-                        cell: "A2:H27",
-                      },
-                    ],
+                    locators: e.samples.map((id) => ({
+                      file: catalog.assets.find((a) => a.tag === e.tag)!
+                        .info_source.file,
+                      sheet: "Condition History",
+                      cell: `A${id.split(":").at(-1)}:H${id.split(":").at(-1)}`,
+                    })),
                     kind: "computed",
                     period: `${e.first} to ${e.last}`,
                     formula: e.conditions.join("\n"),
@@ -467,7 +526,7 @@ function Episodes() {
             </div>
           </div>
         ))}
-        {!items.length && !error && (
+        {!items.length && !error && loadedScope === scope && (
           <div className="empty">
             No condition episodes match. Clear filters or move the source replay
             time forward.

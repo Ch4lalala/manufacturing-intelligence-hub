@@ -1,0 +1,176 @@
+
+> caliber-decision-hub@1.0.0 test
+> tsx --test tests/domain.test.ts tests/repair.test.ts
+
+TAP version 13
+# Subtest: Original totals, all stable rows, status composition and decimal financial invariants
+ok 1 - Original totals, all stable rows, status composition and decimal financial invariants
+  ---
+  duration_ms: 1.503875
+  type: 'test'
+  ...
+# Subtest: Filtered totals derive only from matching rows, including n/a identifiers and no-results
+ok 2 - Filtered totals derive only from matching rows, including n/a identifiers and no-results
+  ---
+  duration_ms: 0.4985
+  type: 'test'
+  ...
+# Subtest: Duplicate ARs remain separate and qualified matching rejects wrong tag/plant/date
+ok 3 - Duplicate ARs remain separate and qualified matching rejects wrong tag/plant/date
+  ---
+  duration_ms: 0.105875
+  type: 'test'
+  ...
+# Subtest: All five assets cover hourly, weekly, report and correctly classified reading counts
+ok 4 - All five assets cover hourly, weekly, report and correctly classified reading counts
+  ---
+  duration_ms: 0.572917
+  type: 'test'
+  ...
+# Subtest: Unit and HE/PM conflicts persist with source-stated reliability caveats
+ok 5 - Unit and HE/PM conflicts persist with source-stated reliability caveats
+  ---
+  duration_ms: 0.35075
+  type: 'test'
+  ...
+# Subtest: Prospective bundle for every asset excludes current/future outcomes across all fields
+ok 6 - Prospective bundle for every asset excludes current/future outcomes across all fields
+  ---
+  duration_ms: 13.393125
+  type: 'test'
+  ...
+# Subtest: Episode acknowledgement identity and transparent severity/criticality/risk ordering
+ok 7 - Episode acknowledgement identity and transparent severity/criticality/risk ordering
+  ---
+  duration_ms: 0.508917
+  type: 'test'
+  ...
+# Subtest: Mechanism retrieval works beyond tag and distinguishes report availability
+ok 8 - Mechanism retrieval works beyond tag and distinguishes report availability
+  ---
+  duration_ms: 0.373209
+  type: 'test'
+  ...
+# Subtest: Action workflow prevents skipped approval and gates closure by evidence and reviewer confirmation
+ok 9 - Action workflow prevents skipped approval and gates closure by evidence and reviewer confirmation
+  ---
+  duration_ms: 11.514917
+  type: 'test'
+  ...
+# Subtest: Versioned local state migration/reset and malformed-state recovery
+ok 10 - Versioned local state migration/reset and malformed-state recovery
+  ---
+  duration_ms: 3.556666
+  type: 'test'
+  ...
+# Subtest: Utility generator and forecast are deterministic, explicitly synthetic and isolated
+ok 11 - Utility generator and forecast are deterministic, explicitly synthetic and isolated
+  ---
+  duration_ms: 2.435584
+  type: 'test'
+  ...
+# Subtest: Replay citations resolve; malformed claims, invented numbers and ineligible report citations fail
+ok 12 - Replay citations resolve; malformed claims, invented numbers and ineligible report citations fail
+  ---
+  duration_ms: 26.33425
+  type: 'test'
+  ...
+# Subtest: API missing env, HTTP errors, invalid JSON, cancellation and timeouts visibly fall back without secrets
+ok 13 - API missing env, HTTP errors, invalid JSON, cancellation and timeouts visibly fall back without secrets
+  ---
+  duration_ms: 45.143459
+  type: 'test'
+  ...
+# Subtest: Model request contains only eligible prospective evidence and uses ordinary completions
+ok 14 - Model request contains only eligible prospective evidence and uses ordinary completions
+  ---
+  duration_ms: 10.115417
+  type: 'test'
+  ...
+# Subtest: Calendar and whitespace evidence gates cannot produce invalid approval or closure
+ok 15 - Calendar and whitespace evidence gates cannot produce invalid approval or closure
+  ---
+  duration_ms: 6.178292
+  type: 'test'
+  ...
+# Subtest: Date-only observations are not available at midnight and post-event data never enters pre-event scope
+ok 16 - Date-only observations are not available at midnight and post-event data never enters pre-event scope
+  ---
+  duration_ms: 5.873375
+  type: 'test'
+  ...
+# Subtest: Provider output cannot erase missing checks, bind unsupported guidance or expose extra payload fields
+ok 17 - Provider output cannot erase missing checks, bind unsupported guidance or expose extra payload fields
+  ---
+  duration_ms: 8.868375
+  type: 'test'
+  ...
+# Subtest: API episode and case gates agree at midnight/end-of-day; calendar and event-day exclusions hold
+ok 18 - API episode and case gates agree at midnight/end-of-day; calendar and event-day exclusions hold
+  ---
+  duration_ms: 49.906916
+  type: 'test'
+  ...
+# Subtest: Replay follows evidence: empty/normal has no diagnosis or maintenance draft; comparable normal trend/hourly OFF can trigger review
+ok 19 - Replay follows evidence: empty/normal has no diagnosis or maintenance draft; comparable normal trend/hourly OFF can trigger review
+  ---
+  duration_ms: 10.516709
+  type: 'test'
+  ...
+# Subtest: ALARM mechanisms derive from breached parameters; normal is explicit counter-evidence; report findings remain retrospective
+ok 20 - ALARM mechanisms derive from breached parameters; normal is explicit counter-evidence; report findings remain retrospective
+  ---
+  duration_ms: 20.334792
+  type: 'test'
+  ...
+# Subtest: Composed live narrative can differ; observations bind exact source/derived facts; empty hypotheses supported
+ok 21 - Composed live narrative can differ; observations bind exact source/derived facts; empty hypotheses supported
+  ---
+  duration_ms: 47.083708
+  type: 'test'
+  ...
+# Subtest: Every hypothesis gets its own action link; review identity changes when composed content changes
+ok 22 - Every hypothesis gets its own action link; review identity changes when composed content changes
+  ---
+  duration_ms: 4.488083
+  type: 'test'
+  ...
+# Subtest: Unauthorized/public/missing-config/quota/concurrency rejection produces zero extra provider calls
+ok 23 - Unauthorized/public/missing-config/quota/concurrency rejection produces zero extra provider calls
+  ---
+  duration_ms: 41.480833
+  type: 'test'
+  ...
+# Subtest: Sessions are signed/expiring/HttpOnly/origin-bound; login/revocation and limits are single-process and conservative
+ok 24 - Sessions are signed/expiring/HttpOnly/origin-bound; login/revocation and limits are single-process and conservative
+  ---
+  duration_ms: 0.571917
+  type: 'test'
+  ...
+# Subtest: Runtime source locator/download behavior handles unknown/missing/corrupt files without parent lookup or source substitution
+ok 25 - Runtime source locator/download behavior handles unknown/missing/corrupt files without parent lookup or source substitution
+  ---
+  duration_ms: 17.173459
+  type: 'test'
+  ...
+# Subtest: Real demo-session handlers issue/revoke HttpOnly cookies and fail closed without configured access
+ok 26 - Real demo-session handlers issue/revoke HttpOnly cookies and fail closed without configured access
+  ---
+  duration_ms: 1.190958
+  type: 'test'
+  ...
+# Subtest: Provider deadline actually aborts hanging transport; caller cancellation before contact makes zero calls
+ok 27 - Provider deadline actually aborts hanging transport; caller cancellation before contact makes zero calls
+  ---
+  duration_ms: 15025.010417
+  type: 'test'
+  ...
+1..27
+# tests 27
+# suites 0
+# pass 27
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15425.742666

@@ -3,6 +3,7 @@ import {
   useEffect,
   useId,
   useRef,
+  useState,
   type ReactNode,
   type ButtonHTMLAttributes,
 } from "react";
@@ -145,6 +146,48 @@ export function Field({
     </div>
   );
 }
+export function SecretField({
+  label,
+  value,
+  onChange,
+  error,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+}) {
+  const id = useId(),
+    [visible, setVisible] = useState(false);
+  return (
+    <div className="field">
+      <label htmlFor={id}>{label}</label>
+      <div className="button-row">
+        <input
+          id={id}
+          type={visible ? "text" : "password"}
+          autoComplete="current-password"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          aria-invalid={!!error}
+          aria-describedby={error ? `${id}-error` : undefined}
+        />
+        <Button
+          aria-label={`${visible ? "Hide" : "Show"} ${label.toLowerCase()}`}
+          aria-pressed={visible}
+          onClick={() => setVisible((v) => !v)}
+        >
+          {visible ? "Hide" : "Show"}
+        </Button>
+      </div>
+      {error && (
+        <span id={`${id}-error`} className="error-text">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+}
 export function Search({
   label,
   value,
@@ -263,6 +306,7 @@ export type SourceDisplay = {
   title: string;
   locators: Locator[];
   excerpt?: string;
+  detailHeading?: string;
   kind?: string;
   formula?: string;
   period?: string;
@@ -357,9 +401,10 @@ export function SourceDialog({
         </div>
       ))}
       <h3>
-        {source.kind?.includes("source") || !source.kind
-          ? "Exact source excerpt"
-          : "Evidence & calculation context"}
+        {source.detailHeading ??
+          (source.kind?.includes("source") || !source.kind
+            ? "Exact source excerpt"
+            : "Evidence & calculation context")}
       </h3>
       <pre className="excerpt">{source.excerpt ?? remote}</pre>
       {remote.startsWith("Unable") && (
@@ -373,7 +418,6 @@ export function SourceDialog({
     </Modal>
   );
 }
-import { useState } from "react";
 function useRemoteSource(source: SourceDisplay) {
   const [value, setValue] = useState("Loading source excerpt…"),
     [attempt, setAttempt] = useState(0);

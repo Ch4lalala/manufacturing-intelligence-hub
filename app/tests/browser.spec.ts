@@ -135,6 +135,16 @@ test("Every asset and all report slides navigable; HE/PM contradictions remain v
         }),
       ).toBeVisible();
   }
+  // Native asset selection must retain each full historical window when no
+  // cutoff was requested, rather than applying the previous asset's reference.
+  for (const tag of ["KO-3201", "HE-3301"]) {
+    await page.getByLabel("Asset scenario", { exact: true }).selectOption(tag);
+    await expect(
+      page.getByRole("heading", { name: `Historical RCA library · ${tag}` }),
+    ).toBeVisible();
+    await expect(page.getByText(/720 source observations/)).toBeVisible();
+    expect(new URL(page.url()).searchParams.has("asOf")).toBe(false);
+  }
 });
 test("Pre-event UI and API exclude current report, future readings and outcome summaries", async ({
   page,
@@ -201,14 +211,17 @@ test("KO action loop, gated approval/verification, persistence, rejection reason
     page.getByText(/Retrospective review: the report finding/),
   ).toBeVisible();
   await expect(
-    page.getByRole("button", { name: "Create reviewed action draft" }),
+    page.getByRole("button", {
+      name: "Create reviewed action draft",
+      exact: true,
+    }),
   ).toBeDisabled();
   await page
     .getByRole("button", { name: "Accept for action review", exact: true })
     .first()
     .click();
   await page
-    .getByRole("button", { name: "Create reviewed action draft" })
+    .getByRole("button", { name: "Create reviewed action draft", exact: true })
     .click();
   await ready(page, "Action Tracker");
   await page
@@ -305,23 +318,38 @@ test("Synthetic utility assumptions, zero-output state and persistence forecast 
 test("Live request without configuration is explicit replay; errors remain recoverable", async ({
   page,
 }) => {
+  await page.route("**/api/demo-session", (r) =>
+    r.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        enabled: true,
+        authenticated: true,
+        reason: "Mocked demo access",
+      }),
+    }),
+  );
+  const fixture = await (
+    await page.request.post("/api/analyze", {
+      data: {
+        asset: "KO-3201",
+        mode: "historical",
+        asOf: "2026-04-30 23:00:00",
+        live: false,
+      },
+    })
+  ).json();
   await goto(page, "/?view=investigation", "Investigation");
   await page.route("**/api/analyze", (route) =>
     route.fulfill({
       status: 200,
       contentType: "application/json",
       body: JSON.stringify({
-        caseId: "KO-3201",
-        mode: "historical",
-        asOf: "2026-04-30 23:00:00",
-        summary: "Replay due to missing test configuration",
-        hypotheses: [],
-        actions: [],
-        limitations: [],
+        ...fixture,
         execution: "replay",
+        liveState: "blocked",
         message:
-          "Evidence replay - no live AI call. Live API not-tested: configure the server API key and exact model ID.",
-        stages: [],
+          "Evidence replay - no live AI call. Live API not-tested: missing mock configuration.",
       }),
     }),
   );
@@ -469,7 +497,11 @@ test("Read-only server source whitelist and actual missing-config fallback expos
   expect(content.excerpt).toContain("1530");
   expect(content.excerpt).toContain("1372.791");
   const status = await (await request.get("/api/status")).json();
-  expect(Object.keys(status).sort()).toEqual(["configured", "liveTested"]);
+  expect(Object.keys(status).sort()).toEqual([
+    "configured",
+    "liveAccess",
+    "liveTested",
+  ]);
   if (!status.configured) {
     const response = await request.post("/api/analyze", {
       data: {
@@ -481,6 +513,286 @@ test("Read-only server source whitelist and actual missing-config fallback expos
     });
     const body = await response.json();
     expect(body.execution).toBe("replay");
-    expect(body.message).toContain("not-tested");
+    expect(body.liveState).toBe("blocked");
   }
+});
+
+test("Problem Tank carries exact pre-event cutoff into Investigation at midnight and end-of-day", async ({
+  page,
+  request,
+}) => {
+  for (const [time, last] of [
+    ["2026-04-22 00:00:00", "2026-04-15"],
+    ["2026-04-22 23:59:59", "2026-04-22"],
+  ]) {
+    const q = new URLSearchParams({
+      view: "problems",
+      tank: "conditions",
+      mode: "prospective",
+      asset: "KO-3201",
+      episodeAsset: "KO-3201",
+      asOf: time,
+    });
+    await goto(page, "/?" + q, "Problem Tank");
+    await expect(
+      page.getByRole("heading", { name: "KO-3201 · Condition family" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Historical register · 380 records" }),
+    ).toBeDisabled();
+    const ep = await (
+      await request.get(
+        "/api/episodes?" +
+          new URLSearchParams({
+            mode: "prospective",
+            asset: "KO-3201",
+            asOf: time,
+          }),
+      )
+    ).json();
+    await expect(
+      page.locator(".episode-card").filter({ hasText: "KO-3201" }),
+    ).toContainText(last);
+    await page
+      .getByRole("button", { name: "Investigate KO-3201", exact: true })
+      .click();
+    await ready(page, "Investigation");
+    const url = new URL(page.url());
+    expect(url.searchParams.get("asOf")).toBe(time);
+    expect(url.searchParams.get("mode")).toBe("prospective");
+    const bundle = await (
+      await request.get(
+        "/api/case?" +
+          new URLSearchParams({
+            mode: "prospective",
+            asset: "KO-3201",
+            asOf: time,
+          }),
+      )
+    ).json();
+    expect(bundle.conditions.at(-1).date).toBe(last);
+    expect(bundle.episodes[0].samples).toEqual(ep[0].samples);
+    await page
+      .getByRole("button", {
+        name: "Evidence replay - no live AI call",
+        exact: true,
+      })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: "Observed signals & factual bindings",
+      }),
+    ).toBeVisible();
+    await expect(page.locator("main")).not.toContainText("1,800");
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({
+      path: time.includes("00:00:00")
+        ? "screenshots/repair-midnight.png"
+        : "screenshots/repair-end-of-day.png",
+      fullPage: true,
+    });
+  }
+});
+test("Normal-only replay offers no diagnosis or draft; second hypothesis can create a scoped pre-event action", async ({
+  page,
+}) => {
+  await goto(
+    page,
+    "/?view=investigation&mode=prospective&asset=KO-3201&asOf=2025-12-10%2023:59:59",
+    "Investigation",
+  );
+  await page
+    .getByRole("button", {
+      name: "Evidence replay - no live AI call",
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByText(/Insufficient anomaly evidence\. Eligible/),
+  ).toBeVisible();
+  await expect(page.locator(".hypothesis-card")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: /Create reviewed action draft/ }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Request live AI composition" }),
+  ).toBeDisabled();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: "screenshots/repair-insufficient.png",
+    fullPage: true,
+  });
+  await goto(
+    page,
+    "/?view=investigation&mode=prospective&asset=KO-3201&asOf=2026-04-22%2023:59:59",
+    "Investigation",
+  );
+  await page
+    .getByRole("button", {
+      name: "Evidence replay - no live AI call",
+      exact: true,
+    })
+    .click();
+  const second = page.locator(".hypothesis-card").nth(1);
+  const title = await second.locator("h3").first().innerText();
+  await second
+    .getByRole("button", { name: "Accept for action review", exact: true })
+    .click();
+  await second
+    .getByRole("button", { name: /Create reviewed action draft/ })
+    .click();
+  await ready(page, "Action Tracker");
+  await expect(page.locator(".action-card")).toContainText(title);
+  await expect(
+    page.getByRole("heading", { name: /Imported historical report actions/ }),
+  ).toHaveCount(0);
+  await expect(page.locator("main")).not.toContainText(
+    "leaking lube-oil cooler",
+  );
+  await page.reload();
+  await ready(page, "Action Tracker");
+  await expect(page.locator(".action-card")).toContainText(title);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: "screenshots/repair-second-hypothesis-action.png",
+    fullPage: true,
+  });
+});
+test("Empty historical observation cutoff keeps Data Map metadata sources navigable", async ({
+  page,
+}) => {
+  await goto(
+    page,
+    "/?view=data&asset=KO-3201&asOf=2025-01-01%2000:00:00",
+    "Data & KPI Map",
+  );
+  await expect(
+    page.getByText(/^Hourly coverage: No eligible hourly observations/),
+  ).toBeVisible();
+  await expect(page.getByText(/^Hourly coverage:/)).toContainText(
+    "No eligible weekly observations.",
+  );
+  await page.getByRole("button", { name: "PI Tag row 2", exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByRole("dialog")).toContainText("KO3201_FEED");
+  await page.keyboard.press("Escape");
+  await page
+    .getByRole("button", { name: "Investigation", exact: true })
+    .click();
+  await ready(page, "Investigation");
+  await page
+    .getByRole("button", {
+      name: "Evidence replay - no live AI call",
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByText(/No eligible observations\. Choose/),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: /Create reviewed action draft/ }),
+  ).toHaveCount(0);
+});
+test("Demo access UI masks passcode, handles auth errors, unlocks explicitly and processes guarded quota fallback", async ({
+  page,
+  request,
+}) => {
+  let unlocked = false,
+    failStatusOnce = true;
+  await page.route("**/api/demo-session", (route) => {
+    const method = route.request().method();
+    if (method === "GET" && failStatusOnce) {
+      failStatusOnce = false;
+      return route.fulfill({ status: 503, body: "unavailable" });
+    }
+    if (method === "POST") {
+      if (route.request().postDataJSON().passcode !== "browser-test-only")
+        return route.fulfill({
+          status: 401,
+          contentType: "application/json",
+          body: JSON.stringify({
+            error: "Demo access could not be unlocked. Check the passcode.",
+          }),
+        });
+      unlocked = true;
+    } else if (method === "DELETE") unlocked = false;
+    return route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        enabled: true,
+        authenticated: unlocked,
+        reason: "Mocked local access",
+      }),
+    });
+  });
+  await goto(page, "/?view=investigation&asset=KO-3201", "Investigation");
+  await page
+    .getByRole("button", { name: "Retry demo access status", exact: true })
+    .click();
+  const field = page.getByLabel("Demo passcode", { exact: true });
+  await expect(field).toHaveAttribute("type", "password");
+  await page
+    .getByRole("button", { name: "Show demo passcode", exact: true })
+    .click();
+  await expect(field).toHaveAttribute("type", "text");
+  await page
+    .getByRole("button", { name: "Hide demo passcode", exact: true })
+    .click();
+  await field.fill("wrong-test-value");
+  await page
+    .getByRole("button", { name: "Unlock live access", exact: true })
+    .click();
+  await expect(
+    page
+      .getByText("Demo access could not be unlocked. Check the passcode.")
+      .first(),
+  ).toBeVisible();
+  await field.fill("browser-test-only");
+  await page
+    .getByRole("button", { name: "Unlock live access", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Request live AI composition" }),
+  ).toBeEnabled();
+  const result = await (
+    await request.post("/api/analyze", {
+      data: {
+        asset: "KO-3201",
+        mode: "historical",
+        asOf: "2026-04-30 23:00:00",
+        live: false,
+      },
+    })
+  ).json();
+  await page.route("**/api/analyze", (r) =>
+    r.fulfill({
+      status: 429,
+      contentType: "application/json",
+      body: JSON.stringify({
+        ...result,
+        liveState: "blocked",
+        message:
+          "Evidence replay - no live AI call. Live demo usage limit reached.",
+      }),
+    }),
+  );
+  await page
+    .getByRole("button", { name: "Request live AI composition" })
+    .click();
+  await expect(page.getByText(/Live demo usage limit reached/)).toBeVisible();
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({
+    path: "screenshots/repair-demo-access.png",
+    fullPage: true,
+  });
+  await page
+    .getByRole("button", { name: "Lock live access", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Request live AI composition" }),
+  ).toBeDisabled();
+  expect(
+    await page.evaluate(() => localStorage.getItem("caliber-workspace-v1")),
+  ).not.toContain("browser-test-only");
 });

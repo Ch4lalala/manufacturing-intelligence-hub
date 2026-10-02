@@ -1,4 +1,5 @@
 import test from "node:test";
+import { providerPayload } from "./fixtures";
 import assert from "node:assert/strict";
 import { raw, incidents } from "../src/lib/data";
 import {
@@ -366,20 +367,28 @@ test("Utility generator and forecast are deterministic, explicitly synthetic and
 test("Replay citations resolve; malformed claims, invented numbers and ineligible report citations fail", () => {
   const a = replay(prospective);
   assert.equal(a.execution, "replay");
-  assert.doesNotThrow(() => validateAnalysis(a, prospective));
-  const bad = structuredClone(a);
+  assert.doesNotThrow(() =>
+    validateAnalysis(providerPayload(prospective), prospective),
+  );
+  const bad = structuredClone(providerPayload(prospective));
   bad.hypotheses[0].evidenceIds.push("KO-3201:report:7:50");
   assert.throws(() => validateAnalysis(bad, prospective), /citation/);
   assert.throws(() =>
-    validateAnalysis({ ...a, summary: "95% certain cooler leak" }, prospective),
+    validateAnalysis(
+      { ...providerPayload(prospective), summary: "95% certain cooler leak" },
+      prospective,
+    ),
   );
   assert.throws(() => validateAnalysis({ caseId: ko.tag }, prospective));
   assert.throws(() =>
     validateAnalysis(
       {
-        ...a,
+        ...providerPayload(prospective),
         actions: [
-          { ...a.actions[0], guidance: "Trip compressor now; order parts" },
+          {
+            ...providerPayload(prospective).actions[0],
+            guidance: "Trip compressor now; order parts",
+          },
         ],
       },
       prospective,
@@ -424,7 +433,9 @@ test("Model request contains only eligible prospective evidence and uses ordinar
     assert.ok(!prompt.includes("cooler tube"));
     assert.ok(!prompt.includes("1530"));
     return Response.json({
-      choices: [{ message: { content: JSON.stringify(replay(prospective)) } }],
+      choices: [
+        { message: { content: JSON.stringify(providerPayload(prospective)) } },
+      ],
     });
   }) as typeof fetch;
   const response = await analyze(
@@ -478,15 +489,17 @@ test("Date-only observations are not available at midnight and post-event data n
   );
   assert.ok(!JSON.stringify(late).includes("1530"));
 });
-test("Provider output cannot erase missing checks, attach unsupported guidance or echo extra payload fields", () => {
-  const a = replay(prospective),
-    bad = structuredClone(a);
+test("Provider output cannot erase missing checks, bind unsupported guidance or expose extra payload fields", () => {
+  const valid = providerPayload(prospective),
+    bad = structuredClone(valid);
   bad.hypotheses[0].missingChecks = [];
   assert.throws(() => validateAnalysis(bad, prospective));
-  assert.throws(() => validateAnalysis({ ...a, limitations: [] }, prospective));
-  const result = validateAnalysis(
-    { ...a, extraProviderPayload: "not accepted as output" },
-    prospective,
+  const result = validateAnalysis({ ...valid, limitations: [] }, prospective);
+  assert.ok(result.limitations.includes(prospective.exclusions[0]));
+  assert.throws(() =>
+    validateAnalysis(
+      { ...valid, extraProviderPayload: "not accepted as output" },
+      prospective,
+    ),
   );
-  assert.ok(!JSON.stringify(result).includes("extraProviderPayload"));
 });

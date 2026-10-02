@@ -1,0 +1,80 @@
+{
+  "commit": "3759e2efc21e5e1727022bfd487066d4fb7fbb45",
+  "temporal": [
+    {
+      "time": "2026-04-22 00:00:00",
+      "tankLast": "2026-04-22",
+      "tankSamples": [
+        "KO-3201:weekly:11",
+        "KO-3201:weekly:12",
+        "KO-3201:weekly:13",
+        "KO-3201:weekly:14",
+        "KO-3201:weekly:15",
+        "KO-3201:weekly:16",
+        "KO-3201:weekly:17",
+        "KO-3201:weekly:18",
+        "KO-3201:weekly:19",
+        "KO-3201:weekly:20",
+        "KO-3201:weekly:21"
+      ],
+      "investigationLast": "2026-04-15",
+      "investigationSampleIds": [
+        "KO-3201:weekly:11",
+        "KO-3201:weekly:12",
+        "KO-3201:weekly:13",
+        "KO-3201:weekly:14",
+        "KO-3201:weekly:15",
+        "KO-3201:weekly:16",
+        "KO-3201:weekly:17",
+        "KO-3201:weekly:18",
+        "KO-3201:weekly:19",
+        "KO-3201:weekly:20"
+      ]
+    },
+    {
+      "time": "2026-04-22 23:59:59",
+      "tankLast": "2026-04-22",
+      "tankSamples": [
+        "KO-3201:weekly:11",
+        "KO-3201:weekly:12",
+        "KO-3201:weekly:13",
+        "KO-3201:weekly:14",
+        "KO-3201:weekly:15",
+        "KO-3201:weekly:16",
+        "KO-3201:weekly:17",
+        "KO-3201:weekly:18",
+        "KO-3201:weekly:19",
+        "KO-3201:weekly:20",
+        "KO-3201:weekly:21"
+      ],
+      "investigationLast": "2026-04-22",
+      "investigationSampleIds": [
+        "KO-3201:weekly:11",
+        "KO-3201:weekly:12",
+        "KO-3201:weekly:13",
+        "KO-3201:weekly:14",
+        "KO-3201:weekly:15",
+        "KO-3201:weekly:16",
+        "KO-3201:weekly:17",
+        "KO-3201:weekly:18",
+        "KO-3201:weekly:19",
+        "KO-3201:weekly:20",
+        "KO-3201:weekly:21"
+      ]
+    }
+  ],
+  "normalEvidence": {
+    "statuses": [
+      "NORMAL"
+    ],
+    "summary": "Pre-event indication from eligible observations. These are candidate mechanisms requiring inspection, with no confirmed diagnosis.",
+    "hypothesisCount": 2,
+    "actionCount": 2
+  },
+  "appOnlyExcerpt": {
+    "error": "ENOENT"
+  },
+  "appOnlyDownload": {
+    "status": 404
+  }
+}

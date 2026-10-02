@@ -1,4 +1,11 @@
-import type { Workspace, WorkspaceAction, ActionState, Change } from "./types";
+import type {
+  Workspace,
+  WorkspaceAction,
+  ActionState,
+  Change,
+  Hypothesis,
+} from "./types";
+import { validSourceDate } from "./time";
 export const STATES: ActionState[] = [
   "Draft",
   "Approved",
@@ -7,11 +14,29 @@ export const STATES: ActionState[] = [
   "Closed",
 ];
 export function validDate(value: string) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
-  const date = new Date(`${value}T00:00:00Z`);
-  return (
-    Number.isFinite(date.valueOf()) && date.toISOString().slice(0, 10) === value
-  );
+  return validSourceDate(value);
+}
+export function reviewKey(
+  tag: string,
+  mode: string,
+  asOf: string,
+  h: Hypothesis,
+) {
+  // Content-bound review identity prevents an accepted prior narrative from approving a changed model hypothesis.
+  const content = JSON.stringify([
+    h.title,
+    h.explanation,
+    h.mechanism,
+    h.strength,
+    h.evidenceIds,
+    h.counterEvidenceIds,
+    h.missingChecks,
+  ]);
+  let fingerprint = 2166136261;
+  for (const character of content)
+    fingerprint =
+      Math.imul(fingerprint ^ character.charCodeAt(0), 16777619) >>> 0;
+  return `${tag}:${mode}:${asOf}:${h.id}:${fingerprint.toString(16)}`;
 }
 export function emptyWorkspace(version: string): Workspace {
   return {

@@ -1,6 +1,6 @@
 # UX Contract
 
-English product interface, WCAG 2.2 AA target. Source timestamps have unknown timezone and stay unchanged. Local workspace history uses explicit UTC ISO timestamps. No enterprise authentication. Role choices are simulations.
+English product interface, WCAG 2.2 AA target. Source timestamps have unknown timezone and stay unchanged. Local workspace history uses explicit UTC ISO timestamps. Demo-session access gates optional provider calls only; no enterprise authentication. Role choices are simulations.
 
 ## Business-context sources
 
@@ -23,13 +23,15 @@ English product interface, WCAG 2.2 AA target. Source timestamps have unknown ti
 | Toast          | src/components/hub.tsx live region            | this contract            | success/error                                               | browser                |
 | CRUD           | src/lib/actions.ts; workspace hook            | solution spec            | local action state transitions, owner edit, confirmed reset | domain/browser tests   |
 
-Table selection and bulk mutation are not applicable. Charts and paginated source tables are read-oriented.
+Table selection and bulk mutation are not applicable. Charts and paginated source tables are read-oriented. SecretField is owned by src/components/ui.tsx; session transport/retry by demo-access.tsx and access validation by live-access.ts. SignalPanel owns typed observation/source-fact drawers. All use existing panels, typography and control tokens.
 
 ## Navigation and dataset state
 
-Five views and selected asset use URL query parameters. Register filters, sort, page and query use URL state and survive Back. Prospective mode lives inside Investigation: other navigation is disabled with an explicit historical-review prerequisite to prevent rendering outcome summaries during that replay. Mode changes cancel in-flight requests, clear analyses and source dialogs. No current report, future condition remarks, risk labels or register aggregates enter prospective rendering/analysis.
+Five views and selected asset use URL query parameters. Register filters, sort, page and query use URL state and survive Back. Prospective mode permits Problem Tank condition episodes, Investigation and actions from the same asset/cutoff review. Executive Overview, Data Map and historical register are disabled with explicit reasons to prevent rendering outcome summaries during replay. Tank → Investigation carries asset, mode and exact source-local cutoff. Weekly date-only eligibility uses end-of-day; real calendar/time validation is shared. Historical cutoff limits observations only, with retrospective report context labeled separately. Mode changes cancel in-flight requests, clear analyses and source dialogs. No current report, future condition remarks, risk labels or register aggregates enter prospective rendering/analysis.
 
 ## Forms, overlays and feedback
+
+Fields have labels. Demo passcodes use shared SecretField: masked by default, accessible Show/Hide toggle, current-password autocomplete, associated persistent errors and retry. Passcodes are cleared on success and never persisted in workspace. Signed HttpOnly session is distinct from role simulation; rate/day/concurrency restrictions run on the server before provider fetch. No public live mode without shared quota backing. Analysis states explicitly distinguish not requested, blocked, attempted/failed and validated. Normal-only evidence has no inferred mechanism/action draft. Each hypothesis has its own supporting/counter evidence and linked drafts; acceptance is bound to content.
 
 Fields have labels. Forms use noValidate; validation errors are persistent text, associated with inputs, focus the first invalid field and preserve inputs. Action drafts are saved locally as edited, so navigation does not lose them. Source and reset dialogs use shared native-dialog primitive with accessible title, inert background, Escape and focus restoration; reset focuses Cancel first. No browser alert/confirm/prompt.
 

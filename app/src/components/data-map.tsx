@@ -203,15 +203,25 @@ export function DataMap() {
       >
         <p className="caption">
           Hourly coverage: {bundle.asset.hourlyWindow}. Weekly coverage:{" "}
-          {bundle.asset.weeklyWindow}. Latest weekly date is{" "}
-          {bundle.conditions.at(-1)!.date > bundle.asOf.slice(0, 10)
-            ? "after"
-            : bundle.conditions.at(-1)!.date === bundle.asOf.slice(0, 10)
-              ? "on"
-              : "before"}{" "}
-          the review reference date; historical review retains the complete
-          separately labeled source window. Ingestion freshness and report
-          availability cannot be established without availability timestamps.
+          {bundle.asset.weeklyWindow}.{" "}
+          {bundle.conditions.length ? (
+            <>
+              Latest weekly date is{" "}
+              {bundle.conditions.at(-1)!.date > bundle.asOf.slice(0, 10)
+                ? "after"
+                : bundle.conditions.at(-1)!.date === bundle.asOf.slice(0, 10)
+                  ? "on"
+                  : "before"}{" "}
+              the review reference date.{" "}
+            </>
+          ) : (
+            "No eligible weekly observations. "
+          )}
+          {bundle.observationCutoff
+            ? "The cutoff limits observations; completed report context is retrospective. "
+            : "Historical review retains the complete separately labeled source window. "}
+          Ingestion freshness and report availability cannot be established
+          without availability timestamps.
         </p>
         <div className="table-scroll">
           <table>
@@ -239,7 +249,9 @@ export function DataMap() {
                           title: m.Name,
                           locators: [
                             {
-                              file: bundle.production[0].source.file,
+                              file: bundle.evidence.find(
+                                (e) => e.id === `${bundle.asset.tag}:metadata`,
+                              )!.locator.file,
                               sheet: "PI Tag",
                               cell: `A${i + 2}:H${i + 2}`,
                             },

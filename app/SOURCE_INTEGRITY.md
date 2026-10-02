@@ -31,3 +31,9 @@ App transformation `scripts/normalize.py` independently checks all 22 originals 
 Original register recalculation with Python Decimal reproduced 2261.1 h downtime, Act. Loss 61886.46 k US$, Pot. Loss 5307.97 k US$ and Total Loss 67194.43 k US$. All 380 source row identities and the qualified five report links survive normalization. No supplied source or extractor output was overwritten, and the supplied extractor was not rerun. New `app/` files are allowed by the package verifier.
 
 Full inventory, expected hashes, current instruction-file discrepancy and original-recalculation totals are stored in `data/normalized.json` under `inventory` and `integrity`. Re-run the original verifier if sources move or change; identify affected files before making source-derived claims.
+
+## Repair recheck — 3 October 2026
+
+The initial repair integrity command again checked 22 originals with zero discrepancies and 46 handoff files with the same two size/hash discrepancies for CODEX_PROMPT.md. No original or authoritative fact file is missing/changed. Branch main, reviewed/current HEAD 3759e2efc21e5e1727022bfd487066d4fb7fbb45. The user's existing next-env.d.ts edit and untracked repair prompt were preserved. The private .env.local was neither opened nor modified.
+
+`npm run normalize` again reconciled all 380 register rows and full hourly/weekly observations against originals; normalized JSON is unchanged. `prepare:runtime` verifies original sizes/hashes before creating runtime copies and verifies workbook extraction against the original manifest. No extractor was rerun and no expected manifest hash changed. Generated copies are ignored, server-only, and verified again for original downloads. Artifact-only production verification confirms all 22 downloaded originals match their inventory hashes; see verification/deploy-runtime.json.

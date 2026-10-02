@@ -1,0 +1,7 @@
+{
+  "scope": "Client variable reference scan and standalone file inventory; private .env.local not opened",
+  "clientJsFilesChecked": 13,
+  "serverSecretVariableReferences": 0,
+  "standaloneEnvironmentFiles": [],
+  "pass": true
+}

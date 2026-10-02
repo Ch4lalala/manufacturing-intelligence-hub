@@ -1,0 +1,218 @@
+{
+  "scope": "Local production artifact-only runtime, not deployed Vercel",
+  "assertions": [
+    {
+      "name": "Standalone root contains no private environment files",
+      "pass": true
+    },
+    {
+      "name": "No parent sources or processed extraction directory",
+      "pass": true
+    },
+    {
+      "name": "Clean standalone server started",
+      "pass": true
+    },
+    {
+      "name": "PU-2101B observation coverage in clean runtime",
+      "pass": true
+    },
+    {
+      "name": "PU-2101B exact weekly source excerpt",
+      "pass": true
+    },
+    {
+      "name": "PU-2101B exact historical finding locator",
+      "pass": true
+    },
+    {
+      "name": "KO-3201 observation coverage in clean runtime",
+      "pass": true
+    },
+    {
+      "name": "KO-3201 exact weekly source excerpt",
+      "pass": true
+    },
+    {
+      "name": "KO-3201 exact historical finding locator",
+      "pass": true
+    },
+    {
+      "name": "PM-4405B observation coverage in clean runtime",
+      "pass": true
+    },
+    {
+      "name": "PM-4405B exact weekly source excerpt",
+      "pass": true
+    },
+    {
+      "name": "PM-4405B exact historical finding locator",
+      "pass": true
+    },
+    {
+      "name": "HE-3301 observation coverage in clean runtime",
+      "pass": true
+    },
+    {
+      "name": "HE-3301 exact weekly source excerpt",
+      "pass": true
+    },
+    {
+      "name": "HE-3301 exact historical finding locator",
+      "pass": true
+    },
+    {
+      "name": "BL-5702 observation coverage in clean runtime",
+      "pass": true
+    },
+    {
+      "name": "BL-5702 exact weekly source excerpt",
+      "pass": true
+    },
+    {
+      "name": "BL-5702 exact historical finding locator",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/equipment/Equipment Performance - RCA1 PU-2101B.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/equipment/Equipment Performance - RCA2 KO-3201.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/equipment/Equipment Performance - RCA3 PM-4405B.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/equipment/Equipment Performance - RCA4 HE-3301.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/equipment/Equipment Performance - RCA5 BL-5702.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/incidents/Incident Database.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/production/Production Data - RCA1 PU-2101B.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/production/Production Data - RCA2 KO-3201.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/production/Production Data - RCA3 PM-4405B.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/production/Production Data - RCA4 HE-3301.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/production/Production Data - RCA5 BL-5702.xlsx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/notes/technical meeting focused on case 2.txt",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/official/Booklet CALIBER 2026 - Registration Extended.pdf",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/official/The Case - CALIBER 2026.pdf",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/reference/Microsoft_LICENSE",
+      "pass": true
+    },
+    {
+      "name": "Verified original download: sources/reference/Microsoft_README.md",
+      "pass": true
+    },
+    {
+      "name": "Normalized data and all register-source identities available",
+      "pass": true
+    },
+    {
+      "name": "Exact XLSX locator works without parent extraction",
+      "pass": true
+    },
+    {
+      "name": "PPTX source excerpt resolves",
+      "pass": true
+    },
+    {
+      "name": "PDF page excerpt resolves",
+      "pass": true
+    },
+    {
+      "name": "Original download matches expected SHA-256",
+      "pass": true
+    },
+    {
+      "name": "Production metadata locator resolves original unit",
+      "pass": true
+    },
+    {
+      "name": "Unknown path returns controlled 404",
+      "pass": true
+    },
+    {
+      "name": "Unknown worksheet never substitutes another source",
+      "pass": true
+    },
+    {
+      "name": "Missing original returns controlled error",
+      "pass": true
+    },
+    {
+      "name": "Missing runtime excerpts return controlled 503",
+      "pass": true
+    },
+    {
+      "name": "Public live session disabled",
+      "pass": true
+    },
+    {
+      "name": "Public live fails closed and offers deterministic replay",
+      "pass": true
+    },
+    {
+      "name": "Application page available",
+      "pass": true
+    }
+  ],
+  "passed": 53
+}

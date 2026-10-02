@@ -15,7 +15,8 @@ import type {
   ActionDraft,
   Hypothesis,
 } from "@/lib/types";
-import { emptyWorkspace, restoreWorkspace } from "@/lib/actions";
+import { emptyWorkspace, restoreWorkspace, reviewKey } from "@/lib/actions";
+import { sourceTime } from "@/lib/time";
 import {
   Button,
   Select,
@@ -77,7 +78,19 @@ export function Hub({ catalog }: { catalog: Catalog }) {
   const view = query.view ?? "overview",
     tag = query.asset ?? "KO-3201",
     mode = query.mode === "prospective" ? "prospective" : "historical";
-  const asOf = query.asOf ?? "2026-04-22 23:59:59";
+  const requestedCutoff = query.asOf || query.episodeAsOf || "";
+  const reference =
+    mode === "prospective"
+      ? "2026-04-22 23:59:59"
+      : (catalog.assets
+          .find((a) => a.tag === tag)
+          ?.hourlyWindow.split(" to ")[1] ?? "2026-04-30 23:00:00");
+  let asOf = requestedCutoff || reference;
+  try {
+    asOf = sourceTime(asOf);
+  } catch {
+    /* API displays invalid-calendar state. */
+  }
   function setQuery(patch: Record<string, string>) {
     const next = { ...query, ...patch };
     for (const key of Object.keys(next)) if (!next[key]) delete next[key];
@@ -88,7 +101,7 @@ export function Hub({ catalog }: { catalog: Catalog }) {
     if (
       (next.mode ?? "historical") !== mode ||
       (next.asset ?? "KO-3201") !== tag ||
-      (next.asOf ?? "2026-04-22 23:59:59") !== asOf
+      (next.asOf || next.episodeAsOf || reference) !== asOf
     ) {
       setBundle(null);
       setLoading(true);
@@ -162,13 +175,8 @@ export function Hub({ catalog }: { catalog: Catalog }) {
     const q = new URLSearchParams({
       asset: tag,
       mode,
-      asOf:
-        mode === "prospective"
-          ? asOf
-          : (catalog.assets
-              .find((a) => a.tag === tag)
-              ?.hourlyWindow.split(" to ")[1] ?? asOf),
     });
+    if (mode === "prospective" || requestedCutoff) q.set("asOf", asOf);
     fetch(`/api/case?${q}`, {
       signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]),
     })
@@ -192,7 +200,7 @@ export function Hub({ catalog }: { catalog: Catalog }) {
         }
       });
     return () => controller.abort();
-  }, [tag, mode, asOf, catalog.assets, attempt]);
+  }, [tag, mode, asOf, requestedCutoff, catalog.assets, attempt]);
   useEffect(() => {
     document.title = `${views.find((v) => v.id === view)?.label ?? "Workspace"} | CALIBER`;
   }, [view]);
@@ -203,7 +211,16 @@ export function Hub({ catalog }: { catalog: Catalog }) {
   ) {
     if (!bundle) return;
     if (
-      workspace.reviews[`${tag}:${analysisMode}:${bundle.asOf}:${h.id}`] !==
+      draft.hypothesisId !== h.id ||
+      !draft.evidenceIds.some((id) => h.evidenceIds.includes(id))
+    ) {
+      setMessage(
+        "This draft must link to the reviewed hypothesis and its evidence.",
+      );
+      return;
+    }
+    if (
+      workspace.reviews[reviewKey(tag, analysisMode, bundle.asOf, h)] !==
       "Accepted"
     ) {
       setMessage(
@@ -216,6 +233,9 @@ export function Hub({ catalog }: { catalog: Catalog }) {
         (a) =>
           a.caseId === tag &&
           a.hypothesisId === h.id &&
+          a.hypothesisTitle === h.title &&
+          a.analysisMode === bundle.mode &&
+          a.analysisAsOf === bundle.asOf &&
           a.title === draft.title,
       )
     ) {
@@ -227,6 +247,8 @@ export function Hub({ catalog }: { catalog: Catalog }) {
       ...draft,
       id: crypto.randomUUID(),
       caseId: tag,
+      analysisMode: bundle.mode,
+      analysisAsOf: bundle.asOf,
       hypothesisId: h.id,
       hypothesisTitle: h.title,
       priorityReason:
@@ -259,7 +281,9 @@ export function Hub({ catalog }: { catalog: Catalog }) {
   const safeBundle =
     bundle?.asset.tag === tag &&
     bundle.mode === mode &&
-    (mode !== "prospective" || bundle.asOf === asOf)
+    bundle.asOf === asOf &&
+    (mode === "prospective" ||
+      Boolean(bundle.observationCutoff) === Boolean(requestedCutoff))
       ? bundle
       : null;
   const context: HubContext = {
@@ -310,9 +334,13 @@ export function Hub({ catalog }: { catalog: Catalog }) {
                 onClick={() => navigate(v.id)}
                 className={view === v.id ? "active" : ""}
                 aria-current={view === v.id ? "page" : undefined}
-                disabled={mode === "prospective" && v.id !== "investigation"}
+                disabled={
+                  mode === "prospective" &&
+                  !["investigation", "problems", "actions"].includes(v.id)
+                }
                 title={
-                  mode === "prospective" && v.id !== "investigation"
+                  mode === "prospective" &&
+                  !["investigation", "problems", "actions"].includes(v.id)
                     ? "Return to historical review to access outcome summaries"
                     : undefined
                 }
@@ -392,9 +420,12 @@ export function Hub({ catalog }: { catalog: Catalog }) {
                   setQuery({
                     asset: s,
                     incident: "",
-                    asOf: catalog.assets.find((a) => a.tag === s)?.eventDate
-                      ? `${catalog.assets.find((a) => a.tag === s)!.eventDate} 00:00:00`
-                      : asOf,
+                    asOf:
+                      mode === "prospective" &&
+                      catalog.assets.find((a) => a.tag === s)?.eventDate
+                        ? `${catalog.assets.find((a) => a.tag === s)!.eventDate} 00:00:00`
+                        : requestedCutoff,
+                    episodeAsOf: "",
                   })
                 }
                 options={catalog.assets.map((a) => ({
@@ -407,18 +438,19 @@ export function Hub({ catalog }: { catalog: Catalog }) {
               <strong>{selected.tag}</strong>
               <span>{selected.name}</span>
               <span>
-                {mode === "historical"
+                {mode === "historical" && !requestedCutoff
                   ? selected.hourlyWindow
-                  : `As of ${asOf}`}
+                  : `Observation cutoff: ${asOf}`}
               </span>
               <span>Timezone unknown</span>
               {safeBundle && <span>Review reference: {safeBundle.asOf}</span>}
             </div>
             {mode === "prospective" && (
               <Notice>
-                Historical summaries are hidden in this scope. Return to
-                historical review from Investigation to access register totals
-                and completed reports.
+                Historical summaries are hidden. The condition queue,
+                Investigation and actions from this same pre-event review are
+                available; completed reports and register retrieval are
+                excluded.
               </Notice>
             )}
             <div className="workspace-status" role="status" aria-live="polite">
@@ -441,7 +473,8 @@ export function Hub({ catalog }: { catalog: Catalog }) {
               <div className="loading-state" role="status">
                 Loading verified source scope…
               </div>
-            ) : mode === "prospective" && view !== "investigation" ? (
+            ) : mode === "prospective" &&
+              !["investigation", "problems", "actions"].includes(view) ? (
               <Button onClick={() => navigate("investigation")}>
                 Open pre-event Investigation
               </Button>

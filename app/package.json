@@ -3,16 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "prepare:runtime": "node scripts/prepare-runtime.mjs",
+    "predev": "npm run prepare:runtime",
+    "prebuild": "npm run prepare:runtime",
     "dev": "next dev --hostname 127.0.0.1 --port 3100",
     "build": "next build",
     "start": "next start --hostname 127.0.0.1 --port 3100",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests",
-    "test": "tsx --test tests/domain.test.ts",
+    "test": "tsx --test tests/domain.test.ts tests/repair.test.ts",
     "test:browser": "playwright test",
-    "format": "prettier --write src tests *.json *.md",
-    "format:check": "prettier --check src tests *.json *.md",
-    "normalize": "python scripts/normalize.py"
+    "format": "prettier --write src tests scripts/*.mjs *.ts *.json *.md",
+    "format:check": "prettier --check src tests scripts/*.mjs *.ts *.json *.md",
+    "normalize": "python scripts/normalize.py",
+    "test:deploy": "node scripts/verify-deploy.mjs"
   },
   "dependencies": {
     "next": "16.3.8",

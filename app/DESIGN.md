@@ -64,7 +64,7 @@ Flat panels with 1px borders. Only modal source/action dialogs have shadow. No d
 
 ## Components
 
-Shared button, search, select, field, modal, notice, badge, panel, source trigger and paginator. Native selects and native dates accept operating-system popups. Modal uses native dialog focus isolation, Escape, focus restoration and scrollable content. Buttons show hover, keyboard focus, active, disabled and busy states. Sources render exact excerpts plus full locators. Busy geometry is stable; async failures preserve previous safe inputs and offer retry.
+Shared button, search, select, field, SecretField, modal, notice, badge, panel, source trigger and paginator. Demo access uses the existing evidence panel and field/button tokens, with masked passcode, Show/Hide and persistent errors. Signal/fact cards reuse quality-card and table styles; each hypothesis owns its reviewed action controls. No palette/layout change in the repair. Native selects and native dates accept operating-system popups. Modal uses native dialog focus isolation, Escape, focus restoration and scrollable content. Buttons show hover, keyboard focus, active, disabled and busy states. Sources render exact excerpts plus full locators. Busy geometry is stable; async failures preserve previous safe inputs and offer retry.
 
 Motion is limited to 120ms control feedback and removed for reduced motion. Charts have textual summaries, observation tables and source access. Search has clear; tables paginate. Severity is never conveyed by color alone.
 

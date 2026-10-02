@@ -11,12 +11,19 @@ export function Actions() {
   const [status, setStatus] = useState("");
   if (!bundle) return null;
   const clock = query.clock ?? "2026-10-02",
-    actions = workspace.actions.filter(
+    scoped = workspace.actions.filter(
+      (a) =>
+        bundle.mode === "historical" ||
+        (a.analysisMode === "prospective" &&
+          a.analysisAsOf === bundle.asOf &&
+          a.caseId === bundle.asset.tag),
+    ),
+    actions = scoped.filter(
       (a) =>
         (!status || a.state === status) &&
         (!query.actionAsset || a.caseId === query.actionAsset),
     );
-  const all = workspace.actions;
+  const all = scoped;
   return (
     <>
       <Notice>
@@ -39,9 +46,12 @@ export function Actions() {
           },
           {
             label: "Acknowledged local episodes",
-            value: Object.values(workspace.episodes).filter(
-              (s) => s === "Acknowledged",
-            ).length,
+            value:
+              bundle.mode === "historical"
+                ? Object.values(workspace.episodes).filter(
+                    (s) => s === "Acknowledged",
+                  ).length
+                : 0,
           },
         ].map((k) => (
           <div className="metric" key={k.label}>
@@ -142,86 +152,90 @@ export function Actions() {
           </div>
         )}
       </Panel>
-      <Panel
-        title={`Imported historical report actions · ${bundle.asset.tag}`}
-        sub="Read-only snapshot: source PIC, plan date and status; not actual overdue status today"
-        className="snapshot"
-      >
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Reference</th>
-                <th>Historical action</th>
-                <th>Plan date</th>
-                <th>Source PIC</th>
-                <th>Source status</th>
-                <th>Evidence</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bundle.report &&
-                historicalActions(bundle.report).map((a, i) => (
-                  <tr key={i}>
-                    <td>{a.reference}</td>
-                    <td>{a.title}</td>
-                    <td>{a.date}</td>
-                    <td>{a.pic}</td>
-                    <td>
-                      <Badge>{a.status}</Badge>
-                    </td>
-                    <td>
-                      <Button
-                        variant="text"
-                        onClick={() =>
-                          openSource({
-                            title: `Historical action ${a.reference}`,
-                            locators: [a.source],
-                            excerpt: `${a.title}\nPlan date: ${a.date}\nSource PIC: ${a.pic}\nSource status: ${a.status}`,
-                            kind: "source snapshot",
-                            warnings: [
-                              "Historical action tables and repair remarks have different status meanings; source register closure is not changed by prototype actions.",
-                            ],
-                          })
-                        }
-                      >
-                        View source
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="caption">
-          Slide 9 corrective/pro-active snapshot. Preventive actions, risk
-          analysis and PM schedules remain available on slide 10 in
-          Investigation.
-        </p>
-      </Panel>
-      <Panel
-        title="Local workspace history"
-        sub="UTC timestamps · simulated actor roles; source histories unchanged"
-      >
-        {workspace.history.length ? (
-          <ol className="history">
-            {workspace.history
-              .slice(-30)
-              .reverse()
-              .map((c, i) => (
-                <li key={i}>
-                  <time>{c.at}</time> · {c.actor}
-                  <br />
-                  {c.description}
-                </li>
-              ))}
-          </ol>
-        ) : (
+      {bundle.report && (
+        <Panel
+          title={`Imported historical report actions · ${bundle.asset.tag}`}
+          sub="Read-only snapshot: source PIC, plan date and status; not actual overdue status today"
+          className="snapshot"
+        >
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Historical action</th>
+                  <th>Plan date</th>
+                  <th>Source PIC</th>
+                  <th>Source status</th>
+                  <th>Evidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bundle.report &&
+                  historicalActions(bundle.report).map((a, i) => (
+                    <tr key={i}>
+                      <td>{a.reference}</td>
+                      <td>{a.title}</td>
+                      <td>{a.date}</td>
+                      <td>{a.pic}</td>
+                      <td>
+                        <Badge>{a.status}</Badge>
+                      </td>
+                      <td>
+                        <Button
+                          variant="text"
+                          onClick={() =>
+                            openSource({
+                              title: `Historical action ${a.reference}`,
+                              locators: [a.source],
+                              excerpt: `${a.title}\nPlan date: ${a.date}\nSource PIC: ${a.pic}\nSource status: ${a.status}`,
+                              kind: "source snapshot",
+                              warnings: [
+                                "Historical action tables and repair remarks have different status meanings; source register closure is not changed by prototype actions.",
+                              ],
+                            })
+                          }
+                        >
+                          View source
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
           <p className="caption">
-            No local episode, owner or hypothesis changes recorded.
+            Slide 9 corrective/pro-active snapshot. Preventive actions, risk
+            analysis and PM schedules remain available on slide 10 in
+            Investigation.
           </p>
-        )}
-      </Panel>
+        </Panel>
+      )}
+      {bundle.mode === "historical" && (
+        <Panel
+          title="Local workspace history"
+          sub="UTC timestamps · simulated actor roles; source histories unchanged"
+        >
+          {workspace.history.length ? (
+            <ol className="history">
+              {workspace.history
+                .slice(-30)
+                .reverse()
+                .map((c, i) => (
+                  <li key={i}>
+                    <time>{c.at}</time> · {c.actor}
+                    <br />
+                    {c.description}
+                  </li>
+                ))}
+            </ol>
+          ) : (
+            <p className="caption">
+              No local episode, owner or hypothesis changes recorded.
+            </p>
+          )}
+        </Panel>
+      )}
     </>
   );
 }

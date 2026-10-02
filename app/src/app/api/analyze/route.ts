@@ -1,6 +1,8 @@
 import { raw, incidents } from "@/lib/data";
 import { makeBundle } from "@/lib/evidence";
-import { analyze } from "@/lib/analysis";
+import { requestMode, sourceTime } from "@/lib/time";
+import { guardedAnalysis } from "@/lib/analysis-service";
+import { liveConfig } from "@/lib/live-access";
 export const runtime = "nodejs";
 export async function POST(request: Request) {
   try {
@@ -10,42 +12,45 @@ export async function POST(request: Request) {
         { error: "Analysis request is too large." },
         { status: 413 },
       );
-    const input = JSON.parse(text);
-    const asset = raw.assets.find((a) => a.tag === input.asset);
+    const input = JSON.parse(text),
+      asset = raw.assets.find((a) => a.tag === input.asset);
     if (
       !asset ||
-      !["historical", "prospective"].includes(input.mode) ||
       typeof input.asOf !== "string" ||
-      !/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(:\d{2})?$/.test(input.asOf)
+      typeof input.live !== "boolean"
     )
-      return Response.json(
-        { error: "Choose an asset, mode and valid source-local time." },
-        { status: 400 },
-      );
+      throw new Error("Invalid scope");
+    const mode = requestMode(input.mode),
+      time = sourceTime(input.asOf);
     const bundle = makeBundle(
       asset,
       incidents,
       raw.version,
-      input.mode,
-      input.asOf,
+      mode,
+      time,
+      input.observationCutoff === true,
     );
-    return Response.json(
-      await analyze(
-        bundle,
-        input.live === true,
-        {
-          key: process.env.AI_API_KEY,
-          model: process.env.AI_MODEL,
-          base: process.env.AI_BASE_URL,
-        },
-        fetch,
-        request.signal,
-      ),
-      { headers: { "Cache-Control": "no-store" } },
+    const result = await guardedAnalysis(
+      request,
+      bundle,
+      input.live,
+      liveConfig(),
+      {
+        key: process.env.AI_API_KEY,
+        model: process.env.AI_MODEL,
+        base: process.env.AI_BASE_URL,
+      },
     );
+    return Response.json(result.analysis, {
+      status: result.status,
+      headers: { "Cache-Control": "no-store" },
+    });
   } catch {
     return Response.json(
-      { error: "Analysis could not start. Use evidence replay or retry." },
+      {
+        error:
+          "Choose a supplied asset, valid scope and real source-local date/time. Evidence replay remains available.",
+      },
       { status: 400 },
     );
   }

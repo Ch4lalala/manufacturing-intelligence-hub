@@ -7,6 +7,7 @@ import type {
   Retrieval,
   Mode,
 } from "./types";
+export { eligibleTime } from "./time";
 export const money = (n: number) =>
   n.toLocaleString("en-US", {
     minimumFractionDigits: 2,
@@ -132,11 +133,6 @@ export function assetMeta(a: Asset): AssetMeta {
 }
 export function compareUnits(a: string, b: string) {
   return a.trim().toLowerCase() === b.trim().toLowerCase();
-}
-export function eligibleTime(time: string, asOf: string) {
-  return (
-    time.replace("T", " ").slice(0, 19) <= asOf.replace("T", " ").slice(0, 19)
-  );
 }
 export function classify(formula: string, measurements: number[]) {
   // Whitelist numeric comparisons only. Never evaluate Excel/JS code.

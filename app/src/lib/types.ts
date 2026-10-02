@@ -146,6 +146,8 @@ export type Bundle = {
   asset: AssetMeta;
   mode: Mode;
   asOf: string;
+  observationCutoff: string | null;
+  similarIncidents: Retrieval[];
   conditions: Condition[];
   production: Production[];
   summary: Summary[];
@@ -164,13 +166,53 @@ export type Hypothesis = {
   missingChecks: string[];
   strength: "supported" | "plausible" | "insufficient";
   kind: "Historical RCA finding" | "Hypothesis";
+  mechanism: string;
+  explanation: string;
+  strengthReason: string;
+  signalIds: string[];
+  knowledgeBasis: "Engineering inference" | "Historical source finding";
 };
 export type ActionDraft = {
+  hypothesisId: string;
+  type: "evidence_review" | "engineering_review" | "historical_review";
   title: string;
   guidance: string;
   evidenceIds: string[];
   proposedOwnerRole: string;
   approvalRequired: true;
+};
+export type Fact = {
+  id: string;
+  asset: string;
+  field: string;
+  value: string | number;
+  unit: string;
+  time: string | null;
+  kind: "source" | "computed";
+  evidenceIds: string[];
+  inputs: string[];
+  formula: string | null;
+};
+export type FactReference = Pick<Fact, "asset" | "value" | "unit" | "time"> & {
+  factId: string;
+};
+export type Signal = {
+  id: string;
+  type: "weekly_breach" | "weekly_trend" | "hourly_state" | "hourly_change";
+  parameter: string;
+  severity: "ALARM" | "TRIP" | "Review";
+  rule: string;
+  evidenceIds: string[];
+  factIds: string[];
+  mechanisms: string[];
+};
+export type SignalSummary = {
+  state: "no_observations" | "insufficient_anomaly" | "anomaly";
+  weekly: number;
+  hourly: number;
+  signals: Signal[];
+  facts: Fact[];
+  policy: string[];
 };
 export type Analysis = {
   caseId: string;
@@ -181,6 +223,9 @@ export type Analysis = {
   actions: ActionDraft[];
   limitations: string[];
   execution: "replay" | "live";
+  liveState: "not_requested" | "blocked" | "failed" | "validated";
+  signals: SignalSummary;
+  observations: FactReference[];
   message: string;
   stages: { title: string; result: string }[];
 };
@@ -196,6 +241,8 @@ export type Change = { at: string; actor: string; description: string };
 export type WorkspaceAction = ActionDraft & {
   id: string;
   caseId: string;
+  analysisMode?: Mode;
+  analysisAsOf?: string;
   hypothesisId: string;
   hypothesisTitle: string;
   priorityReason: string;

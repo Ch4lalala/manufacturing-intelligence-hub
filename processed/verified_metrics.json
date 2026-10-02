@@ -1,0 +1,295 @@
+{
+  "computed_from_raw_not_dashboard_cache": true,
+  "incident_count": 380,
+  "incident_date_min": "2024-01-04",
+  "incident_date_max": "2026-07-25",
+  "plant_count": 12,
+  "unique_asset_tags": 379,
+  "missing_ar_count": 226,
+  "missing_ar_representation": {
+    "n/a": 226
+  },
+  "duplicate_ar_identifiers": {
+    "AR-2026-OP2-0171": 2,
+    "AR-2024-ZCU-0236": 2
+  },
+  "register_status_counts": {
+    "CA/PA EXECUTION": 92,
+    "RCA PROCESS": 71,
+    "RISK CANCELED": 47,
+    "RISK CLOSED": 113,
+    "MONITORING RESULT": 37,
+    "NEW REGISTERED": 20
+  },
+  "Downtime (hrs)": 2261.1,
+  "Act. Loss (k US$)": 61886.46,
+  "Pot. Loss (k US$)": 5307.97,
+  "Total Loss (k US$)": 67194.43,
+  "source": {
+    "file": "sources/baseline/incidents/Incident Database.xlsx",
+    "sheet": "Incident Database",
+    "cell": "A4:W383"
+  },
+  "row_total_loss_equals_actual_plus_potential": true,
+  "five_linked_examples": {
+    "downtime_hours": 84.5,
+    "actual_loss_k_usd": 2584.84,
+    "scope": "first five linked RCA incident rows only",
+    "source": {
+      "file": "sources/baseline/incidents/Incident Database.xlsx",
+      "sheet": "Incident Database",
+      "cell": "A4:W8"
+    }
+  },
+  "asset_profiles": [
+    {
+      "tag": "PU-2101B",
+      "weekly_readings": 26,
+      "hourly_records": 720,
+      "production_first": "2026-03-01 00:00:00",
+      "production_last": "2026-03-30 23:00:00",
+      "weekly_status_counts": {
+        "NORMAL": 19,
+        "ALARM": 6,
+        "TRIP": 1
+      },
+      "alarm_readings_before_first_trip": 6,
+      "first_trip": {
+        "row": 22,
+        "week": 21,
+        "date": "2026-03-12",
+        "measurements": [
+          11.22,
+          3.92,
+          7.35,
+          96.9
+        ],
+        "status": "TRIP",
+        "status_formula": "=IF(OR(C22>=11,D22<=4,E22<=7.5,F22>=95),\"TRIP\",IF(OR(C22>=7,D22<=5,E22<=8.5,F22>=80),\"ALARM\",\"NORMAL\"))",
+        "remark": "FAILURE — Mechanical Seal Leakage; unplanned downtime 18.5 h",
+        "source": {
+          "file": "sources/baseline/equipment/Equipment Performance - RCA1 PU-2101B.xlsx",
+          "sheet": "Condition History",
+          "cell": "A22:H22"
+        }
+      },
+      "unit_metadata": {
+        "PU2101B_FEED": "T/H",
+        "PU2101B_DISP": "BARG",
+        "PU2101B_VIB": "MM/S",
+        "PU2101B_TEMP": "DEG C",
+        "PU2101B_AMP": "A",
+        "PLANT_RATE": "T/H",
+        "RUN_STATUS": "ON_OFF"
+      },
+      "source_info": {
+        "file": "sources/baseline/equipment/Equipment Performance - RCA1 PU-2101B.xlsx",
+        "sheet": "Equipment Info",
+        "cell": "A4:D15"
+      }
+    },
+    {
+      "tag": "KO-3201",
+      "weekly_readings": 26,
+      "hourly_records": 720,
+      "production_first": "2026-04-01 00:00:00",
+      "production_last": "2026-04-30 23:00:00",
+      "weekly_status_counts": {
+        "NORMAL": 14,
+        "ALARM": 11,
+        "TRIP": 1
+      },
+      "alarm_readings_before_first_trip": 11,
+      "first_trip": {
+        "row": 22,
+        "week": 21,
+        "date": "2026-04-29",
+        "measurements": [
+          76.5,
+          1530,
+          1.078,
+          112.2
+        ],
+        "status": "TRIP",
+        "status_formula": "=IF(OR(C22>=75,D22>=1500,E22<=1.1,F22>=110),\"TRIP\",IF(OR(C22>=45,D22>=500,E22<=1.4,F22>=95),\"ALARM\",\"NORMAL\"))",
+        "remark": "FAILURE — High Radial Vibration Trip (Bearing Distress); unplanned downtime 32.0 h",
+        "source": {
+          "file": "sources/baseline/equipment/Equipment Performance - RCA2 KO-3201.xlsx",
+          "sheet": "Condition History",
+          "cell": "A22:H22"
+        }
+      },
+      "unit_metadata": {
+        "KO3201_FEED": "T/H",
+        "KO3201_DISP": "BARG",
+        "KO3201_VIB": "MM/S",
+        "KO3201_TEMP": "DEG C",
+        "KO3201_AMP": "A",
+        "PLANT_RATE": "T/H",
+        "RUN_STATUS": "ON_OFF"
+      },
+      "source_info": {
+        "file": "sources/baseline/equipment/Equipment Performance - RCA2 KO-3201.xlsx",
+        "sheet": "Equipment Info",
+        "cell": "A4:D15"
+      }
+    },
+    {
+      "tag": "PM-4405B",
+      "weekly_readings": 26,
+      "hourly_records": 720,
+      "production_first": "2026-07-01 00:00:00",
+      "production_last": "2026-07-30 23:00:00",
+      "weekly_status_counts": {
+        "NORMAL": 19,
+        "ALARM": 6,
+        "TRIP": 1
+      },
+      "alarm_readings_before_first_trip": 6,
+      "first_trip": {
+        "row": 22,
+        "week": 21,
+        "date": "2026-07-08",
+        "measurements": [
+          91.8,
+          8.16,
+          168.3,
+          142.8
+        ],
+        "status": "TRIP",
+        "status_formula": "=IF(OR(C22>=90,D22>=8,E22>=165,F22>=140),\"TRIP\",IF(OR(C22>=75,D22>=5,E22>=150,F22>=120),\"ALARM\",\"NORMAL\"))",
+        "remark": "FAILURE — Motor Bearing Failure (Overheating); unplanned downtime 8.0 h",
+        "source": {
+          "file": "sources/baseline/equipment/Equipment Performance - RCA3 PM-4405B.xlsx",
+          "sheet": "Condition History",
+          "cell": "A22:H22"
+        }
+      },
+      "unit_metadata": {
+        "PM4405B_FEED": "T/H (equiv.)",
+        "PM4405B_DISP": "BARG",
+        "PM4405B_VIB": "MM/S",
+        "PM4405B_TEMP": "DEG C",
+        "PM4405B_AMP": "A",
+        "PLANT_RATE": "T/H (equiv.)",
+        "RUN_STATUS": "ON_OFF"
+      },
+      "source_info": {
+        "file": "sources/baseline/equipment/Equipment Performance - RCA3 PM-4405B.xlsx",
+        "sheet": "Equipment Info",
+        "cell": "A4:D15"
+      }
+    },
+    {
+      "tag": "HE-3301",
+      "weekly_readings": 26,
+      "hourly_records": 720,
+      "production_first": "2026-05-01 00:00:00",
+      "production_last": "2026-05-30 23:00:00",
+      "weekly_status_counts": {
+        "NORMAL": 15,
+        "ALARM": 10,
+        "TRIP": 1
+      },
+      "alarm_readings_before_first_trip": 10,
+      "first_trip": {
+        "row": 22,
+        "week": 21,
+        "date": "2026-05-21",
+        "measurements": [
+          0.918,
+          68.6,
+          93.1,
+          2.448
+        ],
+        "status": "TRIP",
+        "status_formula": "=IF(OR(C22>=0.9,D22<=70,E22<=95,F22>=2.4),\"TRIP\",IF(OR(C22>=0.6,D22<=90,E22<=110,F22>=1.5),\"ALARM\",\"NORMAL\"))",
+        "remark": "FAILURE — High Fouling — Duty Loss & High dP; unplanned downtime 12.0 h",
+        "source": {
+          "file": "sources/baseline/equipment/Equipment Performance - RCA4 HE-3301.xlsx",
+          "sheet": "Condition History",
+          "cell": "A22:H22"
+        }
+      },
+      "unit_metadata": {
+        "HE3301_FEED": "T/H",
+        "HE3301_DISP": "BARG",
+        "HE3301_VIB": "MM/S",
+        "HE3301_TEMP": "DEG C",
+        "HE3301_AMP": "A",
+        "PLANT_RATE": "T/H",
+        "RUN_STATUS": "ON_OFF"
+      },
+      "source_info": {
+        "file": "sources/baseline/equipment/Equipment Performance - RCA4 HE-3301.xlsx",
+        "sheet": "Equipment Info",
+        "cell": "A4:D15"
+      }
+    },
+    {
+      "tag": "BL-5702",
+      "weekly_readings": 26,
+      "hourly_records": 720,
+      "production_first": "2026-06-01 00:00:00",
+      "production_last": "2026-06-30 23:00:00",
+      "weekly_status_counts": {
+        "NORMAL": 10,
+        "ALARM": 15,
+        "TRIP": 1
+      },
+      "alarm_readings_before_first_trip": 15,
+      "first_trip": {
+        "row": 22,
+        "week": 21,
+        "date": "2026-06-17",
+        "measurements": [
+          11.22,
+          5.1,
+          0.306,
+          96.9
+        ],
+        "status": "TRIP",
+        "status_formula": "=IF(OR(C22>=11,D22>=5,E22>=0.3,F22>=95),\"TRIP\",IF(OR(C22>=7,D22>=3,E22>=0.05,F22>=80),\"ALARM\",\"NORMAL\"))",
+        "remark": "FAILURE — High Vibration (Coupling Misalignment); unplanned downtime 14.0 h",
+        "source": {
+          "file": "sources/baseline/equipment/Equipment Performance - RCA5 BL-5702.xlsx",
+          "sheet": "Condition History",
+          "cell": "A22:H22"
+        }
+      },
+      "unit_metadata": {
+        "BL5702_FEED": "T/H",
+        "BL5702_DISP": "BARG",
+        "BL5702_VIB": "MM/S",
+        "BL5702_TEMP": "DEG C",
+        "BL5702_AMP": "A",
+        "PLANT_RATE": "T/H",
+        "RUN_STATUS": "ON_OFF"
+      },
+      "source_info": {
+        "file": "sources/baseline/equipment/Equipment Performance - RCA5 BL-5702.xlsx",
+        "sheet": "Equipment Info",
+        "cell": "A4:D15"
+      }
+    }
+  ],
+  "ko_22_apr": {
+    "row": 21,
+    "week": 20,
+    "date": "2026-04-22",
+    "measurements": [
+      71.674,
+      1372.791,
+      1.122,
+      107.142
+    ],
+    "status": "ALARM",
+    "status_formula": "=IF(OR(C21>=75,D21>=1500,E21<=1.1,F21>=110),\"TRIP\",IF(OR(C21>=45,D21>=500,E21<=1.4,F21>=95),\"ALARM\",\"NORMAL\"))",
+    "remark": "Degradation trend — under close monitoring",
+    "source": {
+      "file": "sources/baseline/equipment/Equipment Performance - RCA2 KO-3201.xlsx",
+      "sheet": "Condition History",
+      "cell": "A21:H21"
+    }
+  }
+}

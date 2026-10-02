@@ -1,0 +1,238 @@
+{
+  "package": "CALIBER Case 2 Codex Handoff",
+  "prepared_date": "2026-10-02",
+  "prototype_included": false,
+  "files": [
+    {
+      "path": ".env.example",
+      "bytes": 255,
+      "sha256": "a034b777714a4460b6f82f77609bb40441aa1648c01c870e8244539f7b61d5ca"
+    },
+    {
+      "path": "CALIBER_Solution_Guide_ID.pdf",
+      "bytes": 84188,
+      "sha256": "d40d4eb5ca1292d3d03530918ce39f3adadb39e918383bc4670de1a6a0dc724a"
+    },
+    {
+      "path": "CODEX_PROMPT.md",
+      "bytes": 9490,
+      "sha256": "8f4caf5a553c34bdc2707a6f28530e123cfdaca8fd547ecd74b76b1430db5d40"
+    },
+    {
+      "path": "README_START_HERE.md",
+      "bytes": 3277,
+      "sha256": "dc7310e2092fa8a9ff895468d292cb13cc2dae26876889d9f9f68acde36a7aa7"
+    },
+    {
+      "path": "docs/ACCEPTANCE.md",
+      "bytes": 4735,
+      "sha256": "f3270ff01517b4e275cda28cea641957f86875f0205747facfbafc69193761bd"
+    },
+    {
+      "path": "docs/DATA_CONTRACTS.md",
+      "bytes": 5698,
+      "sha256": "2e6d5c2d9f42769e1c7bf25facd08e0d18099d53d97e97eb4e5ede449315e91b"
+    },
+    {
+      "path": "docs/DATA_RULES.md",
+      "bytes": 9911,
+      "sha256": "35682f7cc4df8b1a89122d877e701ab9db359dec36cc8f32208fb54b7bfa8b76"
+    },
+    {
+      "path": "docs/IMPLEMENTATION_ROADMAP.md",
+      "bytes": 4915,
+      "sha256": "4e38fd3c3fa1aaee40f63fcf63a042720e6b372091c60c42d0799298dfe0e697"
+    },
+    {
+      "path": "docs/RUBRIC_AND_DIFFERENTIATION.md",
+      "bytes": 4399,
+      "sha256": "f65a5e308e900c0bc00f75d3c5142d5ff3a6950134f18fb6128aaf757da99906"
+    },
+    {
+      "path": "docs/SOLUTION_SPEC.md",
+      "bytes": 17724,
+      "sha256": "a04d43561662b10c2d37a7975f6df96a288a78ec836371a1174e27c405c5a18c"
+    },
+    {
+      "path": "processed/assets.json",
+      "bytes": 1881321,
+      "sha256": "86d1293396ba0f770685e580b945ef76aad52aaa2ffc1c46820128919a703a22"
+    },
+    {
+      "path": "processed/incidents.json",
+      "bytes": 359605,
+      "sha256": "a7b26066eac608a0bd675e4c418cd204d6a73910177fff97e7943fa4f4231d3d"
+    },
+    {
+      "path": "processed/official_text.json",
+      "bytes": 32886,
+      "sha256": "da21a7e09949821a54363764b086e461895ff57ad0f0bec8ddbaf93dffc044a8"
+    },
+    {
+      "path": "processed/presentation_extraction.json",
+      "bytes": 183956,
+      "sha256": "4459668ac36154dd7d29462e3f7b7a8eb3b32428cf1a0e12abe99416a3922865"
+    },
+    {
+      "path": "processed/source_inventory.json",
+      "bytes": 8854,
+      "sha256": "a2ff83bfab1a598fe5d0fba02a5b80664f2663a8de091895e7621496a6faef08"
+    },
+    {
+      "path": "processed/source_origins.json",
+      "bytes": 7342,
+      "sha256": "095ae3e7c4be5231287ef624a7cf517f242dfc526e7ae26042f77e65e9f86c0b"
+    },
+    {
+      "path": "processed/verified_metrics.json",
+      "bytes": 8881,
+      "sha256": "cbe52cac1526e59bd830b044d00890c10404bb6ce92d168eb1bfaa86aeb5ae69"
+    },
+    {
+      "path": "processed/workbook_extraction.json",
+      "bytes": 1027582,
+      "sha256": "53659d83eab3d1bee3b162b9904478aa69eb102419294e8c2ad33658a98a2fc9"
+    },
+    {
+      "path": "scripts/audit_sources.py",
+      "bytes": 11629,
+      "sha256": "50b600b21bd631b029b7e8e619b2e9be50b99f15d577206c8c9d9ed989f4ab44"
+    },
+    {
+      "path": "scripts/requirements-audit.txt",
+      "bytes": 27,
+      "sha256": "92637790c1801383d77dcda6b957439740f9c137cd859441a8cbd96a32b3a114"
+    },
+    {
+      "path": "scripts/verify_package.py",
+      "bytes": 2055,
+      "sha256": "5a5f0bfa9ceb16ae3ac5d709071d88719883d04659059ba75bcff0006f6044d9"
+    },
+    {
+      "path": "sources/baseline/equipment/Equipment Performance - RCA1 PU-2101B.xlsx",
+      "bytes": 22367,
+      "sha256": "44ee110f2c1068f840328f6360a2afecf3714ec2d226f533d83581e0c0d69b77"
+    },
+    {
+      "path": "sources/baseline/equipment/Equipment Performance - RCA2 KO-3201.xlsx",
+      "bytes": 22418,
+      "sha256": "73f16cd575d51af260103bfce4a902adccd7629d72f5dd264842f816f7b940a5"
+    },
+    {
+      "path": "sources/baseline/equipment/Equipment Performance - RCA3 PM-4405B.xlsx",
+      "bytes": 22036,
+      "sha256": "aa80959ae9b93e0980587be439976bc5c68894b9013ee4d2194462f5906ea987"
+    },
+    {
+      "path": "sources/baseline/equipment/Equipment Performance - RCA4 HE-3301.xlsx",
+      "bytes": 21068,
+      "sha256": "c2055e639505210dd390075aed4bbf5a4e146d3c749ce068e84b7bc6dd469832"
+    },
+    {
+      "path": "sources/baseline/equipment/Equipment Performance - RCA5 BL-5702.xlsx",
+      "bytes": 22060,
+      "sha256": "b574f6572aed51b6eb302a44ac385a1b3ee3075dbe14635f72c5cd8b18b6931b"
+    },
+    {
+      "path": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+      "bytes": 71175,
+      "sha256": "a378b769f36cbee095812eb8a2d428e2fcbd2a6082e2dba504dce47cb18f3a62"
+    },
+    {
+      "path": "sources/baseline/incidents/Incident Database.xlsx",
+      "bytes": 80668,
+      "sha256": "5b6d42937bc03f92ab65aaecc6aa7188130e883d603c8f3d338fb531045c6c03"
+    },
+    {
+      "path": "sources/baseline/production/Production Data - RCA1 PU-2101B.xlsx",
+      "bytes": 61727,
+      "sha256": "b8df8c5a20857d6ff6b7658c208cc9e079cd7792e3e934b009fd5fd3ef8dfefd"
+    },
+    {
+      "path": "sources/baseline/production/Production Data - RCA2 KO-3201.xlsx",
+      "bytes": 62928,
+      "sha256": "70e5870795e3492101e00def9f702ea89688ebc44e106752e669e3bd748c37f6"
+    },
+    {
+      "path": "sources/baseline/production/Production Data - RCA3 PM-4405B.xlsx",
+      "bytes": 61915,
+      "sha256": "eff20a263e69da6c8d327efede988628db6eff53a0a69bbdfce85e724231af02"
+    },
+    {
+      "path": "sources/baseline/production/Production Data - RCA4 HE-3301.xlsx",
+      "bytes": 62022,
+      "sha256": "1472765ce61c772ef01880f6f409e866dfe10abb803e6ccb1c989ba6b942b8f1"
+    },
+    {
+      "path": "sources/baseline/production/Production Data - RCA5 BL-5702.xlsx",
+      "bytes": 62697,
+      "sha256": "88a6030bbb0892703c50afe08ddd7531df15e3880d7363cb45c1233d3a329c8a"
+    },
+    {
+      "path": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+      "bytes": 78864,
+      "sha256": "2f800b7a46d1a0522c3c1ef3372e8faf39cfac0f33996a01a7a7936e4b3f0ad1"
+    },
+    {
+      "path": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+      "bytes": 79400,
+      "sha256": "7db64c0b6e9492713b461d26397aa08392c7c071032d0a610e5844245f13baa9"
+    },
+    {
+      "path": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+      "bytes": 79786,
+      "sha256": "a980f954c748241b3a7d672d5abdfc404bb205bb28d996980e9e62c6a0f1ff23"
+    },
+    {
+      "path": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+      "bytes": 79191,
+      "sha256": "43b49807de2387f1d5ce84d2989bb0adfb916c2f0ae40682f3e04bafe8a2abb9"
+    },
+    {
+      "path": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+      "bytes": 78150,
+      "sha256": "260f106bf3909801920f7d46ab357c5acee18a0c730a2c986ccd55604fc574ae"
+    },
+    {
+      "path": "sources/notes/technical meeting focused on case 2.txt",
+      "bytes": 3802,
+      "sha256": "6a4c4526228105fb072bb7a6c9fdd3284e24627fb732f2dd8871c87d8aafe473"
+    },
+    {
+      "path": "sources/official/Booklet CALIBER 2026 - Registration Extended.pdf",
+      "bytes": 3945112,
+      "sha256": "5dd79e20ce4bc1635f2b306b05a9a8ff6afade8dbad955a21070dce863213e4e"
+    },
+    {
+      "path": "sources/official/The Case - CALIBER 2026.pdf",
+      "bytes": 2628887,
+      "sha256": "3adf8804d316d2dda2c9a171c63a851e46f840c37dc5f49c1732d497b88f9687"
+    },
+    {
+      "path": "sources/reference/Microsoft_LICENSE",
+      "bytes": 1142,
+      "sha256": "c075a7fdbcff0157cf50a2c2b54c7190e36e0215ec5b9145988fdd1f9efb869b"
+    },
+    {
+      "path": "sources/reference/Microsoft_README.md",
+      "bytes": 13361,
+      "sha256": "6f940219e309d830c8301d981c4262eb4b7fc7145e7b373914a86e0c95fc2b4a"
+    },
+    {
+      "path": "validation/AUDIT_REPORT.md",
+      "bytes": 2659,
+      "sha256": "ac0a0114427df9edd16019c19e5d1ab55d603c48aea38c9abc1e5e67660b9615"
+    },
+    {
+      "path": "validation/DELIVERY_CHECKS.md",
+      "bytes": 1583,
+      "sha256": "5f9b1fba379273e1096f3926ee50837cb45691959cb69ce15c2bb7b585d2b08c"
+    },
+    {
+      "path": "validation/REQUIREMENTS_TRACEABILITY.csv",
+      "bytes": 4303,
+      "sha256": "e0533015e78704058f3c6a70a4bd56b47f32aabfed695acee75c9eb588f9fd2f"
+    }
+  ],
+  "manifest_excludes_itself": true
+}

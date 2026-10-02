@@ -1,0 +1,40 @@
+================================================================================
+RINGKASAN CASE 2: INTELLIGENT MANUFACTURING
+CALIBER 2026 - CHANDRA ASRI GROUP
+================================================================================
+
+1. JUDUL & TEMA CASE 2
+   - Judul Case: Intelligent Manufacturing: Unified Dashboard, AI Insight, Root Cause Analysis, and Follow-Up Action Recommendation[cite: 1].
+
+2. LATAR BELAKANG & MASALAH (PROBLEM BACKGROUND)
+   - Saat ini dashboard operational dibuat oleh tim atau divisi yang berbeda-beda dengan sudut pandang (POV) serta parameter yang berbeda[cite: 1].
+   - Ketika timbul permasalahan yang melibatkan banyak divisi (across division), proses pengambilan keputusan menjadi lambat dan membingungkan karena tidak adanya single source of truth[cite: 1].
+   - Diperlukan sebuah dashboard yang terintegrasi (unified dashboard) untuk menggabungkan sudut pandang berbagai divisi dengan indikator KPI, format data, serta sistem reporting yang terstandarisasi[cite: 1].
+
+3. PROBLEM STATEMENT
+   - Peserta diminta untuk mendesain intelligent manufacturing dashboard yang mengintegrasikan berbagai jenis data ke dalam satu tampilan yang mudah dipahami (user-friendly & understandable) untuk mendukung pengambilan keputusan yang cepat dan tepat di lapangan[cite: 1].
+
+4. PERTANYAAN KUNCI (KEY QUESTIONS)
+   - Bagaimana membuat dashboard terstandarisasi yang memiliki one-governed data berdasarkan KPI yang jelas?[cite: 1]
+   - Bagaimana membangun single pane of glass yang memberikan executive visibility untuk performa operasional manufacturing secara end-to-end?[cite: 1]
+   - Bagaimana memanfaatkan teknologi AI untuk membantu mengidentifikasi root cause (Root Cause Analysis) agar dapat mengambil tindakan preventive dan corrective?[cite: 1]
+
+5. SOLUSI YANG DIHARAPKAN (EXPECTED SOLUTION)
+   - Integrated Dashboard (Single Pane of Glass): Menggabungkan seluruh indikator KPI ke dalam satu platform tunggal yang tepercaya[cite: 1].
+   - Visibilitas Performa: Menampilkan parameter performa secara jelas (hit target, target, atau below target)[cite: 1].
+   - AI Root Cause Analysis Support: Jika parameter berada di bawah target (below target), AI akan membantu mencari penyebab utama masalahnya[cite: 1].
+   - Rekomendasi Action: Memberikan saran tindakan perbaikan (corrective) dan tindakan pencegahan (preventive) berdasarkan rekam jejak atau data masa lalu (past experience)[cite: 1].
+
+6. BASELINE DATA YANG DISEDIAKAN
+   - Production Data: Sumber utama untuk menyusun tampilan dashboard[cite: 1].
+   - Incident Database: Sumber acuan untuk analisis insiden dan rekomendasi tindakan[cite: 1].
+   - Equipment Performance: Data kinerja peralatan/mesin[cite: 1].
+   - Downtime Data: Data waktu henti mesin[cite: 1].
+
+7. POIN PENTING DARI SESI TANYA JAWAB (Q&A) TERKAIT CASE 2
+   - Penetapan KPI: Panitia tidak memberikan daftar KPI resmi; peserta dibebaskan menentukan KPI menggunakan asumsi/deduksi yang relevan[cite: 1].
+   - Cakupan Data RCA: Seluruh data RCA (RCA 1 sampai 5) dalam data set harus dapat diakses dan terintegrasi di dalam satu dashboard[cite: 1].
+   - Sumber Data: Data equipment performance mingguan berasal dari sumber pengukuran yang berbeda dengan production data per jam[cite: 1].
+   - Pengembangan Aplikasi Tambahan: Diperbolehkan membuat aplikasi pendukung (seperti formulir input data insiden di luar dashboard), namun poin penilaian utama tetap difokuskan pada integrasi dashboard-nya[cite: 1].
+   - Sifat Pengolahan Data: Dashboard tidak diwajibkan berbasis real-time; peserta dibebaskan memilih metode pengolahan data (misalnya real-time atau batching)[cite: 1].
+   - Penambahan Data Dummy: Peserta diperbolehkan menambah baris data dummy untuk memperkaya sistem selama menggunakan format yang sama dan bersifat reasonable[cite: 1].

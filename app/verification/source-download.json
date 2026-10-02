@@ -1,0 +1,13 @@
+{
+  "test": "Original KO workbook download",
+  "path": "sources/baseline/equipment/Equipment Performance - RCA2 KO-3201.xlsx",
+  "status": 200,
+  "bytes": 22418,
+  "sha256": "73f16cd575d51af260103bfce4a902adccd7629d72f5dd264842f816f7b940a5",
+  "expectedSha256": "73f16cd575d51af260103bfce4a902adccd7629d72f5dd264842f816f7b940a5",
+  "matched": true,
+  "apiStatus": {
+    "configured": false,
+    "liveTested": false
+  }
+}

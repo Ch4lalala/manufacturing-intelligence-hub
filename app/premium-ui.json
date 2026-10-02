@@ -1,0 +1,21 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["src"],
+  "locale": "en-US",
+  "canonicalMap": "UX-CONTRACT.md",
+  "requiredCapabilities": [
+    "Select/Listbox",
+    "Date",
+    "Form",
+    "Scrollbar",
+    "Toast",
+    "CRUD"
+  ],
+  "ownership": { "Select/Listbox": "native", "Date": "native" },
+  "requiredCommands": ["unit", "browser"],
+  "commands": { "unit": "npm test", "browser": "npm run test:browser" },
+  "evidence": {
+    "crudFullFlow": "tests/browser.spec.ts",
+    "failurePaths": "tests/domain.test.ts"
+  }
+}

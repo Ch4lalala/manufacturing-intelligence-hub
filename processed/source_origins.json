@@ -1,0 +1,167 @@
+[
+  {
+    "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+    "provider": "Google Drive",
+    "drive_id": "1WHLMEnFAha5dU56nA99UR29KVcUNoUst",
+    "source_url": "https://drive.google.com/file/d/1WHLMEnFAha5dU56nA99UR29KVcUNoUst/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+    "provider": "Google Drive",
+    "drive_id": "1HP6yduLSZ_XM8HUMYUT_IPWvswayaMN8",
+    "source_url": "https://drive.google.com/file/d/1HP6yduLSZ_XM8HUMYUT_IPWvswayaMN8/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+    "provider": "Google Drive",
+    "drive_id": "1eYR6JYEJTRwCczHA62dXrcSAKpAgwHQJ",
+    "source_url": "https://drive.google.com/file/d/1eYR6JYEJTRwCczHA62dXrcSAKpAgwHQJ/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+    "provider": "Google Drive",
+    "drive_id": "1lu8xcco8Narf5B5LLjpEBxakBClP9UBG",
+    "source_url": "https://drive.google.com/file/d/1lu8xcco8Narf5B5LLjpEBxakBClP9UBG/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+    "provider": "Google Drive",
+    "drive_id": "1QDh3OtA-9pF-zoHp_v_FErQPC4e145g2",
+    "source_url": "https://drive.google.com/file/d/1QDh3OtA-9pF-zoHp_v_FErQPC4e145g2/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/production/Production Data - RCA1 PU-2101B.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1LEMULJLN4BYI-bZmWGyafP9Y9yMh_Ykr",
+    "source_url": "https://drive.google.com/file/d/1LEMULJLN4BYI-bZmWGyafP9Y9yMh_Ykr/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/production/Production Data - RCA2 KO-3201.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "13BrL6q2sPfZZOoAnHl6cWFu0Opcy3QKn",
+    "source_url": "https://drive.google.com/file/d/13BrL6q2sPfZZOoAnHl6cWFu0Opcy3QKn/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/production/Production Data - RCA3 PM-4405B.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1iWjcHJpWL4fbgqR3oh-pPBxhe5N-coIX",
+    "source_url": "https://drive.google.com/file/d/1iWjcHJpWL4fbgqR3oh-pPBxhe5N-coIX/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/production/Production Data - RCA4 HE-3301.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1PvL7iQNTrtd3h5RaQPGB51tGUrarPanL",
+    "source_url": "https://drive.google.com/file/d/1PvL7iQNTrtd3h5RaQPGB51tGUrarPanL/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/production/Production Data - RCA5 BL-5702.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1PIJIy5ch60guLgQvRYaDEEAPeVII8Tyk",
+    "source_url": "https://drive.google.com/file/d/1PIJIy5ch60guLgQvRYaDEEAPeVII8Tyk/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/equipment/Equipment Performance - RCA1 PU-2101B.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1DCICMHVSl72h39m5fraFGfQQa521OBnh",
+    "source_url": "https://drive.google.com/file/d/1DCICMHVSl72h39m5fraFGfQQa521OBnh/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/equipment/Equipment Performance - RCA2 KO-3201.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1j8AMzw-_mC0JHOL2UGj8fNQoAFCCkvHN",
+    "source_url": "https://drive.google.com/file/d/1j8AMzw-_mC0JHOL2UGj8fNQoAFCCkvHN/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/equipment/Equipment Performance - RCA3 PM-4405B.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1rBmtfRnlHmZU8a4jVsRTYVPOxKViVMIx",
+    "source_url": "https://drive.google.com/file/d/1rBmtfRnlHmZU8a4jVsRTYVPOxKViVMIx/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/equipment/Equipment Performance - RCA4 HE-3301.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1mJ_6cYg3VqrUGw-Oe-majbhNXKfsSu29",
+    "source_url": "https://drive.google.com/file/d/1mJ_6cYg3VqrUGw-Oe-majbhNXKfsSu29/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/equipment/Equipment Performance - RCA5 BL-5702.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1NWnp32baWK_gOt2UW51b8uHeGq7tdCLL",
+    "source_url": "https://drive.google.com/file/d/1NWnp32baWK_gOt2UW51b8uHeGq7tdCLL/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/incidents/Incident Database.xlsx",
+    "provider": "Google Drive",
+    "drive_id": "1pWzFI1uH36lskSJA9NMccpY449DWinSn",
+    "source_url": "https://drive.google.com/file/d/1pWzFI1uH36lskSJA9NMccpY449DWinSn/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": "2026-08-18T17:43:30.000Z"
+  },
+  {
+    "file": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+    "provider": "Google Drive",
+    "drive_id": "1uB20NDir82oiAAz7a_6Q-B8N3kuJwQCP",
+    "source_url": "https://drive.google.com/file/d/1uB20NDir82oiAAz7a_6Q-B8N3kuJwQCP/view",
+    "retrieved_at": "2026-10-02",
+    "provider_modified_time": null
+  },
+  {
+    "file": "sources/official/The Case - CALIBER 2026.pdf",
+    "provider": "User-uploaded official casebook",
+    "scope": "Case 2 pp.8-11; FAQ p.12"
+  },
+  {
+    "file": "sources/official/Booklet CALIBER 2026 - Registration Extended.pdf",
+    "provider": "User-uploaded official booklet",
+    "scope": "Submission pp.9-10; deadline p.7; rubric p.11"
+  },
+  {
+    "file": "sources/notes/technical meeting focused on case 2.txt",
+    "provider": "User-provided meeting summary via Google Drive",
+    "source_url": "https://drive.google.com/file/d/1M59Puyo__FdATdbJYAq6lx99DCY5JBgI/view",
+    "authority": "Supplemental summary, not independently verified verbatim committee transcript"
+  },
+  {
+    "file": "sources/reference/Microsoft_README.md",
+    "provider": "Microsoft GitHub",
+    "source_url": "https://github.com/microsoft/agentic-factory-hack",
+    "ref": "26b906d3e2e3f073ced52bd15ee2ae6c150625fe",
+    "authority": "Technical inspiration, not case data"
+  },
+  {
+    "file": "sources/reference/Microsoft_LICENSE",
+    "provider": "Microsoft GitHub",
+    "source_url": "https://github.com/microsoft/agentic-factory-hack/blob/26b906d3e2e3f073ced52bd15ee2ae6c150625fe/LICENSE",
+    "authority": "Attribution if reusing implementation"
+  }
+]

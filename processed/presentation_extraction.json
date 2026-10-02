@@ -1,0 +1,7037 @@
+[
+  {
+    "file": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+    "slides": [
+      {
+        "slide": 1,
+        "blocks": [
+          {
+            "shape_id": 2,
+            "type": "text",
+            "text": "Case 2: Intelligent Manufacturing Dashboard"
+          },
+          {
+            "shape_id": 3,
+            "type": "text",
+            "text": "Unified Dashboard, AI Insight & Action Hub"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Data Source"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "Production, Downtime, Equipment, Incident, Engineering, Energy & HSE Data"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Purpose"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Integrate fragmented manufacturing data, identify root causes, prioritize alerts, and track actions"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Data Foundation"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "• Data source mapping\n• KPI harmonization\n• Governed data model"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Single Pane of Glass"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "• Executive KPI view\n• Energy & production\n• Downtime & emission"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "AI Root Cause"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "• Similar incident retrieval\n• Pattern detection\n• Probable root cause"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Action Recommendation"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "• Priority alerts\n• Owner assignment\n• Progress tracking"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "One governed platform connects data → delivers insights → explains root causes → drives accountable actions for faster and safer decision-making."
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+          "slide": 1
+        }
+      },
+      {
+        "slide": 2,
+        "blocks": [
+          {
+            "shape_id": 2,
+            "type": "text",
+            "text": "Equipment Performance"
+          },
+          {
+            "shape_id": 4,
+            "type": "text",
+            "text": "What it shows"
+          },
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "• Condition monitoring records (vibration, seal flush, pressure, bearing temperature)\n• Weekly health status: Normal → Alarm → Trip → Recovery\n• KPIs: Availability, MTBF, MTTR, Downtime, PM Compliance, Production Loss"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "What it can extract"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "• Degradation trends & time-to-failure signatures\n• Reliability metrics per asset\n• Alarm/trip breaches and failure onset points"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "How it is useful"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "• Early failure detection & predictive maintenance\n• Asset health scoring & benchmarking\n• Connects condition data to downtime and cost impact"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Insight\nCondition-monitoring data showed early warning signs before failure, enabling predictive maintenance to prevent unplanned shutdowns and improve asset reliability."
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Highlight\nAsset degradation caused most critical failures, resulting in downtime, production loss, and financial impact."
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+          "slide": 2
+        }
+      },
+      {
+        "slide": 3,
+        "blocks": [
+          {
+            "shape_id": 2,
+            "type": "text",
+            "text": "Incident Database"
+          },
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "• Risk incidents with downtime, loss and risk score\n• Incident attributes, failure mechanisms, RCA/CAPA status\n• Dashboard by plant, discipline and equipment type"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "• Failure frequency, downtime and loss patterns\n• Bad actor assets & recurring failures\n• RCA/CAPA progress and risk closure"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "• Prioritize high-risk equipment\n• Support reliability analytics and loss reduction\n• Link incidents, RCA and corrective actions"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Insight\nIncident history combined with RCA/CAPA records enables AI to identify recurring failure patterns, prioritize high-risk assets, and recommend preventive actions to reduce future downtime and losses."
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Highlight\n380 incidents caused 2,261 hours downtime and US$67.2M losses, primarily driven by recurring equipment failures such as bearing damage, seal leakage, fouling, and vibration-related issues."
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "What it shows"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "What it can extract"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "How it is useful"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+          "slide": 3
+        }
+      },
+      {
+        "slide": 4,
+        "blocks": [
+          {
+            "shape_id": 2,
+            "type": "text",
+            "text": "Production Data"
+          },
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "• Hourly PI tag data: rate, pressure, vibration, temperature\n• Metadata: units, span, typical value, instrument tag\n• Run status and operational behavior"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "• Operating trends and anomalies\n• Equipment condition vs production correlation\n• Run/stop behavior and load profiles"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "• Raw signals for AI & anomaly detection\n• Connect performance to output loss\n• Foundation for digital twin and monitoring"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Insight\nProcess trends reveal early operational abnormalities before failures or production losses occur, enabling AI-driven anomaly detection, predictive analytics, and faster root cause identification."
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Highlight\nProduction Data captures real-time operational and equipment signals, including feed rate, pressure, vibration, temperature, motor current, and production rate, providing a complete view of plant performance."
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "What it shows"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "What it can extract"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "How it is useful"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+          "slide": 4
+        }
+      },
+      {
+        "slide": 5,
+        "blocks": [
+          {
+            "shape_id": 2,
+            "type": "text",
+            "text": "RCA & Downtime Data"
+          },
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "• Structured RCA, CAPA/PAA reports and chronology\n• 4P and 4M+1E root cause verification\n• Corrective actions and loss closure summary"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "• Verified root causes & failure mechanisms\n• Action plans, PIC and execution status\n• Downtime, production and financial impact"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "• Reliability knowledge hub & lessons learned\n• Recurrence prevention and CAPA tracking\n• Links failures directly to solutions"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Insight\nRCA history transforms past failures into reusable operational knowledge, enabling AI-driven similar-incident retrieval, root cause indication, action recommendation, and faster problem resolution."
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Highlight\nThe database captures verified root causes, failure mechanisms, CAPA actions, responsible owners, and implementation status, creating a valuable repository of reliability knowledge."
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "What it shows"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "What it can extract"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "How it is useful"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/explanation/Data Set Explanation for Case 2 Intelligence Manufacturing.pptx",
+          "slide": 5
+        }
+      }
+    ]
+  },
+  {
+    "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+    "slides": [
+      {
+        "slide": 1,
+        "blocks": [
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "ABNORMALITY REPORT — RCA & CAPA/PAA"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "Feed Charge Pump PU-2101B"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Mechanical Seal Leakage"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "AR NUMBER"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "AR-2026-ARP-0117"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "TAG / PLANT"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "PU-2101B  |  ARP"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "DATE OCCURRENCE"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "12 Mar 2026"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "III  (Score 200)"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "PIC (RCA)"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Procedure No. RCA-P-0050-03  •  Form RCA-F-0075-02"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "Equipment Related Risk"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 1
+        }
+      },
+      {
+        "slide": 2,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "PROBLEM IDENTIFICATION"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "AR Details & Problem Statement"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "02/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "AR IDENTIFICATION"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Title / Problem"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Feed Charge Pump PU-2101B — Mechanical Seal Leakage"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "AR Type"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "OPEDR (Operation) — Uptime"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Plant / Unit"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "ARP  (Aurora Resin Plant)"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Tag / Eq. Class"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "PU-2101B  |  Class B"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Discipline"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "ROT"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Date Occurrence"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "12 Mar 2026"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "Date Reported"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "13 Mar 2026"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "Immediate Action"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Isolate PU-2101B, swap to spare PU-2101A, replace mechanical seal cartridge"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "SEVERITY"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Major"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "III"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "18.5 h"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "LOSS"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "$226.44k"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PROBLEM STATEMENT"
+          },
+          {
+            "shape_id": 61,
+            "type": "text",
+            "text": "Mechanical seal of Feed Charge Pump PU-2101B failed on 12-Mar-2026, causing seal leakage and an unplanned feed reduction to the ARP reactor section."
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 2
+        }
+      },
+      {
+        "slide": 3,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "GENERAL PROCESS OVERVIEW"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Chronology of Events"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "03/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "11-Mar-2026"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "ARP produced resin grade PR-5502 (Reactor Rate ± 13.6 T/H). Field operator noted minor seal weep on PU-2101B during routine round."
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "12-Mar-2026 02:15"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Seal flush low-flow alarm annunciated; visible feed seal leak with low suction pressure. Pump auto-tripped on low discharge pressure."
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "12-Mar-2026 02:40"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Feed section reduced; charge to reactor curtailed pending seal repair. Rotating team mobilized."
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "12-Mar-2026 09:20"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Seal cartridge & shaft sleeve inspected — seal faces heat-checked / worn (dry-running signature)."
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "12-Mar-2026 20:45"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "New seal cartridge installed, pump commissioned, feed restored to ± 13.6 T/H."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Problem: Mechanical seal of Feed Charge Pump PU-2101B failed on 12-Mar-2026, causing seal leakage and an unplanned feed reduction to the ARP reactor section."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 3
+        }
+      },
+      {
+        "slide": 4,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ASSESS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Past Performance Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "04/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "HISTORICAL DATA & EVIDENCE"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "PU-2101B seal MTBF trended down from 26 to 9 months over the last 3 cycles. Seal-flush flow had been intermittently below the 6 L/min design minimum during feed swings, indicating recurring dry-run exposure."
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "IMPACT SUMMARY (4W)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "What:"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Mechanical seal of PU-2101B leaked / failed"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "When:"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "12-Mar-2026 (02:15)"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Scope:"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Reduced charge feed to ARP reactor section"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Uptime Loss:"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "18.5 hours  →  251.6 ton  →  $226.44k"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 4
+        }
+      },
+      {
+        "slide": 5,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "TARGET SETTING"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Actual vs Target Condition"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "05/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "ACTUAL CONDITION (Before Improvement)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Feed reduction due to PU-2101B mechanical seal leak"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "TARGET CONDITION (Project Y)"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "No unplanned feed reduction due to PU-2101B seal failure (seal MTBF ≥ 24 months)"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "TARGET METRIC"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Recurrence of this equipment failure mode:\n     Before = 1 case   →   Target = 0 case"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 5
+        }
+      },
+      {
+        "slide": 6,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Parameter Verification (4P)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "06/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Problem Phenomenon / Parameter"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "P1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Pump operated above rated flow"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Operated at 13.1–13.7 T/H vs rated max 18 T/H — within limit."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Suction pressure below NPSH margin"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Suction pressure dropped during feed swing; NPSH margin < 0.5 m (spec ≥ 1.0 m) — cavitation risk."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Seal flush flow below minimum"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Seal-flush flow measured 3–4 L/min vs 6 L/min minimum — seal ran dry intermittently."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "P4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Cooling water to seal cooler inadequate"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Seal cooler outlet temp normal (42 °C) — cooling adequate."
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "P5"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Seal faces beyond service life"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Seal in service 11 months, within 24-month design life."
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "NG = current condition not meeting standard (problem)   •   G = meets standard"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 6
+        }
+      },
+      {
+        "slide": 7,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "4M + 1E Verification"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "07/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Man / Machine / Method / Material / Environment"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "No low-NPSH / flush-flow interlock in DCS"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "No automatic trip or alarm on loss of seal-flush flow."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Feed-swing SOP allows fast rate ramp"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "SOP permits > 2 T/H per minute ramp, driving suction transients."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "PM covers seal only, not flush system"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Seal-flush plan (Plan 11) not on the PM check-sheet."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "X4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Operator competency on seal-flush monitoring"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Operators trained; no competency gap identified."
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "ROOT CAUSE:  Premature mechanical seal failure caused by intermittent dry-running: suction cavitation during feed swings reduced NPSH and seal-flush flow dropped below the 6 L/min minimum, with no interlock to protect the seal."
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 7
+        }
+      },
+      {
+        "slide": 8,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "RCA — MATRIX PRIORITY"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Impact vs Control Prioritization"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "08/11"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1  X2  X3"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "P2  P3"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "IMPACT  →"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "CONTROL  →"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Prioritized root causes (high impact) are addressed first via Corrective & Pro-Active Actions →"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 8
+        }
+      },
+      {
+        "slide": 9,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Corrective & Pro-Active Action (CAPAA)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "09/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Install seal-flush flow switch with DCS alarm on PU-2101B"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "24-Apr-2026"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "In Progress"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Add low-NPSH / loss-of-flush trip interlock in DCS"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "24-May-2026"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "PRO-ACTIVE ACTION (roll-out to similar equipment)"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 42,
+            "type": "text",
+            "text": "Pro-Active Action"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 46,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "Roll out flush-flow switch to PU-2101A spare"
+          },
+          {
+            "shape_id": 54,
+            "type": "text",
+            "text": "24-May-2026"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 58,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "Apply interlock standard to all API-682 seal pumps in ARP"
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "24-Jul-2026"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 69,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 9
+        }
+      },
+      {
+        "slide": 10,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Preventive & Risk Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "10/11"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "PREVENTIVE / PRO-ACTIVE ACTION (Good Condition Parameters)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Item"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Possible Root Cause"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Preventive Action"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Suction cavitation"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Revise feed-swing SOP to cap ramp at 1 T/H per minute"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "24-Apr-2026"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 30,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Flush system not in PM"
+          },
+          {
+            "shape_id": 34,
+            "type": "text",
+            "text": "Add seal-flush system (Plan 11) to PU-2101B PM check-sheet"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "24-Apr-2026"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "RISK ANALYSIS OF CORRECTIVE ACTION"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Potential Risk"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Countermeasure"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Install flow switch & interlock"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "Nuisance trips during commissioning"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Stage commissioning with bypass timer & operator brief"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "24-May-2026"
+          },
+          {
+            "shape_id": 59,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PM SCHEDULE ESTABLISHED"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "PM No."
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "Description"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "Group"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Interval"
+          },
+          {
+            "shape_id": 70,
+            "type": "text",
+            "text": "PM-1"
+          },
+          {
+            "shape_id": 72,
+            "type": "text",
+            "text": "Weekly seal-flush flow & seal-pot level check PU-2101B"
+          },
+          {
+            "shape_id": 74,
+            "type": "text",
+            "text": "Rotating"
+          },
+          {
+            "shape_id": 76,
+            "type": "text",
+            "text": "Weekly"
+          },
+          {
+            "shape_id": 78,
+            "type": "text",
+            "text": "PM-2"
+          },
+          {
+            "shape_id": 80,
+            "type": "text",
+            "text": "Quarterly seal condition & shaft run-out inspection"
+          },
+          {
+            "shape_id": 82,
+            "type": "text",
+            "text": "Rotating"
+          },
+          {
+            "shape_id": 84,
+            "type": "text",
+            "text": "3-monthly"
+          },
+          {
+            "shape_id": 85,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ARP-0117  |  PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 10
+        }
+      },
+      {
+        "slide": 11,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "Downtime & Closure Summary"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "18.5 h"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "PRODUCTION LOSS"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "251.6 ton"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "ESTIMATED LOSS"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "$226.44k"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "III (200)"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "ROOT CAUSE"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Premature mechanical seal failure caused by intermittent dry-running: suction cavitation during feed swings reduced NPSH and seal-flush flow dropped below the 6 L/min minimum, with no interlock to protect the seal."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "KEY CORRECTIVE / PRO-ACTIVE ACTIONS"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "•  Install seal-flush flow switch with DCS alarm on PU-2101B\n•  Add low-NPSH / loss-of-flush trip interlock in DCS\n•  Revise feed-swing SOP to cap ramp at 1 T/H per minute"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "AR-2026-ARP-0117   •   PU-2101B — ARP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA1 - PU-2101B Mechanical Seal Leakage.pptx",
+          "slide": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+    "slides": [
+      {
+        "slide": 1,
+        "blocks": [
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "ABNORMALITY REPORT — RCA & CAPA/PAA"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "Equipment Related Risk"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "Cracked Gas Compressor KO-3201"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "High Radial Vibration Trip (Bearing Distress)"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "AR NUMBER"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "AR-2026-ZCU-0142"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "TAG / PLANT"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "KO-3201  |  ZCU"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "DATE OCCURRENCE"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "29 Apr 2026"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "II  (Score 4000)"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "PIC (RCA)"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Procedure No. RCA-P-0050-03  •  Form RCA-F-0075-02"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 1
+        }
+      },
+      {
+        "slide": 2,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "PROBLEM IDENTIFICATION"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "AR Details & Problem Statement"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "02/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "AR IDENTIFICATION"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Title / Problem"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Cracked Gas Compressor KO-3201 — High Radial Vibration Trip (Bearing Distress)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "AR Type"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "OPEDR (Operation) — Uptime"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Plant / Unit"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "ZCU  (Zeta Cracker Unit)"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Tag / Eq. Class"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "KO-3201  |  Class A"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Discipline"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "ROT"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Date Occurrence"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "29 Apr 2026"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "Date Reported"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "30 Apr 2026"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "Immediate Action"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Controlled shutdown of compression train, replace DE journal bearing, flush lube-oil system"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "SEVERITY"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Catastrophic"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "II"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "32.0 h"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "LOSS"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "$1584.0k"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PROBLEM STATEMENT"
+          },
+          {
+            "shape_id": 61,
+            "type": "text",
+            "text": "Cracked Gas Compressor KO-3201 tripped on high-high radial vibration on 29-Apr-2026 due to journal-bearing babbitt distress driven by water-contaminated lube oil."
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 2
+        }
+      },
+      {
+        "slide": 3,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "GENERAL PROCESS OVERVIEW"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Chronology of Events"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "03/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "27-Apr-2026"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "ZCU compression train running normal; KO-3201 drive-end (DE) radial vibration trending up (from 28 to 52 micron over 5 days)."
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "29-Apr-2026 06:40"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "KO-3201 DE vibration reached high-high setpoint (75 micron); machinery protection system tripped the compressor."
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "29-Apr-2026 08:10"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Plant rate cut to minimum; lube-oil sample taken — water content 1,800 ppm (spec < 500 ppm)."
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "29-Apr-2026 18:00"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "DE journal bearing removed — babbitt wiped/distressed. Lube-oil cooler tube leak confirmed."
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "30-Apr-2026 14:40"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "New bearing installed, lube-oil system flushed, cooler tube plugged, train restarted to 55 T/H."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Problem: Cracked Gas Compressor KO-3201 tripped on high-high radial vibration on 29-Apr-2026 due to journal-bearing babbitt distress driven by water-contaminated lube oil."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 3
+        }
+      },
+      {
+        "slide": 4,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ASSESS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Past Performance Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "04/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "HISTORICAL DATA & EVIDENCE"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "KO-3201 DE vibration baseline is 25–30 micron. Trend shows a steady rise over 5 days preceding the trip. Lube-oil water content had drifted above 500 ppm for ~2 weeks without an online alarm."
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "IMPACT SUMMARY (4W)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "What:"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "KO-3201 tripped on high-high radial vibration"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "When:"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "29-Apr-2026 (06:40)"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Scope:"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "ZCU compression train shutdown — full ethylene rate loss"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Uptime Loss:"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "32.0 hours  →  1760.0 ton  →  $1584.0k"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 4
+        }
+      },
+      {
+        "slide": 5,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "TARGET SETTING"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Actual vs Target Condition"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "05/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "ACTUAL CONDITION (Before Improvement)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Compressor trip due to bearing distress from contaminated lube oil"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "TARGET CONDITION (Project Y)"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "No compressor trip due to lube-oil contamination (water < 500 ppm, vibration < 45 micron)"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "TARGET METRIC"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Recurrence of this equipment failure mode:\n     Before = 1 case   →   Target = 0 case"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 5
+        }
+      },
+      {
+        "slide": 6,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Parameter Verification (4P)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "06/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Problem Phenomenon / Parameter"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "P1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Radial vibration above alarm"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "DE vibration rose to 75 micron vs 45 micron alarm — bearing distress."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Lube-oil water content above spec"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Water content 1,800 ppm vs < 500 ppm spec — film breakdown."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Lube-oil supply pressure low"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Header pressure 1.8 barg — within normal band."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "P4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Bearing beyond service life"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Bearing in service 3 years vs 6-year design — within life."
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "P5"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Process surge / anti-surge margin"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Anti-surge margin maintained; no surge event recorded."
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "NG = current condition not meeting standard (problem)   •   G = meets standard"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 6
+        }
+      },
+      {
+        "slide": 7,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "4M + 1E Verification"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "07/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Man / Machine / Method / Material / Environment"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "No online water-in-oil monitoring"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Water content only checked by weekly grab sample — slow detection."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Lube-oil cooler integrity not trended"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "No routine cooler tube leak check between TAs."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Vibration alert limits too wide"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Alert at 60 micron gave little lead time before 75 micron trip."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "X4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Lube-oil purifier not in service"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Purifier available and operational."
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "ROOT CAUSE:  Journal-bearing babbitt distress caused by degraded oil-film strength from water ingress via a leaking lube-oil cooler tube, undetected due to absence of online water-in-oil monitoring, leading to rising vibration and a high-high trip."
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 7
+        }
+      },
+      {
+        "slide": 8,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "RCA — MATRIX PRIORITY"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Impact vs Control Prioritization"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "08/11"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1  X2  X3"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "P1  P2"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "IMPACT  →"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "CONTROL  →"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Prioritized root causes (high impact) are addressed first via Corrective & Pro-Active Actions"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 8
+        }
+      },
+      {
+        "slide": 9,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Corrective & Pro-Active Action (CAPAA)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "09/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Repair leaking lube-oil cooler tube (plug + re-test)"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "30-Apr-2026"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "STA-02"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Closed"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Install online water-in-oil sensor on KO-3201 lube system"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "30-Jun-2026"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "In Progress"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "PRO-ACTIVE ACTION (roll-out to similar equipment)"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 42,
+            "type": "text",
+            "text": "Pro-Active Action"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 46,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "Retube lube-oil cooler at next TA"
+          },
+          {
+            "shape_id": 54,
+            "type": "text",
+            "text": "31-Oct-2026"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "STA-02"
+          },
+          {
+            "shape_id": 58,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "Apply online water-in-oil monitoring to KO-3202/3203"
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "30-Sep-2026"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 69,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0142  |  KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 9
+        }
+      },
+      {
+        "slide": 10,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Preventive & Risk Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "10/11"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "PREVENTIVE / PRO-ACTIVE ACTION (Good Condition Parameters)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Item"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Possible Root Cause"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Preventive Action"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Vibration limits too wide"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Tighten KO-3201 vibration alert to 45 micron & shorten trend-review cadence"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "30-May-2026"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 30,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Cooler integrity not trended"
+          },
+          {
+            "shape_id": 34,
+            "type": "text",
+            "text": "Add lube-oil cooler dP & conductivity trend to reliability dashboard"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "30-Jun-2026"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "RISK ANALYSIS OF CORRECTIVE ACTION"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Potential Risk"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Countermeasure"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Tighten vibration alert to 45 micron"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "Nuisance alerts on start-up transients"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Add start-up alarm suppression timer"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "30-May-2026"
+          },
+          {
+            "shape_id": 59,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PM SCHEDULE ESTABLISHED"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "PM No."
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "Description"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "Group"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Interval"
+          },
+          {
+            "shape_id": 70,
+            "type": "text",
+            "text": "PM-1"
+          },
+          {
+            "shape_id": 72,
+            "type": "text",
+            "text": "Weekly lube-oil water-content & particle count"
+          },
+          {
+            "shape_id": 74,
+            "type": "text",
+            "text": "Reliability"
+          },
+          {
+            "shape_id": 76,
+            "type": "text",
+            "text": "Weekly"
+          },
+          {
+            "shape_id": 78,
+            "type": "text",
+            "text": "PM-2"
+          },
+          {
+            "shape_id": 80,
+            "type": "text",
+            "text": "6-monthly lube-oil cooler leak test"
+          },
+          {
+            "shape_id": 82,
+            "type": "text",
+            "text": "Static"
+          },
+          {
+            "shape_id": 84,
+            "type": "text",
+            "text": "6-monthly"
+          },
+          {
+            "shape_id": 86,
+            "type": "text",
+            "text": "PM-3"
+          },
+          {
+            "shape_id": 88,
+            "type": "text",
+            "text": "Continuous vibration trend review KO-3201"
+          },
+          {
+            "shape_id": 90,
+            "type": "text",
+            "text": "Reliability"
+          },
+          {
+            "shape_id": 92,
+            "type": "text",
+            "text": "Daily"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 10
+        }
+      },
+      {
+        "slide": 11,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "Downtime & Closure Summary"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "32.0 h"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "PRODUCTION LOSS"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "1760.0 ton"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "ESTIMATED LOSS"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "$1584.0k"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "II (4000)"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "ROOT CAUSE"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Journal-bearing babbitt distress caused by degraded oil-film strength from water ingress via a leaking lube-oil cooler tube, undetected due to absence of online water-in-oil monitoring, leading to rising vibration and a high-high trip."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "KEY CORRECTIVE / PRO-ACTIVE ACTIONS"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "•  Repair leaking lube-oil cooler tube (plug + re-test)\n•  Install online water-in-oil sensor on KO-3201 lube system\n•  Tighten KO-3201 vibration alert to 45 micron & shorten trend-review cadence"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "AR-2026-ZCU-0142   •   KO-3201 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA2 - KO-3201 High Radial Vibration Trip.pptx",
+          "slide": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+    "slides": [
+      {
+        "slide": 1,
+        "blocks": [
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "ABNORMALITY REPORT — RCA & CAPA/PAA"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "Equipment Related Risk"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "Cooling Water Pump PM-4405B (Motor Driven)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Motor Bearing Failure (Overheating)"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "AR NUMBER"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "AR-2026-NUP-0089"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "TAG / PLANT"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "PM-4405B  |  NUP"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "DATE OCCURRENCE"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "08 Jul 2026"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "III  (Score 200)"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "PIC (RCA)"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Procedure No. RCA-P-0050-03  •  Form RCA-F-0075-02"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 1
+        }
+      },
+      {
+        "slide": 2,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "PROBLEM IDENTIFICATION"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "AR Details & Problem Statement"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "02/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "AR IDENTIFICATION"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Title / Problem"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Cooling Water Pump PM-4405B (Motor Driven) — Motor Bearing Failure (Overheating)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "AR Type"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "OPEDR (Operation) — Uptime"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Plant / Unit"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NUP  (Nova Utility Plant)"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Tag / Eq. Class"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "PM-4405B  |  Class B"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Discipline"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "ELE"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Date Occurrence"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "08 Jul 2026"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "Date Reported"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "08 Jul 2026"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "Immediate Action"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Start standby CW pump PM-4405C, isolate PM-4405B, replace motor DE & NDE bearings"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "SEVERITY"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Moderate"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "III"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "8.0 h"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "LOSS"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "$112.0k"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PROBLEM STATEMENT"
+          },
+          {
+            "shape_id": 61,
+            "type": "text",
+            "text": "Cooling Water Pump PM-4405B motor tripped on 08-Jul-2026 due to drive-end bearing failure from grease degradation and an over-extended re-lubrication interval."
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 2
+        }
+      },
+      {
+        "slide": 3,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "GENERAL PROCESS OVERVIEW"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Chronology of Events"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "03/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "06-Jul-2026"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Cooling-water system running on PM-4405B; motor DE bearing temperature trending up (68 → 84 °C)."
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "08-Jul-2026 13:20"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Motor bearing high-temperature alarm; motor tripped on winding/bearing over-temp."
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "08-Jul-2026 13:35"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Standby PM-4405C started; cooling-water supply maintained at reduced margin."
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "08-Jul-2026 16:00"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Motor DE bearing found seized; grease degraded/carbonized. NDE bearing marginal."
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "08-Jul-2026 21:20"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "DE & NDE bearings replaced and re-greased; motor recommissioned."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Problem: Cooling Water Pump PM-4405B motor tripped on 08-Jul-2026 due to drive-end bearing failure from grease degradation and an over-extended re-lubrication interval."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 3
+        }
+      },
+      {
+        "slide": 4,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ASSESS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Past Performance Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "04/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "HISTORICAL DATA & EVIDENCE"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "PM-4405B motor bearing temperature baseline is 60–68 °C. Re-lubrication was performed on a fixed 12-month interval regardless of duty/ambient. Bearing temperature was not trended in CMMS, so degradation went unnoticed."
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "IMPACT SUMMARY (4W)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "What:"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "PM-4405B motor DE bearing failed / overheated"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "When:"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "08-Jul-2026 (13:20)"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Scope:"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Loss of one cooling-water pump; reduced CW margin (standby covered)"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Uptime Loss:"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "8.0 hours  →  160.0 ton  →  $112.0k"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 4
+        }
+      },
+      {
+        "slide": 5,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "TARGET SETTING"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Actual vs Target Condition"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "05/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "ACTUAL CONDITION (Before Improvement)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "CW pump motor trip due to bearing overheating"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "TARGET CONDITION (Project Y)"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "No motor bearing failure due to lubrication (bearing temp < 75 °C, risk-based re-greasing)"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "TARGET METRIC"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Recurrence of this equipment failure mode:\n     Before = 1 case   →   Target = 0 case"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 5
+        }
+      },
+      {
+        "slide": 6,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Parameter Verification (4P)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "06/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Problem Phenomenon / Parameter"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "P1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Motor bearing temperature above limit"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "DE bearing reached 84 °C vs 75 °C alarm — grease breakdown."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Motor over-loaded (high ampere)"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Running current 132 A vs 150 A rated — within limit."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Cooling-fan / ventilation blocked"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Fan cowl clean; ambient ventilation adequate."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "P4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Grease type incorrect"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Correct high-temp lithium-complex grease used."
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "P5"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Bearing beyond service life"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Bearing in service 2 years vs 5-year design — within life."
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "NG = current condition not meeting standard (problem)   •   G = meets standard"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 6
+        }
+      },
+      {
+        "slide": 7,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "4M + 1E Verification"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "07/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Man / Machine / Method / Material / Environment"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Re-lubrication interval not risk-based"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Fixed 12-month interval too long for duty & ambient — grease degraded."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Bearing temperature not trended in CMMS"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "No condition-based trigger; only alarm at failure point."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Vibration route excludes utility motors"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "PM-4405B not on the monthly vibration route."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "X4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Operator round frequency"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Rounds performed per schedule; local gauge read."
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "ROOT CAUSE:  Motor drive-end bearing failure caused by grease degradation from an over-extended, non-risk-based re-lubrication interval, undetected due to absence of bearing-temperature trending, resulting in bearing overheating and motor trip."
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 7
+        }
+      },
+      {
+        "slide": 8,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "RCA — MATRIX PRIORITY"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Impact vs Control Prioritization"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "08/11"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1  X2  X3"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "P1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "IMPACT  →"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "CONTROL  →"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Prioritized root causes (high impact) are addressed first via Corrective & Pro-Active Actions →"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 8
+        }
+      },
+      {
+        "slide": 9,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Corrective & Pro-Active Action (CAPAA)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "09/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Revise PM-4405B re-lubrication interval to risk-based (4-monthly)"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "31-Jul-2026"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "In Progress"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Add motor bearing temperature trending & alert to CMMS"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "31-Aug-2026"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "PRO-ACTIVE ACTION (roll-out to similar equipment)"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 42,
+            "type": "text",
+            "text": "Pro-Active Action"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 46,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "Apply risk-based re-greasing to all CW pump motors"
+          },
+          {
+            "shape_id": 54,
+            "type": "text",
+            "text": "31-Aug-2026"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 58,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "Extend bearing-temp trending to utility motor fleet"
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "30-Sep-2026"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 69,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 9
+        }
+      },
+      {
+        "slide": 10,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Preventive & Risk Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "10/11"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "PREVENTIVE / PRO-ACTIVE ACTION (Good Condition Parameters)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Item"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Possible Root Cause"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Preventive Action"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Motor not on vibration route"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Add PM-4405B/C to monthly vibration & thermography route"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "31-Jul-2026"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 30,
+            "type": "text",
+            "text": "P1"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Bearing over-temp"
+          },
+          {
+            "shape_id": 34,
+            "type": "text",
+            "text": "Verify motor cooling-fan & louvre condition each PM"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "31-Jul-2026"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "ELE-01"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "RISK ANALYSIS OF CORRECTIVE ACTION"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Potential Risk"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Countermeasure"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Shorten re-greasing interval"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "Over-greasing risk (churning / seal push-out)"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Use metered re-greasing per bearing volume calc"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "31-Jul-2026"
+          },
+          {
+            "shape_id": 59,
+            "type": "text",
+            "text": "REL-02"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PM SCHEDULE ESTABLISHED"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "PM No."
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "Description"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "Group"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Interval"
+          },
+          {
+            "shape_id": 70,
+            "type": "text",
+            "text": "PM-1"
+          },
+          {
+            "shape_id": 72,
+            "type": "text",
+            "text": "Risk-based motor bearing re-greasing PM-4405B"
+          },
+          {
+            "shape_id": 74,
+            "type": "text",
+            "text": "Electrical"
+          },
+          {
+            "shape_id": 76,
+            "type": "text",
+            "text": "4-monthly"
+          },
+          {
+            "shape_id": 78,
+            "type": "text",
+            "text": "PM-2"
+          },
+          {
+            "shape_id": 80,
+            "type": "text",
+            "text": "Monthly motor bearing temperature & vibration reading"
+          },
+          {
+            "shape_id": 82,
+            "type": "text",
+            "text": "Reliability"
+          },
+          {
+            "shape_id": 84,
+            "type": "text",
+            "text": "Monthly"
+          },
+          {
+            "shape_id": 85,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-NUP-0089  |  PM-4405B — NUP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 10
+        }
+      },
+      {
+        "slide": 11,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "Downtime & Closure Summary"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "8.0 h"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "PRODUCTION LOSS"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "160.0 ton"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "ESTIMATED LOSS"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "$112.0k"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "III (200)"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "ROOT CAUSE"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Motor drive-end bearing failure caused by grease degradation from an over-extended, non-risk-based re-lubrication interval, undetected due to absence of bearing-temperature trending, resulting in bearing overheating and motor trip."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "KEY CORRECTIVE / PRO-ACTIVE ACTIONS"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "•  Revise PM-4405B re-lubrication interval to risk-based (4-monthly)\n•  Add motor bearing temperature trending & alert to CMMS\n•  Add PM-4405B/C to monthly vibration & thermography route"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "AR-2026-NUP-0089   •   PM-4405B — NUP "
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA3 - PM-4405B Motor Bearing Failure.pptx",
+          "slide": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+    "slides": [
+      {
+        "slide": 1,
+        "blocks": [
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "ABNORMALITY REPORT — RCA & CAPA/PAA"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "Equipment Related Risk"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "Feed/Effluent Heat Exchanger HE-3301"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "High Fouling — Duty Loss & High dP"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "AR NUMBER"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "AR-2026-ZCU-0165"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "TAG / PLANT"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "HE-3301  |  ZCU"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "DATE OCCURRENCE"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "21 May 2026"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "III  (Score 400)"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "PIC (RCA)"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "STA-02"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Procedure No. RCA-P-0050-03  •  Form RCA-F-0075-02"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 1
+        }
+      },
+      {
+        "slide": 2,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "PROBLEM IDENTIFICATION"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "AR Details & Problem Statement"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "02/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "AR IDENTIFICATION"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Title / Problem"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Feed/Effluent Heat Exchanger HE-3301 — High Fouling — Duty Loss & High dP"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "AR Type"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "OPEDR (Operation) — Uptime"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Plant / Unit"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "ZCU  (Zeta Cracker Unit)"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Tag / Eq. Class"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "HE-3301  |  Class B"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Discipline"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "STA"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Date Occurrence"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "21 May 2026"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "Date Reported"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "22 May 2026"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "Immediate Action"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Isolate HE-3301, bypass via spare train, hydro-jet clean tube bundle"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "SEVERITY"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Moderate"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "III"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "12.0 h"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "LOSS"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "$183.6k"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PROBLEM STATEMENT"
+          },
+          {
+            "shape_id": 61,
+            "type": "text",
+            "text": "Feed/Effluent Heat Exchanger HE-3301 suffered accelerated tube-side fouling reducing duty and raising dP, forcing an unplanned isolation, cleaning and partial rate cut on 21-May-2026."
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 2
+        }
+      },
+      {
+        "slide": 3,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "GENERAL PROCESS OVERVIEW"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Chronology of Events"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "03/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "18-May-2026"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Heat-recovery section running; HE-3301 tube-side dP rising (0.4 → 0.9 bar) and cold-outlet temperature falling."
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "21-May-2026 09:00"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Preheat duty dropped ~35% below design; unit rate reduced to protect downstream. Exchanger isolated."
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "21-May-2026 11:30"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Tube bundle inspected — heavy coke/polymer deposition on tube side."
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "21-May-2026 21:00"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Bundle hydro-jet cleaned and returned to service; duty and dP restored, rate ramped back to 30 T/H."
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Problem: Feed/Effluent Heat Exchanger HE-3301 suffered accelerated tube-side fouling reducing duty and raising dP, forcing an unplanned isolation, cleaning and partial rate cut on 21-May-2026."
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 3
+        }
+      },
+      {
+        "slide": 4,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ASSESS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Past Performance Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "04/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "HISTORICAL DATA & EVIDENCE"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "HE-3301 tube-side dP baseline is 0.3–0.4 bar; heat duty design 100%. Over the run, dP climbed steadily while duty fell — a classic fouling curve. No dP-based cleaning trigger existed, so fouling was allowed to progress to a forced cut."
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "IMPACT SUMMARY (4W)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "What:"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "HE-3301 duty loss & high dP from tube-side fouling"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "When:"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "21-May-2026 (09:00)"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Scope:"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Partial rate cut of ZCU heat-recovery section"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Uptime Loss:"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "12.0 hours  →  216.0 ton  →  $183.6k"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 4
+        }
+      },
+      {
+        "slide": 5,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "TARGET SETTING"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Actual vs Target Condition"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "05/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "ACTUAL CONDITION (Before Improvement)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Rate cut due to HE-3301 fouling (duty loss + high dP)"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "TARGET CONDITION (Project Y)"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "No unplanned rate cut due to HE-3301 fouling (dP < 0.6 bar, duty > 90%)"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "TARGET METRIC"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Recurrence of this equipment failure mode:\n     Before = 1 case   →   Target = 0 case"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 5
+        }
+      },
+      {
+        "slide": 6,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Parameter Verification (4P)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "06/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Problem Phenomenon / Parameter"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "P1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Tube-side dP above limit"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "dP reached 0.9 bar vs 0.6 bar limit — heavy fouling."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Heat duty below design"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Duty fell to ~65% of design — loss of preheat."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Feed heavy-ends above spec"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Heavy-ends 2.4% vs < 1.5% design — increased fouling precursor."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "P4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Tube velocity below design"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Tube velocity 1.9 m/s vs 1.5 m/s min — adequate."
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "P5"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Cooling/heating medium temperature off"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Shell-side inlet temperature within normal band."
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "NG = current condition not meeting standard (problem)   •   G = meets standard"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 6
+        }
+      },
+      {
+        "slide": 7,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "4M + 1E Verification"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "07/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Man / Machine / Method / Material / Environment"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "No dP-based cleaning trigger"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Cleaning was time-based only; no dP alarm to trigger action."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Feed filtration performance not trended"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Upstream filter dP not monitored, allowing heavy-ends carry-over."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Fouling KPI not on dashboard"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "No fouling factor / duty KPI tracked between TAs."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "X4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Bundle metallurgy inadequate"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Bundle metallurgy suitable for service."
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "ROOT CAUSE:  Accelerated tube-side coke/polymer fouling driven by higher-than-design feed heavy-ends, allowed to progress by the absence of a dP-based cleaning trigger and fouling KPI, causing duty loss, high dP and a forced rate cut."
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 7
+        }
+      },
+      {
+        "slide": 8,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "RCA — MATRIX PRIORITY"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Impact vs Control Prioritization"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "08/11"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1  X2  X3"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "P1  P2  P3"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "IMPACT  →"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "CONTROL  →"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Prioritized root causes (high impact) are addressed first via Corrective & Pro-Active Actions →"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 8
+        }
+      },
+      {
+        "slide": 9,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Corrective & Pro-Active Action (CAPAA)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "09/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Add dP-based cleaning trigger & alarm for HE-3301"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "22-Jun-2026"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "STA-02"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "In Progress"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Tighten feed heavy-ends control & filtration"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "30-Jun-2026"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "PRO-ACTIVE ACTION (roll-out to similar equipment)"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 42,
+            "type": "text",
+            "text": "Pro-Active Action"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 46,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "Apply dP-trigger logic to parallel exchangers HE-3302/3303"
+          },
+          {
+            "shape_id": 54,
+            "type": "text",
+            "text": "22-Jul-2026"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "STA-02"
+          },
+          {
+            "shape_id": 58,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "Review upstream fractionation cut-point control"
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "31-Jul-2026"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 69,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 9
+        }
+      },
+      {
+        "slide": 10,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Preventive & Risk Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "10/11"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "PREVENTIVE / PRO-ACTIVE ACTION (Good Condition Parameters)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Item"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Possible Root Cause"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Preventive Action"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "No fouling KPI"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Add fouling factor & duty KPI to reliability dashboard"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "22-Jun-2026"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "STA-02"
+          },
+          {
+            "shape_id": 30,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Filter not trended"
+          },
+          {
+            "shape_id": 34,
+            "type": "text",
+            "text": "Add upstream filter dP trend & replacement trigger"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "30-Jun-2026"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "RISK ANALYSIS OF CORRECTIVE ACTION"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Potential Risk"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Countermeasure"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Add dP cleaning trigger"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "Premature/over-frequent cleaning"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Set trigger with hysteresis + engineering review before cleaning"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "22-Jun-2026"
+          },
+          {
+            "shape_id": 59,
+            "type": "text",
+            "text": "STA-02"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PM SCHEDULE ESTABLISHED"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "PM No."
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "Description"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "Group"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Interval"
+          },
+          {
+            "shape_id": 70,
+            "type": "text",
+            "text": "PM-1"
+          },
+          {
+            "shape_id": 72,
+            "type": "text",
+            "text": "Daily HE-3301 dP & duty trend review"
+          },
+          {
+            "shape_id": 74,
+            "type": "text",
+            "text": "Process"
+          },
+          {
+            "shape_id": 76,
+            "type": "text",
+            "text": "Daily"
+          },
+          {
+            "shape_id": 78,
+            "type": "text",
+            "text": "PM-2"
+          },
+          {
+            "shape_id": 80,
+            "type": "text",
+            "text": "Bundle inspection & cleaning at dP trigger / next TA"
+          },
+          {
+            "shape_id": 82,
+            "type": "text",
+            "text": "Static"
+          },
+          {
+            "shape_id": 84,
+            "type": "text",
+            "text": "Condition / TA"
+          },
+          {
+            "shape_id": 85,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-ZCU-0165  |  HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 10
+        }
+      },
+      {
+        "slide": 11,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "Downtime & Closure Summary"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "12.0 h"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "PRODUCTION LOSS"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "216.0 ton"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "ESTIMATED LOSS"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "$183.6k"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "III (400)"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "ROOT CAUSE"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Accelerated tube-side coke/polymer fouling driven by higher-than-design feed heavy-ends, allowed to progress by the absence of a dP-based cleaning trigger and fouling KPI, causing duty loss, high dP and a forced rate cut."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "KEY CORRECTIVE / PRO-ACTIVE ACTIONS"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "•  Add dP-based cleaning trigger & alarm for HE-3301\n•  Tighten feed heavy-ends control & filtration\n•  Add fouling factor & duty KPI to reliability dashboard"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "AR-2026-ZCU-0165   •   HE-3301 — ZCU"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA4 - HE-3301 High Fouling — Duty Loss & High dP.pptx",
+          "slide": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+    "slides": [
+      {
+        "slide": 1,
+        "blocks": [
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "ABNORMALITY REPORT — RCA & CAPA/PAA"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "  Equipment Related Risk"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "Product Blower BL-5702"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "High Vibration (Coupling Misalignment)"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "AR NUMBER"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "AR-2026-OPP-0203"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "TAG / PLANT"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "BL-5702  |  OPP"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "DATE OCCURRENCE"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "17 Jun 2026"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "III  (Score 400)"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "PIC (RCA)"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Procedure No. RCA-P-0050-03  •  Form RCA-F-0075-02"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 1
+        }
+      },
+      {
+        "slide": 2,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "PROBLEM IDENTIFICATION"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "AR Details & Problem Statement"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "02/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "AR IDENTIFICATION"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Title / Problem"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Product Blower BL-5702 — High Vibration (Coupling Misalignment)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "AR Type"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "OPEDR (Operation) — Uptime"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Plant / Unit"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "OPP  (Orion Polypropylene Plant)"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Tag / Eq. Class"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "BL-5702  |  Class A"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Discipline"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "ROT"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Date Occurrence"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "17 Jun 2026"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "Date Reported"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "18 Jun 2026"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "Immediate Action"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Stop BL-5702, re-align coupling, replace worn coupling element"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "SEVERITY"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Major"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "III"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "14.0 h"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "LOSS"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "$478.8k"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PROBLEM STATEMENT"
+          },
+          {
+            "shape_id": 61,
+            "type": "text",
+            "text": "Product Blower BL-5702 tripped on high vibration on 17-Jun-2026 due to coupling misalignment and a worn coupling element, halting the OPP powder-handling section."
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 2
+        }
+      },
+      {
+        "slide": 3,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "GENERAL PROCESS OVERVIEW"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Chronology of Events"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "03/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "15-Jun-2026"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "OPP running normal; BL-5702 vibration trending up (4.2 → 8.5 mm/s) with 2X harmonic rising."
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "17-Jun-2026 04:30"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "BL-5702 vibration reached alarm (11 mm/s); blower stopped to prevent damage — powder handling section halted."
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "17-Jun-2026 07:00"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Coupling element found worn/cracked; laser alignment showed 0.35 mm offset (spec < 0.05 mm)."
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "17-Jun-2026 18:30"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Coupling element replaced, unit re-aligned to < 0.05 mm, blower restarted to 38 T/H."
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Problem: Product Blower BL-5702 tripped on high vibration on 17-Jun-2026 due to coupling misalignment and a worn coupling element, halting the OPP powder-handling section."
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 3
+        }
+      },
+      {
+        "slide": 4,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ASSESS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Past Performance Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "04/11"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "HISTORICAL DATA & EVIDENCE"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "BL-5702 vibration baseline is 3.5–4.5 mm/s. A rising trend with dominant 2X harmonic over 2 days indicated developing misalignment. Alignment was last verified 14 months prior; no soft-foot / alignment check in the routine PM."
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "IMPACT SUMMARY (4W)"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "What:"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "BL-5702 high vibration from coupling misalignment"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "When:"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "17-Jun-2026 (04:30)"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Scope:"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "OPP powder-handling section stop"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Uptime Loss:"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "14.0 hours  →  532.0 ton  →  $478.8k"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 4
+        }
+      },
+      {
+        "slide": 5,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "TARGET SETTING"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Actual vs Target Condition"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "05/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "ACTUAL CONDITION (Before Improvement)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Blower stop due to high vibration (misalignment)"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "TARGET CONDITION (Project Y)"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "No blower stop due to misalignment (vibration < 7 mm/s, alignment < 0.05 mm)"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "TARGET METRIC"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Recurrence of this equipment failure mode:\n     Before = 1 case   →   Target = 0 case"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 5
+        }
+      },
+      {
+        "slide": 6,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Parameter Verification (4P)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "06/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Problem Phenomenon / Parameter"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "P1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Overall vibration above alarm"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "Vibration reached 11 mm/s vs 7 mm/s alarm — misalignment signature."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "P2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Coupling alignment out of tolerance"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Offset 0.35 mm vs < 0.05 mm spec — angular/parallel misalignment."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "P3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Bearing condition degraded"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Bearing envelope/shock-pulse normal — no bearing defect."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "P4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Foundation / soft-foot"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Soft-foot 0.12 mm found on one foot — contributed to misalignment."
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "P5"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Rotor unbalance"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "1X component within balance grade — no unbalance."
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "NG = current condition not meeting standard (problem)   •   G = meets standard"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 6
+        }
+      },
+      {
+        "slide": 7,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "ROOT CAUSE ANALYSIS"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "4M + 1E Verification"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "07/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "#"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Man / Machine / Method / Material / Environment"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Result"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "Evidence / Finding"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Alignment check not in routine PM"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "PM did not include periodic laser alignment / soft-foot check."
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "Coupling element life not tracked"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Elastomer coupling element run beyond recommended 12-month life."
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "Vibration route interval too long"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "NG"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "Monthly route missed the fast-rising 2-day trend."
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "X4"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Alignment tools / competency"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "G"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Laser alignment tool & trained technicians available."
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "ROOT CAUSE:  High vibration from coupling misalignment aggravated by soft-foot and an over-aged elastomer coupling element, undetected because periodic alignment/soft-foot checks were absent from the PM and the vibration route interval was too long."
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 7
+        }
+      },
+      {
+        "slide": 8,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "RCA — MATRIX PRIORITY"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Impact vs Control Prioritization"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "08/11"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "X1  X2  X3"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "P1  P2  P4"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "IMPACT  →"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "CONTROL  →"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Low"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "Medium"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "High"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "Prioritized root causes (high impact) are addressed first via Corrective & Pro-Active Actions →"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 8
+        }
+      },
+      {
+        "slide": 9,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Corrective & Pro-Active Action (CAPAA)"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "09/11"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 11,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 15,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 19,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "Add periodic laser alignment & soft-foot check to BL-5702 PM"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "18-Jul-2026"
+          },
+          {
+            "shape_id": 25,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "In Progress"
+          },
+          {
+            "shape_id": 29,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 31,
+            "type": "text",
+            "text": "Track coupling element life & replace at 12 months"
+          },
+          {
+            "shape_id": 33,
+            "type": "text",
+            "text": "18-Jul-2026"
+          },
+          {
+            "shape_id": 35,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 37,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "PRO-ACTIVE ACTION (roll-out to similar equipment)"
+          },
+          {
+            "shape_id": 40,
+            "type": "text",
+            "text": "RC"
+          },
+          {
+            "shape_id": 42,
+            "type": "text",
+            "text": "Pro-Active Action"
+          },
+          {
+            "shape_id": 44,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 46,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 48,
+            "type": "text",
+            "text": "Status"
+          },
+          {
+            "shape_id": 50,
+            "type": "text",
+            "text": "X1"
+          },
+          {
+            "shape_id": 52,
+            "type": "text",
+            "text": "Roll out alignment check to all Class-A blowers in OPP"
+          },
+          {
+            "shape_id": 54,
+            "type": "text",
+            "text": "18-Aug-2026"
+          },
+          {
+            "shape_id": 56,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 58,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "X2"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "Create coupling-element replacement register for OPP trains"
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "31-Aug-2026"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Open"
+          },
+          {
+            "shape_id": 69,
+            "type": "text",
+            "text": "RCA & CAPA/PAA  |  AR-2026-OPP-0203  |  BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 9
+        }
+      },
+      {
+        "slide": 10,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "IMPROVE"
+          },
+          {
+            "shape_id": 6,
+            "type": "text",
+            "text": "Preventive & Risk Analysis"
+          },
+          {
+            "shape_id": 7,
+            "type": "text",
+            "text": "10/11"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "PREVENTIVE / PRO-ACTIVE ACTION (Good Condition Parameters)"
+          },
+          {
+            "shape_id": 10,
+            "type": "text",
+            "text": "Item"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "Possible Root Cause"
+          },
+          {
+            "shape_id": 14,
+            "type": "text",
+            "text": "Preventive Action"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 18,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "X3"
+          },
+          {
+            "shape_id": 22,
+            "type": "text",
+            "text": "Route interval too long"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "Shorten BL-5702 vibration route to weekly"
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "18-Jul-2026"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 30,
+            "type": "text",
+            "text": "P4"
+          },
+          {
+            "shape_id": 32,
+            "type": "text",
+            "text": "Soft-foot"
+          },
+          {
+            "shape_id": 34,
+            "type": "text",
+            "text": "Correct soft-foot & re-shim baseplate BL-5702"
+          },
+          {
+            "shape_id": 36,
+            "type": "text",
+            "text": "18-Jun-2026"
+          },
+          {
+            "shape_id": 38,
+            "type": "text",
+            "text": "ROT-01"
+          },
+          {
+            "shape_id": 39,
+            "type": "text",
+            "text": "RISK ANALYSIS OF CORRECTIVE ACTION"
+          },
+          {
+            "shape_id": 41,
+            "type": "text",
+            "text": "Corrective Action"
+          },
+          {
+            "shape_id": 43,
+            "type": "text",
+            "text": "Potential Risk"
+          },
+          {
+            "shape_id": 45,
+            "type": "text",
+            "text": "Countermeasure"
+          },
+          {
+            "shape_id": 47,
+            "type": "text",
+            "text": "Plan Date"
+          },
+          {
+            "shape_id": 49,
+            "type": "text",
+            "text": "PIC"
+          },
+          {
+            "shape_id": 51,
+            "type": "text",
+            "text": "Shorten vibration route to weekly"
+          },
+          {
+            "shape_id": 53,
+            "type": "text",
+            "text": "Increased inspection workload"
+          },
+          {
+            "shape_id": 55,
+            "type": "text",
+            "text": "Use wireless vibration sensor for continuous trend"
+          },
+          {
+            "shape_id": 57,
+            "type": "text",
+            "text": "18-Jul-2026"
+          },
+          {
+            "shape_id": 59,
+            "type": "text",
+            "text": "REL-05"
+          },
+          {
+            "shape_id": 60,
+            "type": "text",
+            "text": "PM SCHEDULE ESTABLISHED"
+          },
+          {
+            "shape_id": 62,
+            "type": "text",
+            "text": "PM No."
+          },
+          {
+            "shape_id": 64,
+            "type": "text",
+            "text": "Description"
+          },
+          {
+            "shape_id": 66,
+            "type": "text",
+            "text": "Group"
+          },
+          {
+            "shape_id": 68,
+            "type": "text",
+            "text": "Interval"
+          },
+          {
+            "shape_id": 70,
+            "type": "text",
+            "text": "PM-1"
+          },
+          {
+            "shape_id": 72,
+            "type": "text",
+            "text": "6-monthly laser alignment & soft-foot check BL-5702"
+          },
+          {
+            "shape_id": 74,
+            "type": "text",
+            "text": "Rotating"
+          },
+          {
+            "shape_id": 76,
+            "type": "text",
+            "text": "6-monthly"
+          },
+          {
+            "shape_id": 78,
+            "type": "text",
+            "text": "PM-2"
+          },
+          {
+            "shape_id": 80,
+            "type": "text",
+            "text": "Coupling element inspection/replacement"
+          },
+          {
+            "shape_id": 82,
+            "type": "text",
+            "text": "Rotating"
+          },
+          {
+            "shape_id": 84,
+            "type": "text",
+            "text": "12-monthly"
+          },
+          {
+            "shape_id": 86,
+            "type": "text",
+            "text": "PM-3"
+          },
+          {
+            "shape_id": 88,
+            "type": "text",
+            "text": "Weekly vibration trend review BL-5702"
+          },
+          {
+            "shape_id": 90,
+            "type": "text",
+            "text": "Reliability"
+          },
+          {
+            "shape_id": 92,
+            "type": "text",
+            "text": "Weekly"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 10
+        }
+      },
+      {
+        "slide": 11,
+        "blocks": [
+          {
+            "shape_id": 5,
+            "type": "text",
+            "text": "Downtime & Closure Summary"
+          },
+          {
+            "shape_id": 8,
+            "type": "text",
+            "text": "DOWNTIME"
+          },
+          {
+            "shape_id": 9,
+            "type": "text",
+            "text": "14.0 h"
+          },
+          {
+            "shape_id": 12,
+            "type": "text",
+            "text": "PRODUCTION LOSS"
+          },
+          {
+            "shape_id": 13,
+            "type": "text",
+            "text": "532.0 ton"
+          },
+          {
+            "shape_id": 16,
+            "type": "text",
+            "text": "ESTIMATED LOSS"
+          },
+          {
+            "shape_id": 17,
+            "type": "text",
+            "text": "$478.8k"
+          },
+          {
+            "shape_id": 20,
+            "type": "text",
+            "text": "PRE-RISK"
+          },
+          {
+            "shape_id": 21,
+            "type": "text",
+            "text": "III (400)"
+          },
+          {
+            "shape_id": 23,
+            "type": "text",
+            "text": "ROOT CAUSE"
+          },
+          {
+            "shape_id": 24,
+            "type": "text",
+            "text": "High vibration from coupling misalignment aggravated by soft-foot and an over-aged elastomer coupling element, undetected because periodic alignment/soft-foot checks were absent from the PM and the vibration route interval was too long."
+          },
+          {
+            "shape_id": 26,
+            "type": "text",
+            "text": "KEY CORRECTIVE / PRO-ACTIVE ACTIONS"
+          },
+          {
+            "shape_id": 27,
+            "type": "text",
+            "text": "•  Add periodic laser alignment & soft-foot check to BL-5702 PM\n•  Track coupling element life & replace at 12 months\n•  Shorten BL-5702 vibration route to weekly"
+          },
+          {
+            "shape_id": 28,
+            "type": "text",
+            "text": "AR-2026-OPP-0203   •   BL-5702 — OPP"
+          }
+        ],
+        "source": {
+          "file": "sources/baseline/rca/RCA5 - BL-5702 High Vibration.pptx",
+          "slide": 11
+        }
+      }
+    ]
+  }
+]

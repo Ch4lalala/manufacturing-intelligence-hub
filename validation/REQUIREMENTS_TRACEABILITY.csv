@@ -1,0 +1,22 @@
+ID,Authority,Requirement,Surface,Specification,Acceptance proof to build,Limit
+ES1,Casebook p9 / KQ1 p10,Governed dashboard rationalization,Data & KPI Map,SOLUTION_SPEC sections2-3,Open source catalog/KPI lineage and proposed consolidation,No actual dashboard inventory; no eliminated-dashboard count
+KQ1a,Casebook p10,Data source mapping and consistent KPI definitions,Data & KPI Map,DATA_CONTRACTS; DATA_RULES,Each KPI resolves to file/location/units/period/proposed owner,Owners are proposed
+ES2,Casebook p9 / KQ2 p10,Executive single pane of glass,Executive Overview,SOLUTION_SPEC section3,Scope-aware portfolio plus selected operational scenario,Different asset months are not concurrent
+KQ2a,Casebook p10,Energy forecasting,Executive Overview utility illustration,SOLUTION_SPEC section4,Synthetic history and persistence forecast with assumptions,No real utility baseline or forecast accuracy
+KQ2b,Casebook p10,Similar-incident retrieval,Investigation,SOLUTION_SPEC section3,Search 380 rows by component/mechanism/context,Only five detailed reports
+KQ2c,Casebook p10,AI-based probable root cause indication,Investigation,SOLUTION_SPEC sections3/5,Eligible evidence/hypotheses/citations/contradictions,Known outcomes labeled historical; no certainty claim
+ES3,Casebook p9,Root cause support using history/deviations/patterns,Investigation,DATA_RULES; DATA_CONTRACTS,Weekly/hourly charts kept separate; engineer review,Source discrepancies remain visible
+KQ3a,Casebook p10,Problem tank and alert priority engine,Problem Tank,SOLUTION_SPEC section3,Explain severity/criticality/eligible risk ordering and episodes,Proposed policy; no invented score
+ES4,Casebook p9 / KQ3 p10,Action recommendation/ownership/guidance/progress,Action Tracker,SOLUTION_SPEC section3,Approve action; assign simulated owner/date; verify closure,No live maintenance execution
+KQ3b,Casebook p10,Translate AI insights to tracked actions,Investigation -> Action Tracker,ACCEPTANCE,Action links to reviewed hypothesis/evidence; history persists,Historical CAPA snapshots remain unchanged
+DATA1,Baseline and supplemental note,All five detailed asset scenarios,All views/source library,source_inventory; assets; RCA originals,720 hourly /26 weekly /11slides per asset,No detailed RCA claimed for other375 rows
+DATA2,Original register,All 380 incident rows and exact totals,Overview; Problem Tank; retrieval,verified_metrics; DATA_RULES,Raw source audit and aggregation tests,226 n/a and two reused AR IDs preserved
+DATA3,Original source conflicts,Units/time/identity/availability caveats,KPI drawers; Investigation,DATA_RULES DQ01-DQ15,Visible conflict cards and invalid-comparison block,No harmonization by guessed conversion
+AI1,AI reliability design,Temporal evidence gates and fallback,Investigation,DATA_CONTRACTS; ACCEPTANCE,No future/current-event RCA leakage; citations resolve,Live API untested until usable key/model provided
+EVAL1,Booklet p11,Problem Understanding & Business Impact,All / team deck,RUBRIC_AND_DIFFERENTIATION; IMPLEMENTATION_ROADMAP,Pain points/evidence/pilot metric definitions,No ROI/reduction results provided
+EVAL2,Booklet p11,Solution Design & Prototype Quality,All five views,ACCEPTANCE,Working navigation/context/loop plus inspected screenshots,Pending executing Codex
+EVAL3,Booklet p11,Presentation Quality Technical,Team deck/video,SOLUTION_SPEC section6; guidePDF,Clear English seven-slide story and three-minute walkthrough,"Team deliverable, not authored here"
+EVAL4,Booklet p11,Feasibility & Roadmap,App README / team deck,IMPLEMENTATION_ROADMAP,Local build + gates and operational/governance readiness,No production readiness or budget validation
+EVAL5,Booklet p11,Chemical Domain Relevance,Investigation,Original five RCA decks; DATA_RULES,Compressor lubrication/fouling/standby/partial impact contexts,Engineering validation still needed
+SUB1,"Booklet p9-10,15 / Casebook p12",Final submission format,Team submission,README_START_HERE; guidePDF,Navigable prototype +3min video +max7slidePDF; English; <=10MB combined,Handoff ZIP/internal guide are not final deliverables
+SUB2,"Booklet p7,15",Submission deadline and first-submission-only,Team submission,IMPLEMENTATION_ROADMAP,4Oct2026 23:59WIB; verify access/size before first upload,Do not upload automatically

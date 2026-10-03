@@ -1,0 +1,6 @@
+
+> caliber-decision-hub@1.0.0 format:check
+> prettier --check src tests scripts/*.mjs *.ts *.json *.md
+
+Checking formatting...
+All matched files use Prettier code style!

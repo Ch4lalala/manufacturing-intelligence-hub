@@ -1,4 +1,5 @@
 import test from "node:test";
+import fs from "node:fs";
 import { providerPayload, actionScopeWorkspace } from "./fixtures";
 import assert from "node:assert/strict";
 import { raw, incidents } from "../src/lib/data";
@@ -534,4 +535,55 @@ test("Provider output cannot erase missing checks, bind unsupported guidance or 
       prospective,
     ),
   );
+});
+
+test("Light-mode design color/radius/spacing tokens match canonical CSS; semantic text and controls retain contrast", () => {
+  const css = fs.readFileSync("src/app/globals.css", "utf8");
+  const design = fs.readFileSync("DESIGN.md", "utf8");
+  const root = css.split("}\n")[0];
+  const tokens = Object.fromEntries(
+    [...root.matchAll(/--([\w-]+):\s*(#[\da-f]+);/gi)].map((m) => [m[1], m[2]]),
+  );
+  const palette = design.split("colors:\n")[1].split("typography:")[0];
+  const documented = [...palette.matchAll(/  ([\w-]+): "(#[\da-f]+)"/gi)];
+  assert.ok(documented.length >= 20);
+  for (const [, name, color] of documented)
+    assert.equal(tokens[name], color, name);
+  for (const [name, value] of [
+    ["radius", "16px"],
+    ["control-radius", "8px"],
+    ["section-gap", "20px"],
+    ["panel-padding", "20px"],
+  ])
+    assert.ok(root.includes(`--${name}: ${value};`));
+  const luminance = (hex: string) => {
+    const rgb = hex
+      .slice(1)
+      .match(/.{2}/g)!
+      .map((s) => {
+        const v = parseInt(s, 16) / 255;
+        return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+      });
+    return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+  };
+  const ratio = (fg: string, bg: string) => {
+    const a = luminance(tokens[fg]),
+      b = luminance(tokens[bg]);
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+  };
+  for (const [fg, bg] of [
+    ["ink", "surface"],
+    ["muted", "canvas"],
+    ["muted", "surface"],
+    ["neutral-ink", "neutral-surface"],
+    ["primary", "surface"],
+    ["primary-ink", "primary-soft"],
+    ["success", "success-surface"],
+    ["danger", "danger-surface"],
+    ["warning", "warning-surface"],
+    ["synthetic", "synthetic-surface"],
+  ])
+    assert.ok(ratio(fg, bg) >= 4.5, `${fg} / ${bg}`);
+  for (const fg of ["control-border", "focus"])
+    assert.ok(ratio(fg, "surface") >= 3, fg);
 });

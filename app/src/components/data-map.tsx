@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useHub } from "./hub";
 import { Panel, Badge, Button, Field, Search, Notice } from "./ui";
 import { QualityPanel } from "./evidence-panels";
+import { number } from "@/lib/domain";
 import type { Quality } from "@/lib/types";
 export function DataMap() {
   const { catalog, bundle, openSource, workspace, save, role } = useHub();
@@ -361,80 +362,85 @@ export function DataMap() {
             changes require reviewed approval in an operational rollout.
           </p>
           {bundle.summary.map((s) => (
-            <div className="definition-row" key={s.name}>
-              <div>
+            <details className="definition-row kpi-definition" key={s.name}>
+              <summary>
                 <strong>{s.name}</strong>
-                <p>
-                  {s.value} <Badge>Source-stated</Badge>
-                </p>
-                <p className="caption">Basis: {String(s.basis)}</p>
-                <Field
-                  label={`Proposed owner · ${s.name}`}
-                  value={
-                    owners[s.name] ??
-                    workspace.owners[s.name] ??
-                    "Reliability data steward"
-                  }
-                  onChange={(v) => setOwners((o) => ({ ...o, [s.name]: v }))}
-                />
+                <span className="kpi-summary-value">
+                  {typeof s.value === "number" ? number(s.value, 3) : s.value}{" "}
+                  <Badge>Source-stated</Badge>
+                </span>
+              </summary>
+              <div className="definition-content">
+                <div>
+                  <p className="caption">Basis: {String(s.basis)}</p>
+                  <Field
+                    label={`Proposed owner · ${s.name}`}
+                    value={
+                      owners[s.name] ??
+                      workspace.owners[s.name] ??
+                      "Reliability data steward"
+                    }
+                    onChange={(v) => setOwners((o) => ({ ...o, [s.name]: v }))}
+                  />
+                  <Button
+                    variant="text"
+                    disabled={!(owners[s.name] ?? "").trim()}
+                    onClick={() =>
+                      save(
+                        (w) => ({
+                          ...w,
+                          owners: {
+                            ...w.owners,
+                            [s.name]: owners[s.name].trim(),
+                          },
+                          history: [
+                            ...w.history,
+                            {
+                              at: new Date().toISOString(),
+                              actor: role,
+                              description: `Proposed KPI owner updated: ${s.name}`,
+                            },
+                          ],
+                        }),
+                        "Proposed KPI owner saved locally.",
+                      )
+                    }
+                  >
+                    Save proposed owner
+                  </Button>
+                </div>
                 <Button
                   variant="text"
-                  disabled={!(owners[s.name] ?? "").trim()}
                   onClick={() =>
-                    save(
-                      (w) => ({
-                        ...w,
-                        owners: {
-                          ...w.owners,
-                          [s.name]: owners[s.name].trim(),
-                        },
-                        history: [
-                          ...w.history,
-                          {
-                            at: new Date().toISOString(),
-                            actor: role,
-                            description: `Proposed KPI owner updated: ${s.name}`,
-                          },
-                        ],
-                      }),
-                      "Proposed KPI owner saved locally.",
-                    )
+                    openSource({
+                      title: s.name,
+                      locators: [s.source],
+                      kind: "source-stated",
+                      formula: String(s.formula),
+                      period: bundle.asset.weeklyWindow,
+                      unit: s.name.includes("%")
+                        ? "%"
+                        : s.name.includes("hours") || s.name === "Period Hours"
+                          ? "h"
+                          : s.name.includes("ton")
+                            ? "ton"
+                            : s.name.includes("USD")
+                              ? "k USD"
+                              : "source count / weeks",
+                      owner:
+                        workspace.owners[s.name] ?? "Reliability data steward",
+                      excerpt: `${s.name}: ${s.value}\nBasis: ${s.basis}\nFormula: ${s.formula}`,
+                      warnings: [
+                        "Source denominator 4368 h is a workbook convention; no validated planned-operation calendar or PM work logs supplied.",
+                        "No remaining-life or independently validated reliability prediction.",
+                      ],
+                    })
                   }
                 >
-                  Save proposed owner
+                  Definition & source
                 </Button>
               </div>
-              <Button
-                variant="text"
-                onClick={() =>
-                  openSource({
-                    title: s.name,
-                    locators: [s.source],
-                    kind: "source-stated",
-                    formula: String(s.formula),
-                    period: bundle.asset.weeklyWindow,
-                    unit: s.name.includes("%")
-                      ? "%"
-                      : s.name.includes("hours") || s.name === "Period Hours"
-                        ? "h"
-                        : s.name.includes("ton")
-                          ? "ton"
-                          : s.name.includes("USD")
-                            ? "k USD"
-                            : "source count / weeks",
-                    owner:
-                      workspace.owners[s.name] ?? "Reliability data steward",
-                    excerpt: `${s.name}: ${s.value}\nBasis: ${s.basis}\nFormula: ${s.formula}`,
-                    warnings: [
-                      "Source denominator 4368 h is a workbook convention; no validated planned-operation calendar or PM work logs supplied.",
-                      "No remaining-life or independently validated reliability prediction.",
-                    ],
-                  })
-                }
-              >
-                Definition & source
-              </Button>
-            </div>
+            </details>
           ))}
         </Panel>
       </div>

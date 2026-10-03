@@ -19,6 +19,7 @@ import {
   Select,
   Pagination,
 } from "./ui";
+import { Icon } from "./icons";
 import { Chart } from "./chart";
 import { Citations, IncidentDetail, QualityPanel } from "./evidence-panels";
 export function Investigation() {
@@ -159,6 +160,43 @@ export function Investigation() {
             : "Inspection required · no known outcome"}
         </Badge>
       </div>
+      <ol className="review-route" aria-label="Evidence review sequence">
+        <li>
+          <strong>
+            <Icon name="overview" />
+            Observations
+          </strong>
+          <span>Separate hourly / weekly sources</span>
+        </li>
+        <li>
+          <strong>
+            <Icon name="problems" />
+            Signals
+          </strong>
+          <span>Source rules and eligible samples</span>
+        </li>
+        <li>
+          <strong>
+            <Icon name="investigation" />
+            Hypotheses
+          </strong>
+          <span>Evidence, alternatives and missing checks</span>
+        </li>
+        <li>
+          <strong>
+            <Icon name="check" />
+            Review
+          </strong>
+          <span>Accept a specific finding</span>
+        </li>
+        <li>
+          <strong>
+            <Icon name="actions" />
+            Linked action
+          </strong>
+          <span>Approve and verify locally</span>
+        </li>
+      </ol>
       {(mode === "prospective" || bundle.observationCutoff) && (
         <Panel
           title="Temporal evidence boundary"
@@ -208,6 +246,13 @@ export function Investigation() {
                 title={a.condition_headers[weekly].split("\n")[0]}
                 unit={
                   a.condition_headers[weekly].split("\n")[1] ?? "Source unit"
+                }
+                direction={
+                  bundle.conditions[0]?.status_formula.match(
+                    new RegExp(
+                      `${String.fromCharCode(67 + weekly)}\\d+(>=|<=)`,
+                    ),
+                  )?.[1] as ">=" | "<=" | undefined
                 }
                 alarm={breachThreshold[0]}
                 trip={breachThreshold[1]}
@@ -332,6 +377,7 @@ export function Investigation() {
                 Evidence replay - no live AI call
               </Button>
               <Button
+                className="analysis-request"
                 busy={busy}
                 disabled={
                   !liveAllowed || replay(bundle).signals.state !== "anomaly"
@@ -407,31 +453,39 @@ export function Investigation() {
                       <p className="caption">
                         {h.knowledgeBasis} · {h.strengthReason}
                       </p>
-                      <strong className="caption">Supporting evidence</strong>
-                      <Citations
-                        ids={h.evidenceIds}
-                        evidence={bundle.evidence}
-                      />
-                      <strong className="caption">
-                        Counter-evidence / alternative context
-                      </strong>
-                      {h.counterEvidenceIds.length ? (
-                        <Citations
-                          ids={h.counterEvidenceIds}
-                          evidence={bundle.evidence}
-                        />
-                      ) : (
-                        <p className="caption">
-                          No resolved counter-evidence in this scope; inspection
-                          remains necessary.
-                        </p>
-                      )}
-                      <h3>Missing checks</h3>
-                      <ul>
-                        {h.missingChecks.map((c) => (
-                          <li key={c}>{c}</li>
-                        ))}
-                      </ul>
+                      <div className="hypothesis-detail">
+                        <div>
+                          <strong className="caption">
+                            Supporting evidence
+                          </strong>
+                          <Citations
+                            ids={h.evidenceIds}
+                            evidence={bundle.evidence}
+                          />
+                          <strong className="caption">
+                            Counter-evidence / alternative context
+                          </strong>
+                          {h.counterEvidenceIds.length ? (
+                            <Citations
+                              ids={h.counterEvidenceIds}
+                              evidence={bundle.evidence}
+                            />
+                          ) : (
+                            <p className="caption">
+                              No resolved counter-evidence in this scope;
+                              inspection remains necessary.
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <h3>Missing checks</h3>
+                          <ul>
+                            {h.missingChecks.map((c) => (
+                              <li key={c}>{c}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
                       <div className="button-row">
                         <Button
                           disabled={review === "Accepted"}

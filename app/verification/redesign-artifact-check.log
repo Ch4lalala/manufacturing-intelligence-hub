@@ -1,0 +1,5 @@
+
+> caliber-decision-hub@1.0.0 test:deploy
+> node scripts/verify-deploy.mjs
+
+{"artifactOnlyRuntime":"PASS","checks":53,"providerCalls":0}

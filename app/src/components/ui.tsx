@@ -7,6 +7,7 @@ import {
   type ReactNode,
   type ButtonHTMLAttributes,
 } from "react";
+import { Icon } from "./icons";
 import type { Evidence, Locator } from "@/lib/types";
 export function Button({
   children,
@@ -37,7 +38,20 @@ export function Badge({
   children: ReactNode;
   tone?: string;
 }) {
-  return <span className={`badge ${tone}`}>{children}</span>;
+  const semantic =
+    tone !== "neutral"
+      ? tone
+      : typeof children === "string" && /^Synthetic/.test(children)
+        ? "synthetic"
+        : typeof children === "string" &&
+            /^(Source|Computed|Proposed)/i.test(children)
+          ? children.split(" ")[0].toLowerCase()
+          : tone;
+  return (
+    <span className={`badge ${semantic}`} data-tone={tone}>
+      {children}
+    </span>
+  );
 }
 export function Panel({
   title,
@@ -72,7 +86,20 @@ export function Notice({
   children: ReactNode;
   tone?: string;
 }) {
-  return <div className={`notice ${tone}`}>{children}</div>;
+  return (
+    <div className={`notice ${tone}`}>
+      <Icon
+        name={
+          tone === "success"
+            ? "check"
+            : tone === "error" || tone === "warning"
+              ? "warning"
+              : "info"
+        }
+      />
+      <div className="notice-content">{children}</div>
+    </div>
+  );
 }
 export function Select({
   label,
@@ -295,6 +322,7 @@ export function Modal({
       <div className="dialog-head">
         <h2 id={id}>{title}</h2>
         <Button onClick={onClose} autoFocus>
+          <Icon name="close" />
           Close
         </Button>
       </div>
@@ -396,7 +424,7 @@ export function SourceDialog({
             className="source-link"
             href={`/api/source?file=${encodeURIComponent(l.file)}&download=1`}
           >
-            Download verified original
+            <Icon name="source" /> Download verified original
           </a>
         </div>
       ))}
@@ -406,7 +434,14 @@ export function SourceDialog({
             ? "Exact source excerpt"
             : "Evidence & calculation context")}
       </h3>
-      <pre className="excerpt">{source.excerpt ?? remote}</pre>
+      <pre
+        className="excerpt"
+        tabIndex={0}
+        role="region"
+        aria-label="Source evidence excerpt"
+      >
+        {source.excerpt ?? remote}
+      </pre>
       {remote.startsWith("Unable") && (
         <Button onClick={retry}>Retry excerpt</Button>
       )}

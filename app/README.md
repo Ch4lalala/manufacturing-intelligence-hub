@@ -2,6 +2,10 @@
 
 Local English prototype with Executive Overview, Data & KPI Map, Problem Tank, Investigation and Action Tracker. Five asset scenarios, 380 immutable incidents, source inspection, evidence-dependent replay and reviewed action closure are implemented. See [repair report](REPAIR_REPORT.md) and [current verification](IMPLEMENTATION_STATUS.md).
 
+## Visual redesign
+
+Industrial SaaS light mode uses shared royal-blue/slate tokens, a persistent white sidebar, aligned asset/role header controls and source-window context. Overview emphasizes scenario trends; Data Map KPI disclosures retain source access and proposed-owner edits; Investigation shows the review sequence and each hypothesis's evidence/checks. Action scope, approval and verified closure remain unchanged. See [visual redesign report and captures](VISUAL_REDESIGN_REPORT.md) and [DESIGN.md](DESIGN.md).
+
 ## Install and run
 
 Tested: Node **22.23.2**, npm **10.9.8**, macOS. Dependencies use exact versions and the existing lockfile. Keep the checkout's canonical `sources/`, `processed/` and `PACKAGE_MANIFEST.json` available for preparation/build; Python is needed only for optional normalization.

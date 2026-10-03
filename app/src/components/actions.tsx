@@ -10,6 +10,7 @@ import {
 import { historicalActions } from "@/lib/evidence";
 import { useHub } from "./hub";
 import { Badge, Button, Field, Notice, Panel, Select, Modal } from "./ui";
+import { Icon } from "./icons";
 import { Citations } from "./evidence-panels";
 export function Actions() {
   const { workspace, bundle, query, setQuery, navigate, openSource } = useHub();
@@ -308,7 +309,19 @@ function ActionCard({
       <p className="caption">Priority reason: {a.priorityReason}</p>
       <div className="flow-track" aria-label="Action progress">
         {STATES.map((s) => (
-          <span key={s} className={s === a.state ? "current" : ""}>
+          <span
+            key={s}
+            className={
+              s === a.state
+                ? "current"
+                : STATES.indexOf(s) < STATES.indexOf(a.state)
+                  ? "complete"
+                  : ""
+            }
+          >
+            {STATES.indexOf(s) < STATES.indexOf(a.state) && (
+              <Icon name="check" />
+            )}
             {s}
           </span>
         ))}

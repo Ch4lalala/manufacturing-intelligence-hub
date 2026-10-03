@@ -1,6 +1,33 @@
-# Implementation status — Action Tracker evidence scope repair
+# Implementation status — industrial SaaS light redesign
 
-Checkout checked: **main**, **0ad8649a3e8b18f69b86008b025e4d064672eea9**, initially clean. This section records the current focused repair; the earlier A–D report below retains its original results and is not a new deployment claim. No commit, push or deployment performed.
+3 October 2026. Initial checkout: **main**, **41fffaf12413245796f075de6fe5551bed123fbb**, clean. The existing Action Tracker shared metric/drawer scope repair in HEAD is preserved. No commit, push or deployment performed. Earlier verification records below remain historical records; their test counts refer to those earlier runs.
+
+## Current redesign results
+
+| Check                                 | Actual result / evidence                                                                                                                                                                                                                                                                                                                                    |
+| ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared visual system                  | Light canvas, white surfaces, royal blue, 16px cards, system sans/mono, consistent icons, contrast-tested badges/focus/control borders. CSS owns tokens; DESIGN.md documents the mapping. Five views share the same primitives.                                                                                                                             |
+| Scope / data / workflow               | Shared actionTrackerMetrics unchanged. Matching prospective asset/mode/cutoff and definition-specific pending/closure drawers, zero historical acknowledgements, temporal boundaries, per-hypothesis drafts and verified closure retained. Source/data/API/domain files and lockfile untouched.                                                             |
+| Typecheck / lint / build / formatting | **PASS** with existing Next 16.3.8 stack. Next-generated next-env.d.ts restored to its initial bytes after build. No fresh dependency install.                                                                                                                                                                                                              |
+| Domain/API                            | **30/30 PASS**, [TAP](verification/redesign-domain-results.tap). Prior 29 tests retained plus CSS/document token and semantic contrast checks.                                                                                                                                                                                                              |
+| Local production Chromium             | **17/17 PASS**, [results](verification/browser-results.json), [log](verification/redesign-browser.log). All five views/assets; source drawers/download hash, cutoff boundaries, normal-only, second-hypothesis draft, actual KO closure (including 390px reviewer dialog), scope drawer regressions, utilities isolation, mocked error/loading/busy/cancel. |
+| Artifact-only runtime                 | **53/53 PASS**, [results](verification/deploy-runtime.json). All 22 original download hashes, source locators/error paths, replay and public-live guards. Provider calls **0**. Local packaging evidence, not a deployment.                                                                                                                                 |
+| Accessibility / responsive            | Axe zero WCAG A/AA findings in tested five views/source dialog; no document overflow at 1440/1024/390. Keyboard select/disclosure, modal focus/Escape/restoration, source excerpt keyboard scrolling and reduced-motion tested. Screenshots inspected, including forced colors. Not a formal certification.                                                 |
+| Design checks                         | DESIGN lint **0 errors, 23 advisory warnings**; explicit runtime token mapping tested. Premium strict audit **0 findings**. [Design log](verification/redesign-design-lint.log), [audit](verification/redesign-premium-audit.json).                                                                                                                         |
+| Source integrity                      | **22 originals / 0 discrepancies**. Package verifier retains the known pre-existing CODEX_PROMPT.md size/hash discrepancy (46 handoff files, two discrepancy entries); manifest preserved. No extraction rerun.                                                                                                                                             |
+| Live provider / deployed platform     | **NOT TESTED**. Public live disabled. No paid calls, no Vercel verification, no provider/model compatibility claim; mocked transport proves bounded UI/service states only. Private .env.local not read or edited.                                                                                                                                          |
+
+See [visual redesign report](VISUAL_REDESIGN_REPORT.md) for design decisions, changed files, exact commands, complete screenshot gallery and limitations. [DESIGN.md](DESIGN.md) owns the visual documentation; [UX-CONTRACT.md](UX-CONTRACT.md) records disclosure/catalog navigation and unchanged metric scope behavior.
+
+Final captures: [Overview](screenshots/redesign-overview-desktop.png), [Data & KPI Map](screenshots/redesign-data-desktop.png), [Problem Tank](screenshots/redesign-problems-desktop.png), [Investigation](screenshots/redesign-investigation-desktop.png), [Action Tracker](screenshots/redesign-actions-desktop.png), [source drawer](screenshots/redesign-source-drawer.png), [verified closure](screenshots/ko-verified-action.png), [prospective empty drawer](screenshots/action-scope-zero-drawer.png), [narrow closure dialog](screenshots/redesign-closure-390.png).
+
+Existing user servers on ports 3100/3102 were left running. Only the isolated test runtime on 3103 was stopped/removed after verification. Browser coverage uses local Chromium; Firefox/Safari, physical devices, full zoom matrix and formal screen-reader review remain untested. No industrial safety, forecasting performance or savings validation is claimed.
+
+---
+
+# Earlier Action Tracker evidence scope repair record
+
+Checkout checked: **main**, **0ad8649a3e8b18f69b86008b025e4d064672eea9**, initially clean. This section records the earlier focused repair; the earlier A–D report below retains its original results and is not a new deployment claim. No commit, push or deployment performed.
 
 ## Current repair results
 

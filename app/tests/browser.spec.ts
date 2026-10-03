@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import fs from "node:fs";
+import { createHash } from "node:crypto";
 import { actionScopeWorkspace } from "./fixtures";
 fs.mkdirSync("screenshots", { recursive: true });
 async function ready(page: Page, view = "Executive Overview") {
@@ -8,6 +9,10 @@ async function ready(page: Page, view = "Executive Overview") {
     page.getByRole("heading", { name: view, exact: true }),
   ).toBeVisible();
   await expect(page.getByText("Loading verified source scope…")).toHaveCount(0);
+  await expect(page.locator('nav button[aria-current="page"]')).toHaveCSS(
+    "background-color",
+    "rgb(239, 246, 255)",
+  );
 }
 async function goto(page: Page, url: string, view: string) {
   await page.goto(url);
@@ -121,6 +126,7 @@ test("Action metric drawers explain only their scoped dataset; historical list f
       await expect(dialog).not.toContainText(id);
     if (label === "Verified local closures")
       await page.screenshot({
+        animations: "disabled",
         path: "screenshots/action-scope-matched-drawer.png",
       });
     await page.keyboard.press("Escape");
@@ -133,7 +139,10 @@ test("Action metric drawers explain only their scoped dataset; historical list f
   await page.setViewportSize({ width: 390, height: 900 });
   await metricEvidence(page, "Verified local closures", 1);
   await noOverflow(page);
-  await page.screenshot({ path: "screenshots/action-scope-drawer-390.png" });
+  await page.screenshot({
+    animations: "disabled",
+    path: "screenshots/action-scope-drawer-390.png",
+  });
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(
@@ -161,6 +170,7 @@ test("Five operational views, desktop screenshots, source drawer keyboard and ac
     await noOverflow(page);
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({
+      animations: "disabled",
       path: `screenshots/${id}-1440.png`,
       fullPage: true,
     });
@@ -188,6 +198,7 @@ test("Five operational views, desktop screenshots, source drawer keyboard and ac
   ).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
+    animations: "disabled",
     path: "screenshots/source-drawer.png",
     fullPage: true,
   });
@@ -250,6 +261,7 @@ test("Every asset and all report slides navigable; HE/PM contradictions remain v
       await expect(page.getByText(/13 hourly OFF samples, each/)).toBeVisible();
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({
+        animations: "disabled",
         path: "screenshots/he-asset-plant.png",
         fullPage: true,
       });
@@ -313,6 +325,7 @@ test("Pre-event UI and API exclude current report, future readings and outcome s
   ).toBeDisabled();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
+    animations: "disabled",
     path: "screenshots/prospective-replay.png",
     fullPage: true,
   });
@@ -384,16 +397,24 @@ test("KO action loop, gated approval/verification, persistence, rejection reason
   ).toBeDisabled();
   await page.getByRole("button", { name: "Keep pending" }).click();
   await page.getByLabel("Simulated role").selectOption("Engineering reviewer");
+  await page.setViewportSize({ width: 390, height: 900 });
   await page
     .getByRole("button", { name: "Review closure", exact: true })
     .click();
   await page.getByRole("checkbox").check();
+  await noOverflow(page);
+  await page.screenshot({
+    animations: "disabled",
+    path: "screenshots/redesign-closure-390.png",
+  });
   await page.getByRole("button", { name: "Confirm verified closure" }).click();
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await expect(
     page.getByText(/Action closed with completion evidence/),
   ).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
+    animations: "disabled",
     path: "screenshots/ko-verified-action.png",
     fullPage: true,
   });
@@ -432,6 +453,7 @@ test("KO action loop, gated approval/verification, persistence, rejection reason
     // The actual drawer must match the zero-valued pre-event metric.
     if (label === "Local action drafts")
       await page.screenshot({
+        animations: "disabled",
         path: "screenshots/action-scope-zero-drawer.png",
       });
     expect(evidence.actions).toEqual([]);
@@ -474,6 +496,7 @@ test("Synthetic utility assumptions, zero-output state and persistence forecast 
   ).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
+    animations: "disabled",
     path: "screenshots/illustrative-utilities.png",
     fullPage: true,
   });
@@ -560,8 +583,16 @@ test("Responsive layouts, keyboard navigation, reduced motion and source failure
     ]) {
       await goto(page, `/?view=${id}`, label);
       await noOverflow(page);
+      const active = page.locator('nav button[aria-current="page"]');
+      await expect(active).toHaveText(label);
+      if (width === 390) {
+        const bounds = await active.boundingBox();
+        expect(bounds!.x).toBeGreaterThanOrEqual(0);
+        expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+      }
       await page.evaluate(() => window.scrollTo(0, 0));
       await page.screenshot({
+        animations: "disabled",
         path: `screenshots/${id}-${width}.png`,
         fullPage: true,
       });
@@ -615,6 +646,11 @@ test("Episode acknowledgement/group/reopen, owner edits, native select keyboard 
     .getByRole("button", { name: "Data & KPI Map", exact: true })
     .click();
   await ready(page, "Data & KPI Map");
+  await page
+    .locator(".kpi-definition")
+    .filter({ hasText: "PM Compliance (%)" })
+    .locator("summary")
+    .click();
   const owner = page.getByLabel("Proposed owner · PM Compliance (%)", {
     exact: true,
   });
@@ -626,6 +662,11 @@ test("Episode acknowledgement/group/reopen, owner edits, native select keyboard 
     .click();
   await page.reload();
   await ready(page, "Data & KPI Map");
+  await page
+    .locator(".kpi-definition")
+    .filter({ hasText: "PM Compliance (%)" })
+    .locator("summary")
+    .click();
   await expect(owner).toHaveValue("Maintenance data steward");
   const asset = page.getByLabel("Asset scenario", { exact: true });
   await asset.focus();
@@ -753,6 +794,7 @@ test("Problem Tank carries exact pre-event cutoff into Investigation at midnight
     await expect(page.locator("main")).not.toContainText("1,800");
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.screenshot({
+      animations: "disabled",
       path: time.includes("00:00:00")
         ? "screenshots/repair-midnight.png"
         : "screenshots/repair-end-of-day.png",
@@ -786,6 +828,7 @@ test("Normal-only replay offers no diagnosis or draft; second hypothesis can cre
   ).toBeDisabled();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
+    animations: "disabled",
     path: "screenshots/repair-insufficient.png",
     fullPage: true,
   });
@@ -821,6 +864,7 @@ test("Normal-only replay offers no diagnosis or draft; second hypothesis can cre
   await expect(page.locator(".action-card")).toContainText(title);
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
+    animations: "disabled",
     path: "screenshots/repair-second-hypothesis-action.png",
     fullPage: true,
   });
@@ -950,6 +994,7 @@ test("Demo access UI masks passcode, handles auth errors, unlocks explicitly and
   await expect(page.getByText(/Live demo usage limit reached/)).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({
+    animations: "disabled",
     path: "screenshots/repair-demo-access.png",
     fullPage: true,
   });
@@ -962,4 +1007,230 @@ test("Demo access UI masks passcode, handles auth errors, unlocks explicitly and
   expect(
     await page.evaluate(() => localStorage.getItem("caliber-workspace-v1")),
   ).not.toContain("browser-test-only");
+});
+
+test("Industrial light shell, independent catalog windows, source download, threshold direction and recoverable loading", async ({
+  page,
+  request,
+}) => {
+  const raw = JSON.parse(fs.readFileSync("data/normalized.json", "utf8"));
+  const bundle = await (await request.get("/api/case?asset=KO-3201")).json();
+  let release!: () => void;
+  const hold = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/case?*", async (route) => {
+    await hold;
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify(bundle),
+    });
+  });
+  await page.goto("/?view=overview");
+  await expect(page.getByText("Loading verified source scope…")).toBeVisible();
+  await expect(
+    page.getByRole("navigation", { name: "Main navigation" }),
+  ).toBeVisible();
+  await noOverflow(page);
+  await page.screenshot({
+    animations: "disabled",
+    path: "screenshots/redesign-loading.png",
+  });
+  release();
+  await ready(page);
+  await page.unroute("**/api/case?*");
+  const style = await page.evaluate(() => ({
+    canvas: getComputedStyle(document.body).backgroundColor,
+    primary: getComputedStyle(document.querySelector(".button.primary")!)
+      .backgroundColor,
+    panel: getComputedStyle(document.querySelector(".panel")!).borderRadius,
+    sidebar: getComputedStyle(document.querySelector(".sidebar")!)
+      .backgroundColor,
+    scrollbar: getComputedStyle(document.querySelector(".table-scroll")!)
+      .scrollbarColor,
+  }));
+  expect(style).toMatchObject({
+    canvas: "rgb(247, 249, 252)",
+    primary: "rgb(37, 99, 235)",
+    panel: "16px",
+    sidebar: "rgb(255, 255, 255)",
+  });
+  expect(style.scrollbar).not.toBe("auto");
+  await expect(
+    page.locator("header").getByLabel("Asset scenario", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.locator("header").getByLabel("Simulated role", { exact: true }),
+  ).toBeVisible();
+  const catalog = page.locator(".panel").filter({
+    has: page.getByRole("heading", {
+      name: "Asset scenario catalog",
+      exact: true,
+    }),
+  });
+  await expect(catalog.locator("tbody tr")).toHaveCount(5);
+  for (const a of raw.assets) {
+    const row = catalog.locator("tbody tr").filter({ hasText: a.tag });
+    await expect(row).toContainText(String(a.production[0].values.Timestamp));
+    await expect(row).toContainText(
+      String(a.production.at(-1).values.Timestamp),
+    );
+  }
+  const source = page
+    .getByRole("button", { name: "Definition & source", exact: true })
+    .first();
+  await source.click();
+  const dialog = page.getByRole("dialog");
+  const downloadReady = page.waitForEvent("download");
+  await dialog
+    .getByRole("link", { name: "Download verified original" })
+    .click();
+  const download = await downloadReady;
+  expect(download.suggestedFilename()).toBe("Incident Database.xlsx");
+  const bytes = fs.readFileSync((await download.path())!);
+  expect(createHash("sha256").update(bytes).digest("hex")).toBe(
+    raw.inventory.find((i: { path: string }) =>
+      i.path.endsWith("incidents/Incident Database.xlsx"),
+    ).sha256,
+  );
+  expect(
+    await page.evaluate(() => getComputedStyle(document.body).overflow),
+  ).toBe("hidden");
+  const a11y = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(a11y.violations.map((v) => v.id)).toEqual([]);
+  await page.keyboard.press("Escape");
+  await expect(source).toBeFocused();
+  expect(
+    await page.evaluate(() => getComputedStyle(document.body).overflow),
+  ).not.toBe("hidden");
+  await goto(page, "/?view=investigation&asset=HE-3301", "Investigation");
+  await page
+    .getByLabel("Weekly measurement", { exact: true })
+    .selectOption("1");
+  await expect(page.locator(".chart-legend").first()).toContainText(
+    "ALARM ≤ 90",
+  );
+  await expect(page.locator(".chart-legend").first()).toContainText(
+    "TRIP ≤ 70",
+  );
+  const chart = page.locator(".panel").filter({
+    has: page.getByRole("heading", { name: "Heat Duty", exact: true }),
+  });
+  await chart
+    .getByRole("button", { name: "View readings", exact: true })
+    .click();
+  await expect(chart.locator("tbody tr")).toHaveCount(20);
+  await chart.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(chart.locator("tbody tr")).toHaveCount(6);
+  await chart
+    .getByRole("button", { name: "View source", exact: true })
+    .last()
+    .click();
+  await expect(page.getByRole("dialog")).toContainText("Condition History");
+  await page.keyboard.press("Escape");
+  await page.route("**/api/case?*", (r) =>
+    r.fulfill({ status: 503, body: "unavailable" }),
+  );
+  await page
+    .getByLabel("Asset scenario", { exact: true })
+    .selectOption("KO-3201");
+  await expect(
+    page.getByText(/Unable to load this source scope/),
+  ).toBeVisible();
+  await noOverflow(page);
+  await page.screenshot({
+    animations: "disabled",
+    path: "screenshots/redesign-scope-error.png",
+  });
+  await page.unroute("**/api/case?*");
+  await page.getByRole("button", { name: "Retry scope", exact: true }).click();
+  await ready(page, "Investigation");
+  await expect(
+    page.getByRole("heading", { name: "Historical RCA library · KO-3201" }),
+  ).toBeVisible();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const transition = await page
+    .locator(".button")
+    .first()
+    .evaluate((el) => getComputedStyle(el).transitionDuration);
+  expect(transition).toBe("0s");
+});
+
+test("Mocked live pending state preserves button width, cancels safely and returns to replay", async ({
+  page,
+  request,
+}) => {
+  const fixture = await (
+    await request.post("/api/analyze", {
+      data: {
+        asset: "KO-3201",
+        mode: "historical",
+        asOf: "2026-04-30 23:00:00",
+        live: false,
+      },
+    })
+  ).json();
+  await page.route("**/api/demo-session", (r) =>
+    r.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        enabled: true,
+        authenticated: true,
+        reason: "Mocked demo access",
+      }),
+    }),
+  );
+  let release!: () => void;
+  const pending = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/api/analyze", async (r) => {
+    await pending;
+    try {
+      await r.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(fixture),
+      });
+    } catch {
+      /* Browser cancelled this mocked transport. */
+    }
+  });
+  await goto(page, "/?view=investigation", "Investigation");
+  const button = page.locator(".analysis-request");
+  await expect(button).toBeEnabled();
+  const width = (await button.boundingBox())!.width;
+  await button.click();
+  await expect(button).toHaveAttribute("aria-busy", "true");
+  await expect(button).toBeDisabled();
+  await expect(button).toHaveText("Live request running…");
+  expect((await button.boundingBox())!.width).toBe(width);
+  await page.screenshot({
+    animations: "disabled",
+    path: "screenshots/redesign-live-pending.png",
+  });
+  await page
+    .getByRole("button", { name: "Cancel request", exact: true })
+    .click();
+  await expect(
+    page.getByText(
+      "Live request cancelled. Evidence replay remains available.",
+    ),
+  ).toBeVisible();
+  release();
+  await expect(button).toBeEnabled();
+  await expect(button).toHaveText("Request live AI composition");
+  await page
+    .getByRole("button", {
+      name: "Evidence replay - no live AI call",
+      exact: true,
+    })
+    .click();
+  await expect(
+    page.getByText(/Retrospective review: the report finding/),
+  ).toBeVisible();
 });

@@ -40,7 +40,7 @@ Historical card totals cover all local workspace actions across assets/review sc
 - Verified local closures: only eligible Closed actions with reviewer and completion evidence, using the existing metric predicate.
 - Acknowledged local episodes: only Acknowledged episode IDs in historical review. Grouped/Open IDs and actions are excluded from this drawer. Prospective count is zero with empty actions/episodes because workspace acknowledgements lack asset/mode/cutoff provenance.
 
-Drawer metadata explains the review scope and list-filter distinction. Historical actions, other assets/cutoffs, legacy actions and their reviewer/completion text cannot enter prospective metric evidence. The shared SourceDialog, appearance, approval/closure transitions, persistence and source data are unchanged. Regression tests open every metric drawer, including zero-result, mixed-scope, filtered-list and narrow/keyboard states.
+Drawer metadata explains the review scope and list-filter distinction. Historical actions, other assets/cutoffs, legacy actions and their reviewer/completion text cannot enter prospective metric evidence. The shared SourceDialog, approval/closure transitions, persistence and source data are retained; its visual tokens follow the system redesign. Regression tests open every metric drawer, including zero-result, mixed-scope, filtered-list and narrow/keyboard states.
 
 ## Forms, overlays and feedback
 
@@ -53,6 +53,16 @@ Search is immediate/local, has Clear and no remote race. Native selects/date con
 ## Async and persistence
 
 Read requests use AbortController and timeout; superseded responses cannot replace the selected case. Analysis is explicit, bounded, cancelable and duplicate clicks are blocked. Failures identify replay availability. Storage exceptions leave a visible memory-only warning. Invalid or stale dataset-version workspace is reset with a visible notice. Multi-tab changes warn and load latest state; no claim of concurrent enterprise editing. Reset removes local actions, hypothesis reviews, episode acknowledgements, owner edits and history, leaving supplied sources unchanged.
+
+## Industrial light-mode presentation
+
+Shared runtime tokens and primitives own all five views. Asset scenario and Simulated role controls now appear together in the header; their accessible names, native behavior, handlers and URL/persistence rules are retained. The active source scope strip shows the independent source window or cutoff, timezone unknown and review reference. Historical/prospective labels are context, not a live-ingestion indicator. Scope editing remains in Investigation/condition queue. Data Map KPI definitions use native details/summary disclosures; value/status remain visible, and opening a definition reveals the same source trigger and proposed-owner editor. Owner persistence/reset behavior is unchanged.
+
+Overview places selected-source trends and decision context immediately after register KPIs; register status/ranking stays available below. A five-row source catalog shows each asset's independent hourly/weekly windows. Review scenario opens its full historical source window, clearing any prior cutoff; this catalog is available only in historical Overview. No cross-window aggregate is added.
+
+Investigation's ordered observations → signals → hypotheses → review → linked action strip describes the workflow; it does not assert stage completion. Per-hypothesis evidence and missing checks reflow from two columns to one. Shared chart legends label source versus synthetic history/forecast and source-formula threshold direction; inspection/readings/source controls retain their semantics. Reading tables clamp their page when parameter/source scope shrinks.
+
+Dialogs retain focus isolation/restoration and sticky Close, with document scroll locked while open. Long content and confirmation actions remain reachable through dialog scrolling. White sidebar reflows to scrollable top navigation at narrow widths; the active view is scrolled into that navigation strip on route change or viewport resize, with reset in the existing footer variant. Source excerpt overflow is a named keyboard-focusable region. Native select/date/datetime-local popups remain platform-owned. Color is reinforced by text and simple icons; reduced-motion and forced-colors paths are global.
 
 ## Verification
 

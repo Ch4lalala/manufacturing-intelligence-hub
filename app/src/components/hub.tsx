@@ -25,17 +25,23 @@ import {
   Modal,
   type SourceDisplay,
 } from "./ui";
+import { Icon, type IconName } from "./icons";
+import { Badge } from "./ui";
 import { Overview } from "./overview";
 import { DataMap } from "./data-map";
 import { Problems } from "./problems";
 import { Investigation } from "./investigation";
 import { Actions } from "./actions";
 const views = [
-  { id: "overview", label: "Executive Overview", symbol: "▥" },
-  { id: "data", label: "Data & KPI Map", symbol: "⌗" },
-  { id: "problems", label: "Problem Tank", symbol: "≡" },
-  { id: "investigation", label: "Investigation", symbol: "⌕" },
-  { id: "actions", label: "Action Tracker", symbol: "✓" },
+  { id: "overview", label: "Executive Overview", icon: "overview" as IconName },
+  { id: "data", label: "Data & KPI Map", icon: "data" as IconName },
+  { id: "problems", label: "Problem Tank", icon: "problems" as IconName },
+  {
+    id: "investigation",
+    label: "Investigation",
+    icon: "investigation" as IconName,
+  },
+  { id: "actions", label: "Action Tracker", icon: "actions" as IconName },
 ];
 type HubContext = {
   catalog: Catalog;
@@ -74,6 +80,7 @@ export function Hub({ catalog }: { catalog: Catalog }) {
     [reset, setReset] = useState(false),
     [role, setRole] = useState("Plant manager");
   const heading = useRef<HTMLHeadingElement>(null);
+  const activeNavigation = useRef<HTMLButtonElement>(null);
   const [workspaceEpoch, setWorkspaceEpoch] = useState(0);
   const view = query.view ?? "overview",
     tag = query.asset ?? "KO-3201",
@@ -202,6 +209,20 @@ export function Hub({ catalog }: { catalog: Catalog }) {
     return () => controller.abort();
   }, [tag, mode, asOf, requestedCutoff, catalog.assets, attempt]);
   useEffect(() => {
+    const revealActive = () => {
+      const button = activeNavigation.current;
+      const nav = button?.parentElement;
+      if (button && nav && nav.scrollWidth > nav.clientWidth)
+        nav.scrollTo({
+          left: button.offsetLeft - nav.offsetLeft - 8,
+          behavior: "instant",
+        });
+    };
+    revealActive();
+    window.addEventListener("resize", revealActive);
+    return () => window.removeEventListener("resize", revealActive);
+  }, [view]);
+  useEffect(() => {
     document.title = `${views.find((v) => v.id === view)?.label ?? "Workspace"} | CALIBER`;
   }, [view]);
   function createAction(
@@ -327,10 +348,12 @@ export function Hub({ catalog }: { catalog: Catalog }) {
               Decision Hub
             </p>
           </div>
+          <p className="eyebrow nav-label">Decision workspace</p>
           <nav aria-label="Main navigation">
             {views.map((v) => (
               <button
                 key={v.id}
+                ref={view === v.id ? activeNavigation : undefined}
                 onClick={() => navigate(v.id)}
                 className={view === v.id ? "active" : ""}
                 aria-current={view === v.id ? "page" : undefined}
@@ -345,7 +368,7 @@ export function Hub({ catalog }: { catalog: Catalog }) {
                     : undefined
                 }
               >
-                <span aria-hidden="true">{v.symbol}</span>
+                <Icon name={v.icon} />
                 {v.label}
               </button>
             ))}
@@ -354,9 +377,9 @@ export function Hub({ catalog }: { catalog: Catalog }) {
             <span className="status-dot" />
             Local prototype
             <p>
-              Governed evidence.
+              Source-led review.
               <br />
-              Reviewed decisions.
+              Simulated approvals.
             </p>
             <small>
               Source snapshot
@@ -364,20 +387,41 @@ export function Hub({ catalog }: { catalog: Catalog }) {
               02 October 2026
             </small>
             <Button onClick={() => setReset(true)}>
+              <Icon name="reset" />
               Reset prototype workspace
             </Button>
           </div>
         </aside>
         <div className="content">
           <header className="topbar">
-            <div>
+            <div className="topbar-context">
               <span className="eyebrow">Operations workbench</span>
               <p>
                 {mode === "historical"
-                  ? "Historical review · baseline evidence"
+                  ? "Historical review · source snapshot"
                   : "Pre-event replay · eligible observations only"}
               </p>
             </div>
+            <Select
+              label="Asset scenario"
+              value={tag}
+              onChange={(s) =>
+                setQuery({
+                  asset: s,
+                  incident: "",
+                  asOf:
+                    mode === "prospective" &&
+                    catalog.assets.find((a) => a.tag === s)?.eventDate
+                      ? `${catalog.assets.find((a) => a.tag === s)!.eventDate} 00:00:00`
+                      : requestedCutoff,
+                  episodeAsOf: "",
+                })
+              }
+              options={catalog.assets.map((a) => ({
+                value: a.tag,
+                label: `${a.tag} · ${a.plant}`,
+              }))}
+            />
             <Select
               label="Simulated role"
               value={role}
@@ -413,28 +457,13 @@ export function Hub({ catalog }: { catalog: Catalog }) {
                           : "Ownership, progress and evidence for each follow-up action."}
                 </p>
               </div>
-              <Select
-                label="Asset scenario"
-                value={tag}
-                onChange={(s) =>
-                  setQuery({
-                    asset: s,
-                    incident: "",
-                    asOf:
-                      mode === "prospective" &&
-                      catalog.assets.find((a) => a.tag === s)?.eventDate
-                        ? `${catalog.assets.find((a) => a.tag === s)!.eventDate} 00:00:00`
-                        : requestedCutoff,
-                    episodeAsOf: "",
-                  })
-                }
-                options={catalog.assets.map((a) => ({
-                  value: a.tag,
-                  label: `${a.tag} · ${a.plant}`,
-                }))}
-              />
+              <Badge tone={mode === "prospective" ? "warning" : "neutral"}>
+                {mode === "prospective"
+                  ? "Pre-event replay"
+                  : "Historical review"}
+              </Badge>
             </div>
-            <div className="scope-bar">
+            <div className="scope-bar" aria-label="Active source scope">
               <strong>{selected.tag}</strong>
               <span>{selected.name}</span>
               <span>

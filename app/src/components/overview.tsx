@@ -3,6 +3,7 @@ import { useState } from "react";
 import { aggregate, filterIncidents, money, number } from "@/lib/domain";
 import { useHub } from "./hub";
 import { Badge, Button, Panel, Select, Field } from "./ui";
+import { Icon } from "./icons";
 import { Chart } from "./chart";
 import { QualityPanel } from "./evidence-panels";
 import { Utilities } from "./utilities";
@@ -138,79 +139,6 @@ export function Overview() {
           </section>
         ))}
       </div>
-      <div className="grid-equal">
-        <Panel
-          title="Source status composition"
-          sub={`${rows.length} incidents in selected register scope`}
-        >
-          <div>
-            {Object.entries(totals.statuses).map(([status, count]) => (
-              <div className="status-row" key={status}>
-                <span>{status}</span>
-                <progress max={Math.max(1, rows.length)} value={count} />
-                <strong>{count}</strong>
-              </div>
-            ))}
-          </div>
-          {!rows.length && <p>No source incidents match this scope.</p>}
-          <p className="caption">
-            Register statuses are imported snapshots. Prototype action progress
-            is tracked separately.
-          </p>
-        </Panel>
-        <Panel
-          title="Ranked register cases"
-          sub="Source risk score descending; no missing score imputation"
-        >
-          <div className="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Case</th>
-                  <th>Risk score</th>
-                  <th>Review</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...rows]
-                  .sort((x, y) => (y.risk ?? -1) - (x.risk ?? -1))
-                  .slice(0, 4)
-                  .map((r) => (
-                    <tr key={r.id}>
-                      <td>
-                        <strong>{r.tag}</strong>
-                        <span className="cell-sub">
-                          {r.title} · {r.date}
-                        </span>
-                      </td>
-                      <td className="numeric">{r.risk ?? "Unavailable"}</td>
-                      <td>
-                        <Button
-                          variant="text"
-                          onClick={() =>
-                            navigate(
-                              "investigation",
-                              catalog.assets.find(
-                                (a) => a.linked_incident_id === r.id,
-                              )?.tag,
-                              r.id,
-                            )
-                          }
-                        >
-                          Open case
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="caption">
-            Total exposure in this scope: {money(totals.total)} k US$ = Act.
-            Loss + Pot. Loss.
-          </p>
-        </Panel>
-      </div>
       <div className="section-label">
         <div>
           <h2>{a.tag} · Selected operating scenario</h2>
@@ -226,10 +154,10 @@ export function Overview() {
             });
           }}
         >
-          Open prioritized issues
+          <Icon name="problems" /> Open prioritized issues
         </Button>
       </div>
-      <div className="grid-two">
+      <div className="grid-two overview-trends">
         <div>
           <Chart
             title="Plant rate · hourly observations"
@@ -308,7 +236,7 @@ export function Overview() {
               variant="primary"
               onClick={() => navigate("investigation", a.tag)}
             >
-              Investigate {a.tag}
+              <Icon name="investigation" /> Investigate {a.tag}
             </Button>
           </Panel>
           <QualityPanel quality={bundle.quality} compact />
@@ -363,6 +291,131 @@ export function Overview() {
           </Panel>
         </div>
       </div>
+      <div className="grid-equal">
+        <Panel
+          title="Source status composition"
+          sub={`${rows.length} incidents in selected register scope`}
+        >
+          <div>
+            {Object.entries(totals.statuses).map(([status, count]) => (
+              <div className="status-row" key={status}>
+                <span>{status}</span>
+                <progress max={Math.max(1, rows.length)} value={count} />
+                <strong>{count}</strong>
+              </div>
+            ))}
+          </div>
+          {!rows.length && <p>No source incidents match this scope.</p>}
+          <p className="caption">
+            Register statuses are imported snapshots. Prototype action progress
+            is tracked separately.
+          </p>
+        </Panel>
+        <Panel
+          title="Ranked register cases"
+          sub="Source risk score descending; no missing score imputation"
+        >
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Case</th>
+                  <th>Risk score</th>
+                  <th>Review</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...rows]
+                  .sort((x, y) => (y.risk ?? -1) - (x.risk ?? -1))
+                  .slice(0, 4)
+                  .map((r) => (
+                    <tr key={r.id}>
+                      <td>
+                        <strong>{r.tag}</strong>
+                        <span className="cell-sub">
+                          {r.title} · {r.date}
+                        </span>
+                      </td>
+                      <td className="numeric">{r.risk ?? "Unavailable"}</td>
+                      <td>
+                        <Button
+                          variant="text"
+                          onClick={() =>
+                            navigate(
+                              "investigation",
+                              catalog.assets.find(
+                                (a) => a.linked_incident_id === r.id,
+                              )?.tag,
+                              r.id,
+                            )
+                          }
+                        >
+                          Open case
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="caption">
+            Total exposure in this scope: {money(totals.total)} k US$ = Act.
+            Loss + Pot. Loss.
+          </p>
+        </Panel>
+      </div>
+      <Panel
+        title="Asset scenario catalog"
+        sub="Five independent source windows · these rows are not a simultaneous fleet snapshot"
+        action={<Badge>Source catalog</Badge>}
+      >
+        <div className="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Asset / scenario</th>
+                <th>Hourly source window</th>
+                <th>Weekly source window</th>
+                <th>Review</th>
+              </tr>
+            </thead>
+            <tbody>
+              {catalog.assets.map((asset) => (
+                <tr key={asset.tag}>
+                  <td>
+                    <code>{asset.tag}</code>
+                    <span className="cell-sub">
+                      {asset.name} · {asset.plant}
+                    </span>
+                  </td>
+                  <td>{asset.hourlyWindow}</td>
+                  <td>{asset.weeklyWindow}</td>
+                  <td>
+                    <Button
+                      variant="text"
+                      onClick={() => {
+                        setQuery({
+                          view: "investigation",
+                          asset: asset.tag,
+                          incident: "",
+                          asOf: "",
+                          episodeAsOf: "",
+                        });
+                      }}
+                    >
+                      Review scenario <Icon name="arrow" />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="caption">
+          Rates from these different months are never aggregated. Open a
+          scenario for its observations, source locators and historical RCA.
+        </p>
+      </Panel>
       <Utilities />
     </>
   );

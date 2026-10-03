@@ -1,6 +1,7 @@
 "use client";
 import { useId, useState } from "react";
 import { number } from "@/lib/domain";
+import { Icon } from "./icons";
 import { Button, Pagination, Panel } from "./ui";
 export type Point = {
   time: string;
@@ -16,6 +17,7 @@ export function Chart({
   alarm,
   trip,
   forecastStart,
+  direction,
 }: {
   title: string;
   unit: string;
@@ -24,6 +26,7 @@ export function Chart({
   alarm?: number;
   trip?: number;
   forecastStart?: number;
+  direction?: ">=" | "<=";
 }) {
   const id = useId(),
     [table, setTable] = useState(false),
@@ -45,7 +48,7 @@ export function Chart({
       Math.max(...points.map((p) => p.value), alarm ?? 0, trip ?? 0) * 1.08 ||
       1;
   const x = (i: number) => 52 + (i / Math.max(1, points.length - 1)) * 660,
-    y = (v: number) => 184 - ((v - min) / (max - min)) * 150;
+    y = (v: number) => 214 - ((v - min) / (max - min)) * 174;
   const path = (start: number, end: number) =>
     points
       .slice(start, end)
@@ -55,18 +58,53 @@ export function Chart({
       )
       .join(" ");
   const chosen = points[Math.min(selected, points.length - 1)];
+  const safePage = Math.min(page, Math.max(1, Math.ceil(points.length / 20)));
+  const comparator = direction === ">=" ? "≥" : direction === "<=" ? "≤" : "";
   return (
     <Panel
       title={title}
       sub={`${unit} · ${points.length} ${forecastStart ? "synthetic points" : "source observations"}`}
       action={
         <Button onClick={() => setTable((v) => !v)}>
+          <Icon name={table ? "overview" : "data"} />
           {table ? "Show chart" : "View readings"}
         </Button>
       }
     >
+      <div className="chart-legend" aria-label="Chart legend">
+        <span>
+          <i className="legend-line" />
+          {forecastStart !== undefined
+            ? "Synthetic history"
+            : "Source observations"}
+        </span>
+        {alarm !== undefined && (
+          <span>
+            <i className="legend-line alarm" />
+            ALARM {comparator} {alarm} {unit}
+          </span>
+        )}
+        {trip !== undefined && (
+          <span>
+            <i className="legend-line trip" />
+            TRIP {comparator} {trip} {unit}
+          </span>
+        )}
+        {forecastStart !== undefined && (
+          <span>
+            <i className="legend-line forecast" />
+            Synthetic persistence forecast
+          </span>
+        )}
+      </div>
+      <p className="chart-axis">
+        Value ({unit}) ·{" "}
+        {forecastStart !== undefined
+          ? "Illustrative hours"
+          : "Source-local observation time; timezone unknown"}
+      </p>
       <svg
-        viewBox="0 0 740 225"
+        viewBox="0 0 740 258"
         role="img"
         aria-labelledby={`${id}-title ${id}-desc`}
         className="chart"
@@ -104,7 +142,7 @@ export function Chart({
               className="alarm-line"
             />
             <text x="55" y={y(alarm) - 5} className="alarm-label">
-              ALARM {alarm} {unit}
+              ALARM {comparator} {alarm} {unit}
             </text>
           </g>
         )}
@@ -118,7 +156,7 @@ export function Chart({
               className="trip-line"
             />
             <text x="55" y={y(trip) - 5} className="trip-label">
-              TRIP {trip} {unit}
+              TRIP {comparator} {trip} {unit}
             </text>
           </g>
         )}
@@ -137,7 +175,12 @@ export function Chart({
               cy={y(p.value)}
               r="3"
               className={`point ${p.status?.toLowerCase() ?? ""}`}
-            />
+            >
+              <title>
+                {p.time} · {number(p.value, 3)} {unit}
+                {p.status ? ` · ${p.status}` : ""}
+              </title>
+            </circle>
           ))}
         <circle
           cx={x(Math.min(selected, points.length - 1))}
@@ -145,10 +188,10 @@ export function Chart({
           r="5"
           className="selected-point"
         />
-        <text x="52" y="213">
+        <text x="52" y="244">
           {points[0].time.slice(0, 16)}
         </text>
-        <text x="714" y="213" textAnchor="end">
+        <text x="714" y="244" textAnchor="end">
           {points.at(-1)!.time.slice(0, 16)}
         </text>
       </svg>
@@ -189,28 +232,30 @@ export function Chart({
                 </tr>
               </thead>
               <tbody>
-                {points.slice((page - 1) * 20, page * 20).map((p, i) => (
-                  <tr key={i}>
-                    <td>{p.time}</td>
-                    <td className="numeric">{number(p.value, 3)}</td>
-                    <td>{p.status ?? "—"}</td>
-                    <td>
-                      {p.source ? (
-                        <Button variant="text" onClick={p.source}>
-                          View source
-                        </Button>
-                      ) : (
-                        "Synthetic / generator assumptions"
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {points
+                  .slice((safePage - 1) * 20, safePage * 20)
+                  .map((p, i) => (
+                    <tr key={i}>
+                      <td>{p.time}</td>
+                      <td className="numeric">{number(p.value, 3)}</td>
+                      <td>{p.status ?? "—"}</td>
+                      <td>
+                        {p.source ? (
+                          <Button variant="text" onClick={p.source}>
+                            View source
+                          </Button>
+                        ) : (
+                          "Synthetic / generator assumptions"
+                        )}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
           <Pagination
             total={points.length}
-            page={Math.min(page, Math.ceil(points.length / 20))}
+            page={safePage}
             onChange={setPage}
           />
         </>

@@ -19,7 +19,8 @@ export function SignalPanel({
         <Badge>{analysis.signals.state.replaceAll("_", " ")}</Badge>
       </div>
       <p className="caption">
-        {analysis.signals.weekly} weekly readings · {analysis.signals.hourly} hourly readings
+        {analysis.signals.weekly} weekly readings · {analysis.signals.hourly}{" "}
+        hourly readings
       </p>
       {analysis.signals.signals.map((s) => (
         <div className="quality-card" key={s.id}>

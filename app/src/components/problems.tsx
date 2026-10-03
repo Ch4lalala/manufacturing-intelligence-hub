@@ -448,7 +448,9 @@ function Episodes() {
             <p>{e.reason}</p>
             <div style={{ display: "flex", gap: "8px", margin: "10px 0" }}>
               <Badge tone="warning">Pending Review</Badge>
-              <Badge tone="neutral">{workspace.episodes[e.id] ?? "Open"} · local review</Badge>
+              <Badge tone="neutral">
+                {workspace.episodes[e.id] ?? "Open"} · local review
+              </Badge>
             </div>
             <div className="button-row">
               <Button

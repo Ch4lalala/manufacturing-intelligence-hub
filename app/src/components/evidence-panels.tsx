@@ -98,9 +98,7 @@ export function IncidentDetail({ incident }: { incident: Incident }) {
             period: incident.date,
             unit: "h; k US$",
             kind: "source",
-            warnings: [
-              "Historical record separate from active actions.",
-            ],
+            warnings: ["Historical record separate from active actions."],
           })
         }
       >

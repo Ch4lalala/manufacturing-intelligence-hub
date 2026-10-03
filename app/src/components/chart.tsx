@@ -1,5 +1,5 @@
 "use client";
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { number } from "@/lib/domain";
 import { Icon } from "./icons";
 import { Button, Pagination, Panel } from "./ui";
@@ -18,6 +18,7 @@ export function Chart({
   trip,
   forecastStart,
   direction,
+  headerControl,
 }: {
   title: string;
   unit: string;
@@ -27,6 +28,7 @@ export function Chart({
   trip?: number;
   forecastStart?: number;
   direction?: ">=" | "<=";
+  headerControl?: ReactNode;
 }) {
   const id = useId(),
     [table, setTable] = useState(false),
@@ -35,6 +37,7 @@ export function Chart({
   if (!points.length)
     return (
       <Panel title={title} sub={unit}>
+        {headerControl && <div className="chart-controls">{headerControl}</div>}
         <p>No eligible observations in this source scope.</p>
       </Panel>
     );
@@ -71,6 +74,7 @@ export function Chart({
         </Button>
       }
     >
+      {headerControl && <div className="chart-controls">{headerControl}</div>}
       <div className="chart-legend" aria-label="Chart legend">
         <span>
           <i className="legend-line" />

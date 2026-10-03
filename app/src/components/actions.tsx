@@ -33,7 +33,8 @@ export function Actions() {
   return (
     <>
       <Notice>
-        Action Tracker manages corrective mitigations, assigned owners, and engineering sign-offs.
+        Action Tracker manages corrective mitigations, assigned owners, and
+        engineering sign-offs.
       </Notice>
       <div className="metric-grid">
         {metricScope.metrics.map((k) => (
@@ -486,9 +487,7 @@ function ActionCard({
               checked={confirmed}
               onChange={(e) => setConfirmed(e.target.checked)}
             />
-            <span>
-              I confirm that completion evidence has been reviewed.
-            </span>
+            <span>I confirm that completion evidence has been reviewed.</span>
           </label>
           {error && <Notice tone="error">{error}</Notice>}
           <div className="button-row">

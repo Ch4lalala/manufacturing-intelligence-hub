@@ -339,14 +339,12 @@ export function Hub({ catalog }: { catalog: Catalog }) {
       <div className="app-shell">
         <aside className="sidebar">
           <div className="brand">
-            <strong>
-              CALIBER<span>2026 / CASE 2</span>
-            </strong>
-            <p>
-              Manufacturing
-              <br />
-              Decision Hub
-            </p>
+            <strong>CALIBER</strong>
+            <div className="brand-edition">
+              <span>2026</span>
+              <span className="brand-badge">Case 2</span>
+            </div>
+            <p>Manufacturing Decision Hub</p>
           </div>
           <p className="eyebrow nav-label">Decision workspace</p>
           <nav aria-label="Main navigation">
@@ -373,22 +371,9 @@ export function Hub({ catalog }: { catalog: Catalog }) {
               </button>
             ))}
           </nav>
-          <div className="sidebar-note">
-            <span className="status-dot" />
-            Local prototype
-            <p>
-              Source-led review.
-              <br />
-              Simulated approvals.
-            </p>
-            <small>
-              Source snapshot
-              <br />
-              02 October 2026
-            </small>
-            <Button onClick={() => setReset(true)}>
-              <Icon name="reset" />
-              Reset prototype workspace
+          <div className="sidebar-footer">
+            <Button className="workspace-reset" onClick={() => setReset(true)}>
+              <Icon name="reset" /> Reset workspace
             </Button>
           </div>
         </aside>
@@ -514,9 +499,6 @@ export function Hub({ catalog }: { catalog: Catalog }) {
           <footer>
             CALIBER Case 2 · Local decision prototype · Source / computed /
             proposed / synthetic states remain distinct
-            <Button className="mobile-reset" onClick={() => setReset(true)}>
-              Reset prototype workspace
-            </Button>
           </footer>
         </div>
       </div>

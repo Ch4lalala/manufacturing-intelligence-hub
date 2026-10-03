@@ -11,7 +11,7 @@
     "Toast",
     "CRUD"
   ],
-  "ownership": { "Select/Listbox": "native", "Date": "native" },
+  "ownership": { "Select/Listbox": "authored", "Date": "native" },
   "requiredCommands": ["unit", "browser"],
   "commands": { "unit": "npm test", "browser": "npm run test:browser" },
   "evidence": {

@@ -1,4 +1,19 @@
-# Implementation status — industrial SaaS light redesign
+# Implementation status — UI layout refinement A–E
+
+Initial checkout: **main / 16acb7b81f0b106c7c9ad930c2064e3df464254b**, clean. Existing user changes and authored Select retained. No commit/push/deployment. See [Indonesian refinement report](UI_REFINEMENT_REPORT.md) for changed files, exact commands, screenshots and verification limits.
+
+- Typecheck, lint, production build, formatting and diff checks PASS.
+- **30/30 domain/API**, **21/21 local production Chromium**, **53/53 artifact runtime** checks PASS; zero provider calls.
+- All five views/assets, source access, scoped drawers, KO closure, temporal/normal-only boundaries and utilities isolation rerun. Desktop 1440/1280/1024, narrow 390 and sidebar 1024×360 verified.
+- DESIGN lint 0 errors / 23 advisory warnings. Premium strict scanner has six reviewed false positives on Select JSX/native hidden adapter; authored ownership remains honest. [Review](verification/refinement-select-review.json), [raw audit](verification/refinement-premium-audit.json).
+- **22 originals / 0 discrepancies**; known CODEX_PROMPT.md handoff size/hash discrepancy remains. No data, original, .env, dependency/lock or server configuration change.
+- Missing screenshot attachments, live provider, Vercel, other browser engines and physical devices remain unverified. Captures are from the local production render.
+
+[Final A–E screenshots](UI_REFINEMENT_REPORT.md#screenshot-final). Earlier counts below refer to earlier runs, not this revision. User servers remained running; only our isolated test runtime was cleaned up.
+
+---
+
+# Earlier industrial SaaS light redesign record
 
 3 October 2026. Initial checkout: **main**, **41fffaf12413245796f075de6fe5551bed123fbb**, clean. The existing Action Tracker shared metric/drawer scope repair in HEAD is preserved. No commit, push or deployment performed. Earlier verification records below remain historical records; their test counts refer to those earlier runs.
 

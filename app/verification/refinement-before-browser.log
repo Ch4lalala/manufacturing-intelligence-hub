@@ -1,0 +1,48 @@
+
+> caliber-decision-hub@1.0.0 test:browser
+> playwright test --grep Industrial light shell
+
+
+Running 1 test using 1 worker
+
+(node:95268) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/browser.spec.ts:1012:5 › Industrial light shell, independent catalog windows, source download, threshold direction and recoverable loading (978ms)
+
+
+  1) tests/browser.spec.ts:1012:5 › Industrial light shell, independent catalog windows, source download, threshold direction and recoverable loading 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('header').getByLabel('Asset scenario', { exact: true })
+    Expected: visible
+    Error: strict mode violation: locator('header').getByLabel('Asset scenario', { exact: true }) resolved to 2 elements:
+        1) <button type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="Asset scenario" class="custom-select-trigger ">…</button> aka getByRole('button', { name: 'Asset scenario' })
+        2) <select tabindex="-1" id="_R_2cklrlb_" aria-hidden="true" class="sr-only-select" aria-label="Asset scenario">…</select> aka locator('[id="_R_2cklrlb_"]')
+
+    Call log:
+      - Expect "toBeVisible" locator('header').getByLabel('Asset scenario', { exact: true }) with timeout 5000ms
+      - waiting for locator('header').getByLabel('Asset scenario', { exact: true })
+
+
+      1060 |   await expect(
+      1061 |     page.locator("header").getByLabel("Asset scenario", { exact: true }),
+    > 1062 |   ).toBeVisible();
+           |     ^
+      1063 |   await expect(
+      1064 |     page.locator("header").getByLabel("Simulated role", { exact: true }),
+      1065 |   ).toBeVisible();
+        at /Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/browser.spec.ts:1062:5
+
+    Error Context: test-results/browser-Industrial-light-s-f6bef-ion-and-recoverable-loading/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/browser-Industrial-light-s-f6bef-ion-and-recoverable-loading/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/browser-Industrial-light-s-f6bef-ion-and-recoverable-loading/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/browser.spec.ts:1012:5 › Industrial light shell, independent catalog windows, source download, threshold direction and recoverable loading 

@@ -98,9 +98,7 @@ export function DemoAccess({
         <p className="caption">{state.reason}</p>
       ) : state.authenticated ? (
         <div className="button-row">
-          <p className="caption">
-            Live AI composition authorized.
-          </p>
+          <p className="caption">Live AI composition authorized.</p>
           <Button busy={busy} onClick={() => change("DELETE")}>
             Lock live access
           </Button>

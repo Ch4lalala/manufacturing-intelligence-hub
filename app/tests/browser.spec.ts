@@ -18,6 +18,21 @@ async function goto(page: Page, url: string, view: string) {
   await page.goto(url);
   await ready(page, view);
 }
+async function choose(page: Page, label: string, value: string) {
+  const text = await page
+    .locator(`select[aria-label=${JSON.stringify(label)}] option`)
+    .evaluateAll(
+      (options, v) =>
+        options.find((o) => (o as HTMLOptionElement).value === v)?.textContent,
+      value,
+    );
+  expect(text).toBeTruthy();
+  await page.getByRole("combobox", { name: label, exact: true }).click();
+  await page
+    .getByRole("listbox", { name: label, exact: true })
+    .getByRole("option", { name: text!, exact: true })
+    .click();
+}
 async function noOverflow(page: Page) {
   expect(
     await page.evaluate(
@@ -58,7 +73,7 @@ test("Action metric drawers explain only their scoped dataset; historical list f
     "Action Tracker",
   );
   await expect(page.locator(".action-card")).toHaveCount(1);
-  await page.getByLabel("Action state", { exact: true }).selectOption("Closed");
+  await choose(page, "Action state", "Closed");
   await expect(page.locator(".action-card")).toHaveCount(0);
   const historical = await metricEvidence(page, "Local action drafts", 9);
   expect(historical.evidence.actions.map((a: { id: string }) => a.id)).toEqual(
@@ -213,7 +228,8 @@ test("380-row search/filter, n/a rows, empty state and qualified source detail",
   await goto(page, "/?view=problems&tank=register", "Problem Tank");
   await expect(page.getByText(/380 matching source records/)).toBeVisible();
   const search = page.getByRole("searchbox", {
-    name: "Search 380 register rows",
+    name: "Search",
+    exact: true,
   });
   await search.fill("n/a");
   await expect(page.getByText(/226 matching source records/)).toBeVisible();
@@ -221,9 +237,7 @@ test("380-row search/filter, n/a rows, empty state and qualified source detail",
   await expect(
     page.getByText("No incidents match these filters."),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Clear search 380 register rows" })
-    .click();
+  await page.getByRole("button", { name: "Clear search", exact: true }).click();
   await expect(search).toHaveValue("");
   await page.getByLabel("Exact asset tag").fill("KO-3201");
   await expect(page.getByText(/1 matching source records/)).toBeVisible();
@@ -248,9 +262,7 @@ test("Every asset and all report slides navigable; HE/PM contradictions remain v
       page.getByRole("heading", { name: `Historical RCA library · ${tag}` }),
     ).toBeVisible();
     for (const slide of Array.from({ length: 11 }, (_, i) => i + 1)) {
-      await page
-        .getByLabel("RCA slide", { exact: true })
-        .selectOption(String(slide));
+      await choose(page, "RCA slide", String(slide));
       await expect(
         page.getByRole("button", {
           name: "Open full slide excerpt & original",
@@ -276,7 +288,7 @@ test("Every asset and all report slides navigable; HE/PM contradictions remain v
   // Native asset selection must retain each full historical window when no
   // cutoff was requested, rather than applying the previous asset's reference.
   for (const tag of ["KO-3201", "HE-3301"]) {
-    await page.getByLabel("Asset scenario", { exact: true }).selectOption(tag);
+    await choose(page, "Asset scenario", tag);
     await expect(
       page.getByRole("heading", { name: `Historical RCA library · ${tag}` }),
     ).toBeVisible();
@@ -396,7 +408,7 @@ test("KO action loop, gated approval/verification, persistence, rejection reason
     page.getByRole("button", { name: "Confirm verified closure" }),
   ).toBeDisabled();
   await page.getByRole("button", { name: "Keep pending" }).click();
-  await page.getByLabel("Simulated role").selectOption("Engineering reviewer");
+  await choose(page, "Simulated role", "Engineering reviewer");
   await page.setViewportSize({ width: 390, height: 900 });
   await page
     .getByRole("button", { name: "Review closure", exact: true })
@@ -421,9 +433,17 @@ test("KO action loop, gated approval/verification, persistence, rejection reason
   await page.reload();
   await ready(page, "Action Tracker");
   await expect(
-    page.getByText(/Verified by Engineering reviewer/),
+    page.locator(".action-head .badge[data-tone=Closed]"),
   ).toBeVisible();
-  await expect(page.getByText(/Action change history/)).toBeVisible();
+  const persistedAction = await page.evaluate(
+    () => JSON.parse(localStorage.getItem("caliber-workspace-v1")!).actions[0],
+  );
+  expect(persistedAction.state).toBe("Closed");
+  expect(persistedAction.reviewer).toBe("Engineering reviewer");
+  expect(persistedAction.history.length).toBeGreaterThanOrEqual(5);
+  await expect(
+    page.getByLabel("Completion evidence / review record"),
+  ).toHaveValue(persistedAction.completionEvidence);
   const historicalClosure = await metricEvidence(
     page,
     "Verified local closures",
@@ -464,9 +484,9 @@ test("KO action loop, gated approval/verification, persistence, rejection reason
   }
   await goto(page, "/?view=actions&asset=KO-3201", "Action Tracker");
   await expect(
-    page.getByText(/Verified by Engineering reviewer/),
+    page.locator(".action-head .badge[data-tone=Closed]"),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Reset prototype workspace" }).click();
+  await page.getByRole("button", { name: "Reset workspace" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page
     .getByRole("dialog")
@@ -481,7 +501,9 @@ test("Synthetic utility assumptions, zero-output state and persistence forecast 
   page,
 }) => {
   await goto(page, "/", "Executive Overview");
-  await expect(page.getByText("Unavailable", { exact: true })).toHaveCount(3);
+  await expect(
+    page.locator(".metric-value").filter({ hasText: /^Unavailable$/ }),
+  ).toHaveCount(3);
   await page
     .getByRole("button", { name: "Open illustrative utilities" })
     .click();
@@ -490,7 +512,9 @@ test("Synthetic utility assumptions, zero-output state and persistence forecast 
   ).toBeVisible();
   await page.getByLabel("Matched output / hour (ton)").fill("0");
   await page.getByRole("button", { name: "Apply assumptions" }).click();
-  await expect(page.getByText("Unavailable", { exact: true })).toHaveCount(1);
+  await expect(
+    page.locator(".metric-value").filter({ hasText: /^Unavailable$/ }),
+  ).toHaveCount(1);
   await expect(
     page.getByText("61,886.46", { exact: false }).first(),
   ).toBeVisible();
@@ -503,7 +527,9 @@ test("Synthetic utility assumptions, zero-output state and persistence forecast 
   await page
     .getByRole("button", { name: "Return to baseline utilities" })
     .click();
-  await expect(page.getByText("Unavailable", { exact: true })).toHaveCount(3);
+  await expect(
+    page.locator(".metric-value").filter({ hasText: /^Unavailable$/ }),
+  ).toHaveCount(3);
 });
 test("Live request without configuration is explicit replay; errors remain recoverable", async ({
   page,
@@ -572,7 +598,7 @@ test("Live request without configuration is explicit replay; errors remain recov
 test("Responsive layouts, keyboard navigation, reduced motion and source failure recovery", async ({
   page,
 }) => {
-  for (const width of [1024, 390]) {
+  for (const width of [1280, 1024, 390]) {
     await page.setViewportSize({ width, height: 900 });
     for (const [id, label] of [
       ["overview", "Executive Overview"],
@@ -619,7 +645,7 @@ test("Responsive layouts, keyboard navigation, reduced motion and source failure
   );
 });
 
-test("Episode acknowledgement/group/reopen, owner edits, native select keyboard and reset history", async ({
+test("Episode acknowledgement/group/reopen, owner edits, select keyboard and reset history", async ({
   page,
 }) => {
   await goto(
@@ -655,9 +681,9 @@ test("Episode acknowledgement/group/reopen, owner edits, native select keyboard 
     exact: true,
   });
   await owner.fill("Maintenance data steward");
-  await owner
-    .locator("..")
-    .locator("..")
+  await page
+    .locator(".kpi-definition")
+    .filter({ hasText: "PM Compliance (%)" })
     .getByRole("button", { name: "Save proposed owner" })
     .click();
   await page.reload();
@@ -668,13 +694,16 @@ test("Episode acknowledgement/group/reopen, owner edits, native select keyboard 
     .locator("summary")
     .click();
   await expect(owner).toHaveValue("Maintenance data steward");
-  const asset = page.getByLabel("Asset scenario", { exact: true });
+  const asset = page.getByRole("combobox", {
+    name: "Asset scenario",
+    exact: true,
+  });
   await asset.focus();
   await page.keyboard.press("Space");
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
   await page
-    .getByRole("button", { name: "Reset prototype workspace", exact: true })
+    .getByRole("button", { name: "Reset workspace", exact: true })
     .click();
   await page
     .getByRole("dialog")
@@ -788,7 +817,7 @@ test("Problem Tank carries exact pre-event cutoff into Investigation at midnight
       .click();
     await expect(
       page.getByRole("heading", {
-        name: "Observed signals & factual bindings",
+        name: "Signal Observations",
       }),
     ).toBeVisible();
     await expect(page.locator("main")).not.toContainText("1,800");
@@ -1058,10 +1087,14 @@ test("Industrial light shell, independent catalog windows, source download, thre
   });
   expect(style.scrollbar).not.toBe("auto");
   await expect(
-    page.locator("header").getByLabel("Asset scenario", { exact: true }),
+    page
+      .locator("header")
+      .getByRole("combobox", { name: "Asset scenario", exact: true }),
   ).toBeVisible();
   await expect(
-    page.locator("header").getByLabel("Simulated role", { exact: true }),
+    page
+      .locator("header")
+      .getByRole("combobox", { name: "Simulated role", exact: true }),
   ).toBeVisible();
   const catalog = page.locator(".panel").filter({
     has: page.getByRole("heading", {
@@ -1107,9 +1140,7 @@ test("Industrial light shell, independent catalog windows, source download, thre
     await page.evaluate(() => getComputedStyle(document.body).overflow),
   ).not.toBe("hidden");
   await goto(page, "/?view=investigation&asset=HE-3301", "Investigation");
-  await page
-    .getByLabel("Weekly measurement", { exact: true })
-    .selectOption("1");
+  await choose(page, "Weekly measurement", "1");
   await expect(page.locator(".chart-legend").first()).toContainText(
     "ALARM ≤ 90",
   );
@@ -1134,9 +1165,7 @@ test("Industrial light shell, independent catalog windows, source download, thre
   await page.route("**/api/case?*", (r) =>
     r.fulfill({ status: 503, body: "unavailable" }),
   );
-  await page
-    .getByLabel("Asset scenario", { exact: true })
-    .selectOption("KO-3201");
+  await choose(page, "Asset scenario", "KO-3201");
   await expect(
     page.getByText(/Unable to load this source scope/),
   ).toBeVisible();
@@ -1233,4 +1262,314 @@ test("Mocked live pending state preserves button width, cancels safely and retur
   await expect(
     page.getByText(/Retrospective review: the report finding/),
   ).toBeVisible();
+});
+
+test("Sidebar branding/reset fit short viewports and require confirmation", async ({
+  page,
+}) => {
+  await goto(page, "/?view=overview", "Executive Overview");
+  const sidebar = page.locator(".sidebar");
+  await expect(sidebar.locator(".brand strong")).toHaveText("CALIBER");
+  await expect(sidebar.locator(".brand-edition")).toHaveText("2026Case 2");
+  await expect(sidebar).not.toContainText("Local prototype");
+  await expect(sidebar).not.toContainText("Source-led review.");
+  await expect(sidebar).not.toContainText("Simulated approvals.");
+  await expect(sidebar).not.toContainText("Source snapshot");
+  const reset = sidebar.getByRole("button", {
+    name: "Reset workspace",
+    exact: true,
+  });
+  const box = (await sidebar.boundingBox())!;
+  const button = (await reset.boundingBox())!;
+  expect(button.x).toBeGreaterThan(box.x + 12);
+  expect(button.x + button.width).toBeLessThan(box.x + box.width - 12);
+  expect(button.y + button.height).toBeLessThan(box.y + box.height);
+  await page.screenshot({
+    path: "screenshots/refinement-A-sidebar.png",
+    animations: "disabled",
+  });
+  const before = await page.evaluate(() =>
+    localStorage.getItem("caliber-workspace-v1"),
+  );
+  await page.setViewportSize({ width: 1024, height: 360 });
+  await reset.scrollIntoViewIfNeeded();
+  await reset.focus();
+  await expect(reset).toBeFocused();
+  expect(
+    await reset.evaluate((el) => getComputedStyle(el).outlineStyle),
+  ).not.toBe("none");
+  const short = (await reset.boundingBox())!;
+  expect(short.y).toBeGreaterThanOrEqual(0);
+  expect(short.y + short.height).toBeLessThanOrEqual(360);
+  await noOverflow(page);
+  await page.screenshot({
+    path: "screenshots/refinement-sidebar-short.png",
+    animations: "disabled",
+  });
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("dialog")).toContainText(
+    "Original sources and historical snapshots are preserved.",
+  );
+  await expect(
+    page.getByRole("button", { name: "Cancel", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(reset).toBeFocused();
+  expect(
+    await page.evaluate(() => localStorage.getItem("caliber-workspace-v1")),
+  ).toBe(before);
+  for (const width of [1440, 1280, 1024, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await reset.scrollIntoViewIfNeeded();
+    await expect(reset).toBeVisible();
+    await noOverflow(page);
+    expect(
+      await sidebar
+        .locator(".brand strong")
+        .evaluate((el) => el.scrollWidth <= el.clientWidth),
+    ).toBe(true);
+  }
+});
+
+test("Status distribution uses filtered source counts, aligned bars and a zero-record state", async ({
+  page,
+}) => {
+  const raw = JSON.parse(fs.readFileSync("data/normalized.json", "utf8"));
+  await goto(page, "/?view=overview", "Executive Overview");
+  const card = page.locator(".status-composition");
+  const check = async (plant: string) => {
+    const records = raw.incidents.filter(
+      (r: { values: Record<string, string> }) =>
+        !plant || r.values.Plant === plant,
+    );
+    const counts: Record<string, number> = {};
+    for (const r of records)
+      counts[r.values["Overall Status"]] =
+        (counts[r.values["Overall Status"]] ?? 0) + 1;
+    await expect(card).toContainText(
+      `${records.length} records in active scope`,
+    );
+    const rows = card.locator(".status-distribution-row");
+    await expect(rows).toHaveCount(Object.keys(counts).length);
+    const geometry = await rows.evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        raw: (node as HTMLElement).dataset.sourceStatus!,
+        count: Number(node.querySelector(".status-count")!.textContent),
+        bar: node.querySelector(".status-track")!.getBoundingClientRect().x,
+        ratio:
+          node.querySelector(".status-track > span")!.getBoundingClientRect()
+            .width /
+          node.querySelector(".status-track")!.getBoundingClientRect().width,
+        right: node.querySelector(".status-count")!.getBoundingClientRect()
+          .right,
+      })),
+    );
+    expect(geometry.reduce((n, r) => n + r.count, 0)).toBe(records.length);
+    for (const row of geometry) {
+      expect(row.count).toBe(counts[row.raw]);
+      expect(row.ratio).toBeCloseTo(row.count / records.length, 2);
+      expect(row.bar).toBeCloseTo(geometry[0].bar, 1);
+      expect(row.right).toBeCloseTo(geometry[0].right, 1);
+    }
+  };
+  await check("");
+  await choose(page, "Register plant scope", "ZCU");
+  await check("ZCU");
+  await card.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: "screenshots/refinement-B-overview.png",
+    animations: "disabled",
+  });
+  await page
+    .getByLabel("Register date from", { exact: true })
+    .fill("2030-01-01");
+  await expect(card).toContainText("0 records in active scope");
+  await expect(card.locator(".status-distribution-row")).toHaveCount(0);
+  await expect(card).toContainText("No records match this scope.");
+  await noOverflow(page);
+  await card.screenshot({
+    path: "screenshots/refinement-status-empty.png",
+    animations: "disabled",
+  });
+  await page.getByRole("button", { name: "Reset scope", exact: true }).click();
+  await check("");
+});
+
+test("Data Map flows independently; governance disclosures, source search and KPI expansion stay accessible", async ({
+  page,
+}) => {
+  await goto(page, "/?view=data", "Data & KPI Map");
+  const panel = (name: string) =>
+    page
+      .locator(".panel")
+      .filter({ has: page.getByRole("heading", { name, exact: true }) });
+  const library = panel("Source Library"),
+    architecture = panel("Enterprise Data Architecture"),
+    dictionary = panel("KPI Dictionary");
+  const lb = (await library.boundingBox())!,
+    ab = (await architecture.boundingBox())!;
+  expect(ab.y - (lb.y + lb.height)).toBeCloseTo(20, 0);
+  expect(ab.y).toBeLessThan(
+    (await dictionary.boundingBox())!.y +
+      (await dictionary.boundingBox())!.height,
+  );
+  const search = library.getByRole("searchbox");
+  await search.fill("Equipment Performance - RCA2 KO-3201.xlsx");
+  await expect(library.locator(".source-list > div")).toHaveCount(1);
+  await library
+    .getByRole("button", { name: "Open source content", exact: true })
+    .click();
+  await expect(page.getByRole("dialog")).toContainText(
+    "Equipment Performance - RCA2 KO-3201.xlsx",
+  );
+  await page.keyboard.press("Escape");
+  await search.fill("no-matching-source-file");
+  await expect(library).toContainText("No matching files.");
+  await library.locator(".search-clear-btn").click();
+  await expect(library.locator(".source-list > div")).toHaveCount(22);
+  const kpi = dictionary
+    .locator("details")
+    .filter({ hasText: "PM Compliance (%)" });
+  await kpi.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  await expect(kpi).toHaveAttribute("open", "");
+  await expect(
+    kpi.getByLabel("Proposed owner · PM Compliance (%)", { exact: true }),
+  ).toBeVisible();
+  await kpi
+    .getByRole("button", { name: "Definition & source", exact: true })
+    .click();
+  await expect(page.getByRole("dialog")).toContainText("PM Compliance (%)");
+  await page.keyboard.press("Escape");
+  const roadmap = panel("Governance & Integration Roadmap");
+  const accordion = roadmap.locator(".accordion");
+  await expect(accordion).toHaveCount(3);
+  await roadmap.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: "screenshots/refinement-C-governance-closed.png",
+    animations: "disabled",
+  });
+  for (const row of await accordion.all()) {
+    await row.locator("summary").focus();
+    await page.keyboard.press("Enter");
+    await expect(row).toHaveAttribute("open", "");
+    await expect(row.locator(".accordion-content")).toBeVisible();
+    expect(
+      await row
+        .locator("summary")
+        .evaluate((el) => getComputedStyle(el).outlineStyle),
+    ).not.toBe("none");
+  }
+  await expect(roadmap).toContainText(
+    "Measure resolution speed and compliance rate.",
+  );
+  await expect(roadmap).toContainText(
+    "Connect work management & incident tracking",
+  );
+  await noOverflow(page);
+  await page.screenshot({
+    path: "screenshots/refinement-C-governance-open.png",
+    animations: "disabled",
+  });
+  await architecture.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: "screenshots/refinement-D-data-flow.png",
+    animations: "disabled",
+  });
+  const axe = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+    .analyze();
+  expect(axe.violations.map((v) => v.id)).toEqual([]);
+  await accordion.first().locator("summary").focus();
+  await page.keyboard.press("Space");
+  await expect(accordion.first()).not.toHaveAttribute("open", "");
+});
+
+test("Investigation embeds hourly selector and review flows without waiting for the evidence rail", async ({
+  page,
+}) => {
+  await goto(
+    page,
+    "/?view=investigation&asset=KO-3201&mode=prospective&asOf=2026-04-22%2023:59:59",
+    "Investigation",
+  );
+  const chart = page.locator(".panel").filter({
+    has: page.getByRole("heading", {
+      name: "Hourly PLANT_RATE",
+      exact: true,
+    }),
+  });
+  const selector = chart.getByRole("combobox", {
+    name: "Hourly measurement (independent source)",
+    exact: true,
+  });
+  await selector.focus();
+  await page.keyboard.press("Space");
+  const popup = page.getByRole("listbox", {
+    name: "Hourly measurement (independent source)",
+    exact: true,
+  });
+  await expect(popup).toBeVisible();
+  const trigger = await selector.boundingBox(),
+    menu = await popup.boundingBox();
+  expect(menu!.width).toBeCloseTo(trigger!.width, 0);
+  await page.keyboard.press("Escape");
+  await expect(selector).toBeFocused();
+  await choose(page, "Hourly measurement (independent source)", "KO3201_VIB");
+  const vib = page.locator(".panel").filter({
+    has: page.getByRole("heading", {
+      name: "Hourly KO3201_VIB",
+      exact: true,
+    }),
+  });
+  await expect(vib).toContainText("MM/S");
+  await expect(vib).toContainText("source observations");
+  const slider = vib.getByRole("slider");
+  await slider.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(slider).toHaveValue("1");
+  await vib.getByRole("button", { name: "View source", exact: true }).click();
+  await expect(page.getByRole("dialog")).toContainText("KO3201_VIB");
+  await page.keyboard.press("Escape");
+  await vib.getByRole("button", { name: "View readings", exact: true }).click();
+  await expect(vib.locator("tbody tr")).toHaveCount(20);
+  const review = page.locator(".panel").filter({
+    has: page.getByRole("heading", {
+      name: "Probable root cause & engineering review",
+      exact: true,
+    }),
+  });
+  const vb = (await vib.boundingBox())!,
+    rb = (await review.boundingBox())!;
+  expect(rb.y - (vb.y + vb.height)).toBeCloseTo(20, 0);
+  await vib.getByRole("button", { name: "Show chart", exact: true }).click();
+  await review.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: "screenshots/refinement-E-investigation-flow.png",
+    animations: "disabled",
+  });
+  await page
+    .getByRole("button", {
+      name: "Evidence replay - no live AI call",
+      exact: true,
+    })
+    .click();
+  await expect(page.locator(".hypothesis-card")).not.toHaveCount(0);
+  await noOverflow(page);
+  await page.setViewportSize({ width: 390, height: 900 });
+  await vib
+    .getByRole("combobox", {
+      name: "Hourly measurement (independent source)",
+      exact: true,
+    })
+    .focus();
+  await page.keyboard.press("Space");
+  await expect(popup).toBeVisible();
+  await noOverflow(page);
+  await page.keyboard.press("Escape");
+  await review.scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: "screenshots/refinement-investigation-390.png",
+    animations: "disabled",
+  });
 });

@@ -7,7 +7,7 @@ import {
   type ReactNode,
   type ButtonHTMLAttributes,
 } from "react";
-import { Icon } from "./icons";
+import { Icon, type IconName } from "./icons";
 import type { Evidence, Locator } from "@/lib/types";
 
 export function Button({
@@ -26,6 +26,7 @@ export function Button({
       {...props}
       disabled={props.disabled || busy}
       aria-busy={busy || undefined}
+      data-autofocus={props.autoFocus || undefined}
       className={`button ${variant} ${props.className ?? ""}`}
     >
       {children}
@@ -80,6 +81,27 @@ export function Panel({
       </div>
       {children}
     </section>
+  );
+}
+
+export function Accordion({
+  title,
+  icon,
+  children,
+}: {
+  title: string;
+  icon: IconName;
+  children: ReactNode;
+}) {
+  return (
+    <details className="accordion">
+      <summary>
+        <Icon name={icon} />
+        <strong>{title}</strong>
+        <Icon name="chevron-down" className="accordion-chevron" />
+      </summary>
+      <div className="accordion-content">{children}</div>
+    </details>
   );
 }
 
@@ -169,14 +191,18 @@ export function Select({
       if (!open) {
         openDropdown();
       } else {
-        setHighlightedIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
+        setHighlightedIndex((prev) =>
+          prev < options.length - 1 ? prev + 1 : 0,
+        );
       }
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       if (!open) {
         openDropdown();
       } else {
-        setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
+        setHighlightedIndex((prev) =>
+          prev > 0 ? prev - 1 : options.length - 1,
+        );
       }
     } else if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -197,12 +223,25 @@ export function Select({
   };
 
   return (
-    <div className={`field custom-select-field ${className}`} ref={containerRef}>
-      <label htmlFor={id} className="field-label">{label}</label>
+    <div
+      className={`field custom-select-field ${className}`}
+      ref={containerRef}
+    >
+      <label htmlFor={id} className="field-label">
+        {label}
+      </label>
       <div className="custom-select-wrapper">
         <button
           type="button"
           ref={triggerRef}
+          role="combobox"
+          id={id}
+          aria-controls={open ? `${id}-options` : undefined}
+          aria-activedescendant={
+            open && highlightedIndex >= 0
+              ? `${id}-option-${highlightedIndex}`
+              : undefined
+          }
           aria-haspopup="listbox"
           aria-expanded={open}
           aria-label={effectiveAriaLabel}
@@ -210,7 +249,9 @@ export function Select({
           onKeyDown={handleKeyDown}
           className={`custom-select-trigger ${open ? "is-open" : ""}`}
         >
-          <span className={`custom-select-value ${!selectedOption ? "is-placeholder" : ""}`}>
+          <span
+            className={`custom-select-value ${!selectedOption ? "is-placeholder" : ""}`}
+          >
             {selectedOption ? selectedOption.label : placeholder}
           </span>
           <Icon name="chevron-down" className="custom-select-chevron" />
@@ -219,6 +260,8 @@ export function Select({
         {open && (
           <ul
             role="listbox"
+            id={`${id}-options`}
+            aria-label={effectiveAriaLabel}
             className="custom-select-popover"
             tabIndex={-1}
           >
@@ -229,6 +272,7 @@ export function Select({
                 <li
                   key={o.value}
                   role="option"
+                  id={`${id}-option-${idx}`}
                   aria-selected={isSelected}
                   className={`custom-select-option ${isSelected ? "is-selected" : ""} ${isHighlighted ? "is-highlighted" : ""}`}
                   onClick={() => {
@@ -248,7 +292,7 @@ export function Select({
 
         <select
           ref={nativeSelectRef}
-          id={id}
+          id={`${id}-native`}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           tabIndex={-1}
@@ -450,16 +494,26 @@ export function Modal({
   wide?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null),
-    id = useId();
+    id = useId(),
+    restoreFocus = useRef<HTMLElement | null>(
+      typeof document === "undefined"
+        ? null
+        : (document.activeElement as HTMLElement | null),
+    );
   useEffect(() => {
-    const previous = document.activeElement as HTMLElement | null;
+    const previous = restoreFocus.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     const dialog = ref.current;
     if (dialog && !dialog.open) {
       dialog.showModal();
-      dialog.querySelector<HTMLElement>(".dialog-body [autofocus]")?.focus();
+      dialog
+        .querySelector<HTMLElement>(".dialog-body [data-autofocus]")
+        ?.focus();
     }
     return () => {
       dialog?.close();
+      document.body.style.overflow = previousOverflow;
       previous?.focus();
     };
   }, []);

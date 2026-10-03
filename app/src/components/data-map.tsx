@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useHub } from "./hub";
-import { Panel, Badge, Button, Field, Search, Notice } from "./ui";
+import { Panel, Badge, Button, Field, Search, Notice, Accordion } from "./ui";
 import { QualityPanel } from "./evidence-panels";
 import { number } from "@/lib/domain";
 import type { Quality } from "@/lib/types";
@@ -191,7 +191,8 @@ export function DataMap() {
           </div>
           <div>
             <strong>Incident → Qualified Report</strong>
-            Structured foreign keys linking register records to root-cause decks.
+            Structured foreign keys linking register records to root-cause
+            decks.
           </div>
           <div>
             <strong>Problem → Action → Verification</strong>
@@ -199,13 +200,26 @@ export function DataMap() {
           </div>
         </div>
         <Notice>
-          Asset telemetry streams maintain independent measurement windows and engineering units.
+          Asset telemetry streams maintain independent measurement windows and
+          engineering units.
         </Notice>
       </Panel>
       <Panel
         title="Measurement Units & Telemetry Coverage"
         sub={`${bundle.asset.tag} · Active Scope`}
       >
+        <p className="caption">
+          Hourly coverage:{" "}
+          {bundle.production.length
+            ? `${bundle.production[0].values.Timestamp} to ${bundle.production.at(-1)!.values.Timestamp}`
+            : "No eligible hourly observations."}{" "}
+          Weekly coverage:{" "}
+          {bundle.conditions.length
+            ? `${bundle.conditions[0].date} to ${bundle.conditions.at(-1)!.date}`
+            : "No eligible weekly observations."}{" "}
+          Source-local time; timezone unknown. Metadata retains its original
+          source window.
+        </p>
         <div className="table-scroll">
           <table>
             <thead>
@@ -255,232 +269,286 @@ export function DataMap() {
           </table>
         </div>
       </Panel>
-      <div className="grid-two">
-        <Panel
-          title="Source Library"
-          sub="Verified system files, technical manuals, and baseline workbooks"
-        >
-          <Search
-            label="Search"
-            value={query}
-            onChange={setQuery}
-          />
-          <div className="source-list">
-            {sources.map((s) => (
-              <div key={s.path}>
-                <Badge tone="neutral">
-                  {s.path.includes("/baseline/explanation/")
-                    ? "Explanation"
-                    : s.path.includes("/baseline/")
-                      ? "Baseline"
-                      : s.path.includes("/official/")
-                        ? "Official"
-                        : s.path.includes("/notes/")
-                          ? "Summary"
-                          : "Reference"}
-                </Badge>
-                <p>
-                  <code>{s.path}</code>
-                </p>
-                <div className="button-row">
+      <div className="grid-two content-columns data-columns">
+        <div className="panel-stack">
+          <Panel
+            title="Source Library"
+            sub="Verified system files, technical manuals, and baseline workbooks"
+          >
+            <Search label="Search" value={query} onChange={setQuery} />
+            <div
+              className="source-list"
+              tabIndex={0}
+              role="region"
+              aria-label="Source Library files"
+            >
+              {sources.map((s) => (
+                <div key={s.path}>
+                  <Badge tone="neutral">
+                    {s.path.includes("/baseline/explanation/")
+                      ? "Explanation"
+                      : s.path.includes("/baseline/")
+                        ? "Baseline"
+                        : s.path.includes("/official/")
+                          ? "Official"
+                          : s.path.includes("/notes/")
+                            ? "Summary"
+                            : "Reference"}
+                  </Badge>
+                  <p>
+                    <code>{s.path}</code>
+                  </p>
+                  <div className="button-row">
+                    <Button
+                      variant="text"
+                      onClick={() =>
+                        openSource({
+                          title: s.path.split("/").at(-1)!,
+                          locators: [{ file: s.path }],
+                        })
+                      }
+                    >
+                      Open source content
+                    </Button>
+                    <a
+                      href={`/api/source?file=${encodeURIComponent(s.path)}&download=1`}
+                    >
+                      Download Original
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {!sources.length && (
+              <div className="empty">
+                No matching files.{" "}
+                <Button onClick={() => setQuery("")}>Clear search</Button>
+              </div>
+            )}
+          </Panel>
+          <Panel
+            title="Enterprise Data Architecture"
+            sub="Integration boundaries, telemetry grain, and stewardship allocation"
+          >
+            <div
+              className="table-scroll"
+              tabIndex={0}
+              role="region"
+              aria-label="Enterprise Data Architecture table"
+            >
+              <table>
+                <thead>
+                  <tr>
+                    <th>Source System</th>
+                    <th>Governed Capability</th>
+                    <th>Entity / Grain</th>
+                    <th>Data Steward</th>
+                    <th>Integration Boundary</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    [
+                      "Production Historian",
+                      "Asset performance and rate telemetry",
+                      "Asset / Hourly",
+                      "Operations Data Steward",
+                      "Calibrated time-series buffer",
+                    ],
+                    [
+                      "Condition Monitoring",
+                      "Condition episodes and alarm thresholds",
+                      "Asset / Weekly",
+                      "Reliability Data Steward",
+                      "Engineering threshold governance",
+                    ],
+                    [
+                      "Incident Database",
+                      "Event registry and financial exposure",
+                      "Incident Row ID",
+                      "Reliability Register Steward",
+                      "Immutable event history",
+                    ],
+                    [
+                      "Root Cause Decks",
+                      "Engineering evidence and corrective actions",
+                      "Report Slide / Action",
+                      "Engineering Reviewer",
+                      "Audited mitigation lifecycle",
+                    ],
+                    [
+                      "Utility Grid",
+                      "Energy, intensity, and carbon emissions",
+                      "Meter / Hour",
+                      "Utilities Data Steward",
+                      "Standardized telemetry interface",
+                    ],
+                  ].map((row) => (
+                    <tr key={row[0]}>
+                      {row.map((cell, i) => (
+                        <td key={i}>{cell}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Panel>
+        </div>
+        <div className="panel-stack">
+          <Panel
+            title="KPI Dictionary"
+            sub={`${bundle.asset.tag} · Metric definitions, calculation basis, and designated stewards`}
+          >
+            {bundle.summary.map((s) => (
+              <details className="definition-row kpi-definition" key={s.name}>
+                <summary>
+                  <strong>{s.name}</strong>
+                  <span className="kpi-summary-value">
+                    {typeof s.value === "number" ? number(s.value, 3) : s.value}{" "}
+                    <Badge tone="neutral">Metric</Badge>
+                  </span>
+                </summary>
+                <div className="definition-content">
+                  <div>
+                    <p className="caption">Basis: {String(s.basis)}</p>
+                    <Field
+                      label="Data Steward"
+                      ariaLabel={`Proposed owner · ${s.name}`}
+                      value={
+                        owners[s.name] ??
+                        workspace.owners[s.name] ??
+                        "Reliability data steward"
+                      }
+                      onChange={(v) =>
+                        setOwners((o) => ({ ...o, [s.name]: v }))
+                      }
+                    />
+                    <Button
+                      variant="text"
+                      disabled={!(owners[s.name] ?? "").trim()}
+                      onClick={() =>
+                        save(
+                          (w) => ({
+                            ...w,
+                            owners: {
+                              ...w.owners,
+                              [s.name]: owners[s.name].trim(),
+                            },
+                            history: [
+                              ...w.history,
+                              {
+                                at: new Date().toISOString(),
+                                actor: role,
+                                description: `KPI steward updated: ${s.name}`,
+                              },
+                            ],
+                          }),
+                          "Designated steward updated.",
+                        )
+                      }
+                    >
+                      Save proposed owner
+                    </Button>
+                  </div>
                   <Button
                     variant="text"
                     onClick={() =>
                       openSource({
-                        title: s.path.split("/").at(-1)!,
-                        locators: [{ file: s.path }],
+                        title: s.name,
+                        locators: [s.source],
+                        kind: "source-stated",
+                        formula: String(s.formula),
+                        period: bundle.asset.weeklyWindow,
+                        unit: s.name.includes("%")
+                          ? "%"
+                          : s.name.includes("hours") ||
+                              s.name === "Period Hours"
+                            ? "h"
+                            : s.name.includes("ton")
+                              ? "ton"
+                              : s.name.includes("USD")
+                                ? "k USD"
+                                : "count",
+                        owner:
+                          workspace.owners[s.name] ??
+                          "Reliability data steward",
+                        excerpt: `${s.name}: ${s.value}\nBasis: ${s.basis}\nFormula: ${s.formula}`,
                       })
                     }
                   >
-                    Open source content
+                    Definition & source
                   </Button>
-                  <a
-                    href={`/api/source?file=${encodeURIComponent(s.path)}&download=1`}
-                  >
-                    Download Original
-                  </a>
                 </div>
-              </div>
+              </details>
             ))}
-          </div>
-          {!sources.length && (
-            <div className="empty">
-              No matching files.{" "}
-              <Button onClick={() => setQuery("")}>Clear search</Button>
-            </div>
-          )}
-        </Panel>
-        <Panel
-          title="KPI Dictionary"
-          sub={`${bundle.asset.tag} · Metric definitions, calculation basis, and designated stewards`}
-        >
-          {bundle.summary.map((s) => (
-            <details className="definition-row kpi-definition" key={s.name}>
-              <summary>
-                <strong>{s.name}</strong>
-                <span className="kpi-summary-value">
-                  {typeof s.value === "number" ? number(s.value, 3) : s.value}{" "}
-                  <Badge tone="neutral">Metric</Badge>
-                </span>
-              </summary>
-              <div className="definition-content">
-                <div>
-                  <p className="caption">Basis: {String(s.basis)}</p>
-                  <Field
-                    label="Data Steward"
-                    ariaLabel={`Proposed owner · ${s.name}`}
-                    value={
-                      owners[s.name] ??
-                      workspace.owners[s.name] ??
-                      "Reliability data steward"
-                    }
-                    onChange={(v) => setOwners((o) => ({ ...o, [s.name]: v }))}
-                  />
-                  <Button
-                    variant="text"
-                    disabled={!(owners[s.name] ?? "").trim()}
-                    onClick={() =>
-                      save(
-                        (w) => ({
-                          ...w,
-                          owners: {
-                            ...w.owners,
-                            [s.name]: owners[s.name].trim(),
-                          },
-                          history: [
-                            ...w.history,
-                            {
-                              at: new Date().toISOString(),
-                              actor: role,
-                              description: `KPI steward updated: ${s.name}`,
-                            },
-                          ],
-                        }),
-                        "Designated steward updated.",
-                      )
-                    }
-                  >
-                    Save proposed owner
-                  </Button>
-                </div>
-                <Button
-                  variant="text"
-                  onClick={() =>
-                    openSource({
-                      title: s.name,
-                      locators: [s.source],
-                      kind: "source-stated",
-                      formula: String(s.formula),
-                      period: bundle.asset.weeklyWindow,
-                      unit: s.name.includes("%")
-                        ? "%"
-                        : s.name.includes("hours") || s.name === "Period Hours"
-                          ? "h"
-                          : s.name.includes("ton")
-                            ? "ton"
-                            : s.name.includes("USD")
-                              ? "k USD"
-                              : "count",
-                      owner:
-                        workspace.owners[s.name] ?? "Reliability data steward",
-                      excerpt: `${s.name}: ${s.value}\nBasis: ${s.basis}\nFormula: ${s.formula}`,
-                    })
-                  }
-                >
-                  Definition & source
-                </Button>
-              </div>
-            </details>
-          ))}
-        </Panel>
-      </div>
-      <Panel
-        title="Enterprise Data Architecture"
-        sub="Integration boundaries, telemetry grain, and stewardship allocation"
-      >
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Source System</th>
-                <th>Governed Capability</th>
-                <th>Entity / Grain</th>
-                <th>Data Steward</th>
-                <th>Integration Boundary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                [
-                  "Production Historian",
-                  "Asset performance and rate telemetry",
-                  "Asset / Hourly",
-                  "Operations Data Steward",
-                  "Calibrated time-series buffer",
-                ],
-                [
-                  "Condition Monitoring",
-                  "Condition episodes and alarm thresholds",
-                  "Asset / Weekly",
-                  "Reliability Data Steward",
-                  "Engineering threshold governance",
-                ],
-                [
-                  "Incident Database",
-                  "Event registry and financial exposure",
-                  "Incident Row ID",
-                  "Reliability Register Steward",
-                  "Immutable event history",
-                ],
-                [
-                  "Root Cause Decks",
-                  "Engineering evidence and corrective actions",
-                  "Report Slide / Action",
-                  "Engineering Reviewer",
-                  "Audited mitigation lifecycle",
-                ],
-                [
-                  "Utility Grid",
-                  "Energy, intensity, and carbon emissions",
-                  "Meter / Hour",
-                  "Utilities Data Steward",
-                  "Standardized telemetry interface",
-                ],
-              ].map((row) => (
-                <tr key={row[0]}>
-                  {row.map((cell, i) => (
-                    <td key={i}>{cell}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          </Panel>
         </div>
-      </Panel>
+      </div>
+      <GovernanceRoadmap />
       <QualityPanel quality={[...bundle.quality, ...extra]} />
-      <Panel
-        title="Governance & Integration Roadmap"
-        sub="Operational readiness framework and integration milestones"
-      >
-        <details>
-          <summary>Stewardship and Data Quality Governance</summary>
-          <p>
-            Nominate domain data stewards and assign formal review ownership for each telemetry feed. Ensure engineering units, threshold versions, and foreign key relationships are strictly maintained across integration boundaries.
-          </p>
-        </details>
-        <details>
-          <summary>Operational Pilot Validation</summary>
-          <p>
-            Validate telemetry latency, citation correctness, and action verification workflows in live operational environments. Measure resolution speed and compliance rate.
-          </p>
-        </details>
-        <details>
-          <summary>Enterprise Rollout Sequence</summary>
-          <p>
-            Phase 1: Ingest asset historian feeds → Phase 2: Connect work management & incident tracking → Phase 3: Activate predictive analytics and utility monitoring.
-          </p>
-        </details>
-      </Panel>
     </>
+  );
+}
+
+function GovernanceRoadmap() {
+  return (
+    <Panel
+      title="Governance & Integration Roadmap"
+      sub="Operational readiness framework and integration milestones"
+    >
+      <div className="accordion-group">
+        <Accordion title="Stewardship and Data Quality Governance" icon="user">
+          <dl className="governance-content">
+            <div>
+              <dt>Review ownership</dt>
+              <dd>
+                Nominate domain data stewards and assign formal review ownership
+                for each telemetry feed.
+              </dd>
+            </div>
+            <div>
+              <dt>Integration boundaries</dt>
+              <dd>
+                Ensure engineering units, threshold versions, and foreign key
+                relationships are strictly maintained across integration
+                boundaries.
+              </dd>
+            </div>
+          </dl>
+        </Accordion>
+        <Accordion title="Operational Pilot Validation" icon="check">
+          <dl className="governance-content">
+            <div>
+              <dt>Validation</dt>
+              <dd>
+                Validate telemetry latency, citation correctness, and action
+                verification workflows in live operational environments.
+              </dd>
+            </div>
+            <div>
+              <dt>Measurement</dt>
+              <dd>Measure resolution speed and compliance rate.</dd>
+            </div>
+          </dl>
+        </Accordion>
+        <Accordion title="Enterprise Rollout Sequence" icon="arrow">
+          <ol className="governance-sequence">
+            <li>
+              <strong>Phase 1</strong>
+              <span>Ingest asset historian feeds</span>
+            </li>
+            <li>
+              <strong>Phase 2</strong>
+              <span>Connect work management & incident tracking</span>
+            </li>
+            <li>
+              <strong>Phase 3</strong>
+              <span>Activate predictive analytics and utility monitoring.</span>
+            </li>
+          </ol>
+        </Accordion>
+      </div>
+    </Panel>
   );
 }

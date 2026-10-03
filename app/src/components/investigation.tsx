@@ -226,8 +226,8 @@ export function Investigation() {
         </>
       ) : (
         <>
-          <div className="grid-two">
-            <div>
+          <div className="grid-two content-columns investigation-columns">
+            <div className="panel-stack">
               <div className="filter-bar">
                 <Select
                   label="Weekly Parameter"
@@ -271,23 +271,23 @@ export function Investigation() {
                 }))}
                 caption={`${a.weeklyWindow} · Condition history`}
               />
-              <div className="filter-bar">
-                <Select
-                  label="Hourly Telemetry"
-                  ariaLabel="Hourly measurement (independent source)"
-                  value={hourly}
-                  onChange={setHourly}
-                  options={a.production_metadata
-                    .filter((m) => m.Name !== "RUN_STATUS")
-                    .map((m) => ({
-                      value: m.Name,
-                      label: `${m.Name} (${m.engunits})`,
-                    }))}
-                />
-              </div>
               <Chart
                 title={`Hourly ${hourly}`}
                 unit={u}
+                headerControl={
+                  <Select
+                    label="Hourly Telemetry"
+                    ariaLabel="Hourly measurement (independent source)"
+                    value={hourly}
+                    onChange={setHourly}
+                    options={a.production_metadata
+                      .filter((m) => m.Name !== "RUN_STATUS")
+                      .map((m) => ({
+                        value: m.Name,
+                        label: `${m.Name} (${m.engunits})`,
+                      }))}
+                  />
+                }
                 points={bundle.production.map((p) => ({
                   time: String(p.values.Timestamp),
                   value: Number(p.values[hourly]),
@@ -317,8 +317,244 @@ export function Investigation() {
                   measured full shutdown.
                 </Notice>
               )}
+              <Panel
+                title="Probable root cause & engineering review"
+                sub="Evidence-backed indications; no definitive diagnosis before inspection"
+              >
+                <p className="caption">{liveStatus}</p>
+                <DemoAccess onAccess={setLiveAllowed} />
+                <div className="button-row">
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      request.current?.abort();
+                      setBusy(false);
+                      setFailure("");
+                      setAnalysis(replay(bundle));
+                    }}
+                  >
+                    Evidence replay - no live AI call
+                  </Button>
+                  <Button
+                    className="analysis-request"
+                    busy={busy}
+                    disabled={
+                      !liveAllowed || replay(bundle).signals.state !== "anomaly"
+                    }
+                    title={
+                      !liveAllowed
+                        ? "Unlock configured demo live access; evidence replay remains available"
+                        : replay(bundle).signals.state !== "anomaly"
+                          ? "Insufficient eligible anomaly evidence for composition"
+                          : undefined
+                    }
+                    onClick={() => run(true)}
+                  >
+                    {busy
+                      ? "Live request running…"
+                      : "Request live AI composition"}
+                  </Button>
+                  {busy && (
+                    <Button
+                      onClick={() => {
+                        request.current?.abort();
+                        setBusy(false);
+                        setFailure(
+                          "Live request cancelled. Evidence replay remains available.",
+                        );
+                      }}
+                    >
+                      Cancel request
+                    </Button>
+                  )}
+                </div>
+                {failure && <Notice tone="error">{failure}</Notice>}
+                {!analysis ? (
+                  <Notice>
+                    Choose evidence replay to review eligible observations and
+                    signals, or explicitly request live composition. Missing
+                    credentials/model select a visible replay result. Composed
+                    hypotheses are engineering inferences; factual bindings and
+                    citations are validated before review.
+                  </Notice>
+                ) : (
+                  <>
+                    <Notice
+                      tone={analysis.execution === "live" ? "info" : "warning"}
+                    >
+                      <strong>{analysis.message}</strong>
+                    </Notice>
+                    <div className="steps">
+                      {analysis.stages.map((s) => (
+                        <div className="step complete" key={s.title}>
+                          <strong>{s.title}</strong>
+                          <span>{s.result}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <p>{analysis.summary}</p>
+                    <SignalPanel analysis={analysis} bundle={bundle} />
+                    {analysis.hypotheses.map((h) => {
+                      const reviewId = reviewKey(a.tag, mode, analysis.asOf, h),
+                        review = workspace.reviews[reviewId];
+                      return (
+                        <div className="hypothesis-card" key={h.id}>
+                          <Badge
+                            tone={
+                              h.kind === "Historical RCA finding"
+                                ? "neutral"
+                                : "warning"
+                            }
+                          >
+                            {h.kind}
+                          </Badge>{" "}
+                          <Badge>Strength: {h.strength} · qualitative</Badge>
+                          <h3>{h.title}</h3>
+                          <p>{h.explanation}</p>
+                          <p className="caption">
+                            {h.knowledgeBasis} · {h.strengthReason}
+                          </p>
+                          <div className="hypothesis-detail">
+                            <div>
+                              <strong className="caption">
+                                Supporting evidence
+                              </strong>
+                              <Citations
+                                ids={h.evidenceIds}
+                                evidence={bundle.evidence}
+                              />
+                              <strong className="caption">
+                                Counter-evidence / alternative context
+                              </strong>
+                              {h.counterEvidenceIds.length ? (
+                                <Citations
+                                  ids={h.counterEvidenceIds}
+                                  evidence={bundle.evidence}
+                                />
+                              ) : (
+                                <p className="caption">
+                                  No resolved counter-evidence in this scope;
+                                  inspection remains necessary.
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <h3>Missing checks</h3>
+                              <ul>
+                                {h.missingChecks.map((c) => (
+                                  <li key={c}>{c}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                          <div className="button-row">
+                            <Button
+                              disabled={review === "Accepted"}
+                              onClick={() =>
+                                save(
+                                  (w) => ({
+                                    ...w,
+                                    reviews: {
+                                      ...w.reviews,
+                                      [reviewId]: "Accepted",
+                                    },
+                                    history: [
+                                      ...w.history,
+                                      {
+                                        at: new Date().toISOString(),
+                                        actor: role,
+                                        description: `Accepted ${a.tag} ${mode} ${h.id} for action review`,
+                                      },
+                                    ],
+                                  }),
+                                  "Finding/hypothesis accepted for proposed follow-up.",
+                                )
+                              }
+                            >
+                              Accept for action review
+                            </Button>
+                            <Button
+                              disabled={review === "Rejected"}
+                              onClick={() =>
+                                save(
+                                  (w) => ({
+                                    ...w,
+                                    reviews: {
+                                      ...w.reviews,
+                                      [reviewId]: "Rejected",
+                                    },
+                                    history: [
+                                      ...w.history,
+                                      {
+                                        at: new Date().toISOString(),
+                                        actor: role,
+                                        description: `Rejected ${a.tag} ${mode} ${h.id}; inspection still required`,
+                                      },
+                                    ],
+                                  }),
+                                  "Hypothesis rejected; no action created.",
+                                )
+                              }
+                            >
+                              Reject hypothesis
+                            </Button>
+                            {review && (
+                              <Badge
+                                tone={
+                                  review === "Accepted" ? "success" : "danger"
+                                }
+                              >
+                                {review}
+                              </Badge>
+                            )}
+                          </div>
+                          {linkedActionDrafts(analysis, h.id).map(
+                            (draft, i) => (
+                              <div className="quality-card" key={draft.title}>
+                                <h3>Proposed action: {draft.title}</h3>
+                                <p>{draft.guidance}</p>
+                                <p className="caption">
+                                  Proposed role: {draft.proposedOwnerRole} ·
+                                  approval required
+                                </p>
+                                <Citations
+                                  ids={draft.evidenceIds}
+                                  evidence={bundle.evidence}
+                                />
+                                <Button
+                                  disabled={review !== "Accepted"}
+                                  title={
+                                    review !== "Accepted"
+                                      ? "Accept the linked finding/hypothesis first"
+                                      : undefined
+                                  }
+                                  onClick={() => createAction(draft, h, mode)}
+                                >
+                                  {i === 0
+                                    ? h.id === analysis.hypotheses[0]?.id
+                                      ? "Create reviewed action draft"
+                                      : `Create reviewed action draft · ${h.id}`
+                                    : "Create follow-up draft"}
+                                </Button>
+                              </div>
+                            ),
+                          )}
+                        </div>
+                      );
+                    })}
+                    <details>
+                      <summary>Analysis limits & review diagnostics</summary>
+                      {analysis.limitations.map((x, i) => (
+                        <p className="caption" key={i}>
+                          {x}
+                        </p>
+                      ))}
+                    </details>
+                  </>
+                )}
+              </Panel>
             </div>
-            <div>
+            <div className="panel-stack">
               <Panel
                 title="Investigation evidence"
                 sub={`${bundle.evidence.length} eligible source objects · ${mode}`}
@@ -357,230 +593,6 @@ export function Investigation() {
               )}
             </div>
           </div>
-          <Panel
-            title="Probable root cause & engineering review"
-            sub="Evidence-backed indications; no definitive diagnosis before inspection"
-          >
-            <p className="caption">{liveStatus}</p>
-            <DemoAccess onAccess={setLiveAllowed} />
-            <div className="button-row">
-              <Button
-                variant="primary"
-                onClick={() => {
-                  request.current?.abort();
-                  setBusy(false);
-                  setFailure("");
-                  setAnalysis(replay(bundle));
-                }}
-              >
-                Evidence replay - no live AI call
-              </Button>
-              <Button
-                className="analysis-request"
-                busy={busy}
-                disabled={
-                  !liveAllowed || replay(bundle).signals.state !== "anomaly"
-                }
-                title={
-                  !liveAllowed
-                    ? "Unlock configured demo live access; evidence replay remains available"
-                    : replay(bundle).signals.state !== "anomaly"
-                      ? "Insufficient eligible anomaly evidence for composition"
-                      : undefined
-                }
-                onClick={() => run(true)}
-              >
-                {busy ? "Live request running…" : "Request live AI composition"}
-              </Button>
-              {busy && (
-                <Button
-                  onClick={() => {
-                    request.current?.abort();
-                    setBusy(false);
-                    setFailure(
-                      "Live request cancelled. Evidence replay remains available.",
-                    );
-                  }}
-                >
-                  Cancel request
-                </Button>
-              )}
-            </div>
-            {failure && <Notice tone="error">{failure}</Notice>}
-            {!analysis ? (
-              <Notice>
-                Choose evidence replay to review eligible observations and
-                signals, or explicitly request live composition. Missing
-                credentials/model select a visible replay result. Composed
-                hypotheses are engineering inferences; factual bindings and
-                citations are validated before review.
-              </Notice>
-            ) : (
-              <>
-                <Notice
-                  tone={analysis.execution === "live" ? "info" : "warning"}
-                >
-                  <strong>{analysis.message}</strong>
-                </Notice>
-                <div className="steps">
-                  {analysis.stages.map((s) => (
-                    <div className="step complete" key={s.title}>
-                      <strong>{s.title}</strong>
-                      <span>{s.result}</span>
-                    </div>
-                  ))}
-                </div>
-                <p>{analysis.summary}</p>
-                <SignalPanel analysis={analysis} bundle={bundle} />
-                {analysis.hypotheses.map((h) => {
-                  const reviewId = reviewKey(a.tag, mode, analysis.asOf, h),
-                    review = workspace.reviews[reviewId];
-                  return (
-                    <div className="hypothesis-card" key={h.id}>
-                      <Badge
-                        tone={
-                          h.kind === "Historical RCA finding"
-                            ? "neutral"
-                            : "warning"
-                        }
-                      >
-                        {h.kind}
-                      </Badge>{" "}
-                      <Badge>Strength: {h.strength} · qualitative</Badge>
-                      <h3>{h.title}</h3>
-                      <p>{h.explanation}</p>
-                      <p className="caption">
-                        {h.knowledgeBasis} · {h.strengthReason}
-                      </p>
-                      <div className="hypothesis-detail">
-                        <div>
-                          <strong className="caption">
-                            Supporting evidence
-                          </strong>
-                          <Citations
-                            ids={h.evidenceIds}
-                            evidence={bundle.evidence}
-                          />
-                          <strong className="caption">
-                            Counter-evidence / alternative context
-                          </strong>
-                          {h.counterEvidenceIds.length ? (
-                            <Citations
-                              ids={h.counterEvidenceIds}
-                              evidence={bundle.evidence}
-                            />
-                          ) : (
-                            <p className="caption">
-                              No resolved counter-evidence in this scope;
-                              inspection remains necessary.
-                            </p>
-                          )}
-                        </div>
-                        <div>
-                          <h3>Missing checks</h3>
-                          <ul>
-                            {h.missingChecks.map((c) => (
-                              <li key={c}>{c}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      <div className="button-row">
-                        <Button
-                          disabled={review === "Accepted"}
-                          onClick={() =>
-                            save(
-                              (w) => ({
-                                ...w,
-                                reviews: {
-                                  ...w.reviews,
-                                  [reviewId]: "Accepted",
-                                },
-                                history: [
-                                  ...w.history,
-                                  {
-                                    at: new Date().toISOString(),
-                                    actor: role,
-                                    description: `Accepted ${a.tag} ${mode} ${h.id} for action review`,
-                                  },
-                                ],
-                              }),
-                              "Finding/hypothesis accepted for proposed follow-up.",
-                            )
-                          }
-                        >
-                          Accept for action review
-                        </Button>
-                        <Button
-                          disabled={review === "Rejected"}
-                          onClick={() =>
-                            save(
-                              (w) => ({
-                                ...w,
-                                reviews: {
-                                  ...w.reviews,
-                                  [reviewId]: "Rejected",
-                                },
-                                history: [
-                                  ...w.history,
-                                  {
-                                    at: new Date().toISOString(),
-                                    actor: role,
-                                    description: `Rejected ${a.tag} ${mode} ${h.id}; inspection still required`,
-                                  },
-                                ],
-                              }),
-                              "Hypothesis rejected; no action created.",
-                            )
-                          }
-                        >
-                          Reject hypothesis
-                        </Button>
-                        {review && <Badge tone={review === "Accepted" ? "success" : "danger"}>{review}</Badge>}
-                      </div>
-                      {linkedActionDrafts(analysis, h.id).map((draft, i) => (
-                        <div className="quality-card" key={draft.title}>
-                          <h3>Proposed action: {draft.title}</h3>
-                          <p>{draft.guidance}</p>
-                          <p className="caption">
-                            Proposed role: {draft.proposedOwnerRole} · approval
-                            required
-                          </p>
-                          <Citations
-                            ids={draft.evidenceIds}
-                            evidence={bundle.evidence}
-                          />
-                          <Button
-                            disabled={review !== "Accepted"}
-                            title={
-                              review !== "Accepted"
-                                ? "Accept the linked finding/hypothesis first"
-                                : undefined
-                            }
-                            onClick={() => createAction(draft, h, mode)}
-                          >
-                            {i === 0
-                              ? h.id === analysis.hypotheses[0]?.id
-                                ? "Create reviewed action draft"
-                                : `Create reviewed action draft · ${h.id}`
-                              : "Create follow-up draft"}
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })}
-                <details>
-                  <summary>Analysis limits & review diagnostics</summary>
-                  {analysis.limitations.map((x, i) => (
-                    <p className="caption" key={i}>
-                      {x}
-                    </p>
-                  ))}
-                </details>
-              </>
-            )}
-          </Panel>
           {mode === "historical" && (
             <>
               <SimilarIncidents current={bundle.incident} />
@@ -606,8 +618,7 @@ export function Investigation() {
                         title: `${a.tag} report slide ${slide}`,
                         locators: [{ file: bundle.report!.file, slide }],
                         kind: "source",
-                        period:
-                          "Historical report archive",
+                        period: "Historical report archive",
                       })
                     }
                   >

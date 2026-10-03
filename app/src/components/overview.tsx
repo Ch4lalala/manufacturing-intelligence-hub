@@ -7,6 +7,7 @@ import { Icon } from "./icons";
 import { Chart } from "./chart";
 import { QualityPanel } from "./evidence-panels";
 import { Utilities } from "./utilities";
+import { StatusComposition } from "./status-composition";
 
 export function Overview() {
   const { catalog, bundle, query, setQuery, navigate, openSource, workspace } =
@@ -144,7 +145,9 @@ export function Overview() {
       <div className="section-label">
         <div>
           <h2>{a.tag} · Operational Telemetry</h2>
-          <p>{a.plant_text} · High-frequency production and condition streams</p>
+          <p>
+            {a.plant_text} · High-frequency production and condition streams
+          </p>
         </div>
         <Button
           variant="primary"
@@ -159,8 +162,8 @@ export function Overview() {
           <Icon name="problems" /> Open prioritized issues
         </Button>
       </div>
-      <div className="grid-two overview-trends">
-        <div>
+      <div className="grid-two overview-trends content-columns">
+        <div className="panel-stack">
           <Chart
             title="Plant rate · hourly observations"
             unit={metadata.engunits}
@@ -214,8 +217,57 @@ export function Overview() {
             }))}
             caption={`${a.weeklyWindow} · ${alarmCount} ALARM readings prior to first TRIP`}
           />
+          <StatusComposition statuses={totals.statuses} total={rows.length} />
+          <Panel
+            title="Asset scenario catalog"
+            sub="Monitored industrial assets across manufacturing units"
+            action={<Badge tone="neutral">Fleet Directory</Badge>}
+          >
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Asset</th>
+                    <th>Hourly Window</th>
+                    <th>Weekly Window</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {catalog.assets.map((asset) => (
+                    <tr key={asset.tag}>
+                      <td>
+                        <code>{asset.tag}</code>
+                        <span className="cell-sub">
+                          {asset.name} · {asset.plant}
+                        </span>
+                      </td>
+                      <td>{asset.hourlyWindow}</td>
+                      <td>{asset.weeklyWindow}</td>
+                      <td>
+                        <Button
+                          variant="text"
+                          onClick={() => {
+                            setQuery({
+                              view: "investigation",
+                              asset: asset.tag,
+                              incident: "",
+                              asOf: "",
+                              episodeAsOf: "",
+                            });
+                          }}
+                        >
+                          Inspect Telemetry <Icon name="arrow" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Panel>
         </div>
-        <div>
+        <div className="panel-stack">
           <Panel
             title="Decision context"
             sub={`${a.tag} · Operational Assessment`}
@@ -277,121 +329,56 @@ export function Overview() {
                 </div>
               ))}
           </Panel>
+          <Panel
+            title="Priority Incidents"
+            sub="Ranked by operational risk score"
+          >
+            <div className="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Case</th>
+                    <th>Risk Score</th>
+                    <th>Review</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...rows]
+                    .sort((x, y) => (y.risk ?? -1) - (x.risk ?? -1))
+                    .slice(0, 4)
+                    .map((r) => (
+                      <tr key={r.id}>
+                        <td>
+                          <strong>{r.tag}</strong>
+                          <span className="cell-sub">
+                            {r.title} · {r.date}
+                          </span>
+                        </td>
+                        <td className="numeric">{r.risk ?? "Unavailable"}</td>
+                        <td>
+                          <Button
+                            variant="text"
+                            onClick={() =>
+                              navigate(
+                                "investigation",
+                                catalog.assets.find(
+                                  (a) => a.linked_incident_id === r.id,
+                                )?.tag,
+                                r.id,
+                              )
+                            }
+                          >
+                            Open case
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </Panel>
         </div>
       </div>
-      <div className="grid-equal">
-        <Panel
-          title="Status Composition"
-          sub={`${rows.length} records in active scope`}
-        >
-          <div>
-            {Object.entries(totals.statuses).map(([status, count]) => (
-              <div className="status-row" key={status}>
-                <span>{status}</span>
-                <progress max={Math.max(1, rows.length)} value={count} />
-                <strong>{count}</strong>
-              </div>
-            ))}
-          </div>
-          {!rows.length && <p>No records match this scope.</p>}
-        </Panel>
-        <Panel
-          title="Priority Incidents"
-          sub="Ranked by operational risk score"
-        >
-          <div className="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Case</th>
-                  <th>Risk Score</th>
-                  <th>Review</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[...rows]
-                  .sort((x, y) => (y.risk ?? -1) - (x.risk ?? -1))
-                  .slice(0, 4)
-                  .map((r) => (
-                    <tr key={r.id}>
-                      <td>
-                        <strong>{r.tag}</strong>
-                        <span className="cell-sub">
-                          {r.title} · {r.date}
-                        </span>
-                      </td>
-                      <td className="numeric">{r.risk ?? "Unavailable"}</td>
-                      <td>
-                        <Button
-                          variant="text"
-                          onClick={() =>
-                            navigate(
-                              "investigation",
-                              catalog.assets.find(
-                                (a) => a.linked_incident_id === r.id,
-                              )?.tag,
-                              r.id,
-                            )
-                          }
-                        >
-                          Open case
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </Panel>
-      </div>
-      <Panel
-        title="Asset scenario catalog"
-        sub="Monitored industrial assets across manufacturing units"
-        action={<Badge tone="neutral">Fleet Directory</Badge>}
-      >
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Asset</th>
-                <th>Hourly Window</th>
-                <th>Weekly Window</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {catalog.assets.map((asset) => (
-                <tr key={asset.tag}>
-                  <td>
-                    <code>{asset.tag}</code>
-                    <span className="cell-sub">
-                      {asset.name} · {asset.plant}
-                    </span>
-                  </td>
-                  <td>{asset.hourlyWindow}</td>
-                  <td>{asset.weeklyWindow}</td>
-                  <td>
-                    <Button
-                      variant="text"
-                      onClick={() => {
-                        setQuery({
-                          view: "investigation",
-                          asset: asset.tag,
-                          incident: "",
-                          asOf: "",
-                          episodeAsOf: "",
-                        });
-                      }}
-                    >
-                      Inspect Telemetry <Icon name="arrow" />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </Panel>
       <Utilities />
     </>
   );

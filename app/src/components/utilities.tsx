@@ -134,7 +134,8 @@ export function Utilities() {
           sub={`${GENERATOR} · Deterministic energy generator`}
         >
           <Notice tone="info">
-            Model parameters are configurable engineering assumptions. Persistence forecasts project the subsequent 24-hour horizon.
+            Model parameters are configurable engineering assumptions.
+            Persistence forecasts project the subsequent 24-hour horizon.
           </Notice>
           <form
             noValidate
@@ -221,7 +222,8 @@ export function Utilities() {
         </Panel>
       ) : (
         <Notice>
-          Live forecasting requires active interval meter connections and product output synchronization.
+          Live forecasting requires active interval meter connections and
+          product output synchronization.
         </Notice>
       )}
     </section>

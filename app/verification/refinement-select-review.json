@@ -1,0 +1,35 @@
+{
+  "scope": "Review of static Select/native adapter findings; no waiver of runtime accessibility",
+  "rawFindings": 6,
+  "scannerLimitation": "JSX names case-folded by scanner; authored Select tags classified as native select. The canonical component also preserves a hidden native value adapter.",
+  "literalNativeSelects": [
+    {
+      "file": "src/components/ui.tsx",
+      "line": 293,
+      "purpose": "aria-hidden true / tabIndex -1 value adapter in canonical ui.tsx"
+    }
+  ],
+  "sharedCallers": [
+    {
+      "file": "src/components/actions.tsx",
+      "sharedOwnerImported": true
+    },
+    {
+      "file": "src/components/hub.tsx",
+      "sharedOwnerImported": true
+    },
+    {
+      "file": "src/components/overview.tsx",
+      "sharedOwnerImported": true
+    },
+    {
+      "file": "src/components/investigation.tsx",
+      "sharedOwnerImported": true
+    },
+    {
+      "file": "src/components/problems.tsx",
+      "sharedOwnerImported": true
+    }
+  ],
+  "runtimeEvidence": "21 passing production browser tests: visible combobox/name/popup/option keyboard and pointer paths; five views and open governance/source dialog Axe checks. Hidden adapter is excluded from accessibility tree."
+}

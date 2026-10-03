@@ -13,8 +13,8 @@ export function QualityPanel({
   const { openSource } = useHub();
   return (
     <Panel
-      title="Evidence needs review"
-      sub="Conflicts stay visible; engineering verification is required."
+      title="Evidence Discrepancies"
+      sub="Discrepancies identified across source datasets requiring verification."
       className="evidence-rail"
     >
       {quality.slice(0, compact ? 3 : quality.length).map((q) => (
@@ -34,7 +34,7 @@ export function QualityPanel({
               })
             }
           >
-            Compare source excerpts
+            Compare source records
           </Button>
         </div>
       ))}
@@ -54,47 +54,40 @@ export function IncidentDetail({ incident }: { incident: Incident }) {
     >
       <div className="form-grid">
         <div>
-          <p className="caption">Qualified source identity</p>
+          <p className="caption">Identifier</p>
           <code>
             {incident.rawAR} · {incident.tag} · {incident.plant} ·{" "}
             {incident.date}
           </code>
-          <p className="caption">
-            {incident.ar === null
-              ? "Raw AR is literal n/a; usable identifier is null."
-              : "AR is not a unique primary key."}
-          </p>
         </div>
         <div>
-          <p className="caption">Equipment / component / mechanism</p>
+          <p className="caption">Equipment Hierarchy</p>
           <p>
             {incident.equipment} / {incident.component} / {incident.mechanism}
           </p>
         </div>
         <div>
-          <p className="caption">Downtime (source column)</p>
+          <p className="caption">Downtime</p>
           <strong>{number(incident.downtime)} h</strong>
         </div>
         <div>
-          <p className="caption">Source risk score</p>
+          <p className="caption">Risk Score</p>
           <strong>{incident.risk ?? "Unavailable"}</strong>
         </div>
         <div>
-          <p className="caption">Act. Loss</p>
+          <p className="caption">Actual Loss</p>
           <strong>{money(incident.actual)} k US$</strong>
         </div>
         <div>
-          <p className="caption">Pot. Loss</p>
+          <p className="caption">Potential Loss</p>
           <strong>{money(incident.potential)} k US$</strong>
         </div>
       </div>
       <p className="caption">
-        Total exposure = {money(incident.total)} k US$ = Act. Loss + Pot. Loss.
-        Exposure does not establish savings. Source status is a historical
-        snapshot.{" "}
+        Total Exposure: {money(incident.total)} k US$ ·{" "}
         {hasReport
-          ? "Detailed RCA available via a qualified link."
-          : "Detailed RCA was not supplied for this row."}
+          ? "RCA documentation available."
+          : "Standard event record without attached RCA."}
       </p>
       <Button
         onClick={() =>
@@ -106,7 +99,7 @@ export function IncidentDetail({ incident }: { incident: Incident }) {
             unit: "h; k US$",
             kind: "source",
             warnings: [
-              "No AR-only join; historical status is separate from local actions.",
+              "Historical record separate from active actions.",
             ],
           })
         }

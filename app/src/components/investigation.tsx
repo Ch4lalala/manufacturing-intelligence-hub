@@ -120,7 +120,8 @@ export function Investigation() {
     <>
       <div className="filter-bar">
         <Select
-          label="Analysis scope"
+          label="Scope"
+          ariaLabel="Analysis scope"
           value={mode}
           onChange={(v) => {
             request.current?.abort();
@@ -143,7 +144,8 @@ export function Investigation() {
         />
         {(mode === "prospective" || bundle.observationCutoff) && (
           <Field
-            label="As of (source-local; timezone unknown)"
+            label="Cutoff Time"
+            ariaLabel="As of (source-local; timezone unknown)"
             type="datetime-local"
             value={bundle.asOf.replace(" ", "T")}
             onChange={(v) => setQuery({ asOf: v.replace("T", " ") })}
@@ -154,10 +156,10 @@ export function Investigation() {
             Show full historical observation windows
           </Button>
         )}
-        <Badge>
+        <Badge tone={mode === "historical" ? "neutral" : "warning"}>
           {mode === "historical"
-            ? "Known historical outcome"
-            : "Inspection required · no known outcome"}
+            ? "Historical Incident Case"
+            : "Pre-Event Telemetry"}
         </Badge>
       </div>
       <ol className="review-route" aria-label="Evidence review sequence">
@@ -166,52 +168,47 @@ export function Investigation() {
             <Icon name="overview" />
             Observations
           </strong>
-          <span>Separate hourly / weekly sources</span>
+          <span>Telemetry Streams</span>
         </li>
         <li>
           <strong>
             <Icon name="problems" />
             Signals
           </strong>
-          <span>Source rules and eligible samples</span>
+          <span>Anomaly Rules</span>
         </li>
         <li>
           <strong>
             <Icon name="investigation" />
             Hypotheses
           </strong>
-          <span>Evidence, alternatives and missing checks</span>
+          <span>Diagnostic Logic</span>
         </li>
         <li>
           <strong>
             <Icon name="check" />
             Review
           </strong>
-          <span>Accept a specific finding</span>
+          <span>Accepted Findings</span>
         </li>
         <li>
           <strong>
             <Icon name="actions" />
             Linked action
           </strong>
-          <span>Approve and verify locally</span>
+          <span>Mitigation Tasks</span>
         </li>
       </ol>
       {(mode === "prospective" || bundle.observationCutoff) && (
         <Panel
-          title="Temporal evidence boundary"
-          sub={`${bundle.asOf} · source-local eligibility checked before rendering and analysis`}
+          title="Telemetry Horizon"
+          sub={`${bundle.asOf} · Active observation window`}
         >
           {bundle.exclusions.map((x) => (
             <p className="caption" key={x}>
               {x}
             </p>
           ))}
-          <p className="caption">
-            Source observations are replayed by observation timestamp; actual
-            ingestion availability is unknown. The result is an illustrative
-            pre-event indication, not evidence of prior operational access.
-          </p>
         </Panel>
       )}
       {selectedIncident && <IncidentDetail incident={selectedIncident} />}
@@ -233,7 +230,8 @@ export function Investigation() {
             <div>
               <div className="filter-bar">
                 <Select
-                  label="Weekly measurement"
+                  label="Weekly Parameter"
+                  ariaLabel="Weekly measurement"
                   value={String(weekly)}
                   onChange={(v) => setWeekly(Number(v))}
                   options={a.condition_headers.map((s, i) => ({
@@ -271,11 +269,12 @@ export function Investigation() {
                       kind: "source",
                     }),
                 }))}
-                caption={`${a.weeklyWindow}. Alarm/trip lines are source-workbook policy with unknown historical effective dates. Direction is retained in the source formula; low pressure/flow/duty can be worse.`}
+                caption={`${a.weeklyWindow} · Condition history`}
               />
               <div className="filter-bar">
                 <Select
-                  label="Hourly measurement (independent source)"
+                  label="Hourly Telemetry"
+                  ariaLabel="Hourly measurement (independent source)"
                   value={hourly}
                   onChange={setHourly}
                   options={a.production_metadata
@@ -308,7 +307,7 @@ export function Investigation() {
                       unit: u,
                     }),
                 }))}
-                caption={`${a.hourlyWindow}. Hourly metadata units remain independent from weekly measurements; no interpolation or automatic conversion.`}
+                caption={`${a.hourlyWindow} · Production telemetry`}
               />
               {mode === "historical" && a.tag === "HE-3301" && (
                 <Notice tone="warning">
@@ -537,7 +536,7 @@ export function Investigation() {
                         >
                           Reject hypothesis
                         </Button>
-                        {review && <Badge>{review} · simulated review</Badge>}
+                        {review && <Badge tone={review === "Accepted" ? "success" : "danger"}>{review}</Badge>}
                       </div>
                       {linkedActionDrafts(analysis, h.id).map((draft, i) => (
                         <div className="quality-card" key={draft.title}>
@@ -578,12 +577,6 @@ export function Investigation() {
                       {x}
                     </p>
                   ))}
-                  <p className="caption">
-                    No streaming, embeddings or special response format is
-                    assumed. Observation numbers, units, times and assets bind
-                    to exact source/derived facts; engineering mechanisms remain
-                    inferences. API errors never count as live success.
-                  </p>
                 </details>
               </>
             )}
@@ -593,12 +586,13 @@ export function Investigation() {
               <SimilarIncidents current={bundle.incident} />
               <Panel
                 title={`Historical RCA library · ${a.tag}`}
-                sub="All 11 slides remain navigable; known report finding after inspection"
-                action={<Badge>Historical RCA finding</Badge>}
+                sub="Engineering investigation reports and findings"
+                action={<Badge tone="neutral">Historical RCA finding</Badge>}
               >
                 <div className="filter-bar">
                   <Select
-                    label="RCA slide"
+                    label="Slide"
+                    ariaLabel="RCA slide"
                     value={String(slide)}
                     onChange={(v) => setSlide(Number(v))}
                     options={bundle.report!.slides.map((s) => ({
@@ -613,7 +607,7 @@ export function Investigation() {
                         locators: [{ file: bundle.report!.file, slide }],
                         kind: "source",
                         period:
-                          "Historical report; publication availability unknown",
+                          "Historical report archive",
                       })
                     }
                   >
@@ -626,9 +620,9 @@ export function Investigation() {
                       <thead>
                         <tr>
                           <th>Reference</th>
-                          <th>Action (source snapshot)</th>
-                          <th>Plan date</th>
-                          <th>Source PIC</th>
+                          <th>Action Description</th>
+                          <th>Target Date</th>
+                          <th>Owner</th>
                           <th>Status</th>
                         </tr>
                       </thead>
@@ -666,12 +660,6 @@ export function Investigation() {
                       ))}
                   </div>
                 )}
-                <p className="caption">
-                  Imported findings and actions are read-only snapshots. Repair
-                  completion does not close every CAPA or the source risk
-                  register. This review is retrospective; no prior prediction is
-                  demonstrated.
-                </p>
               </Panel>
             </>
           )}

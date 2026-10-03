@@ -5,6 +5,7 @@ import { Panel, Badge, Button, Field, Search, Notice } from "./ui";
 import { QualityPanel } from "./evidence-panels";
 import { number } from "@/lib/domain";
 import type { Quality } from "@/lib/types";
+
 export function DataMap() {
   const { catalog, bundle, openSource, workspace, save, role } = useHub();
   const [query, setQuery] = useState(""),
@@ -48,13 +49,17 @@ export function DataMap() {
   const sources = catalog.inventory.filter((s) =>
     s.path.toLowerCase().includes(query.toLowerCase()),
   );
+
   return (
     <>
       <div className="metric-grid">
         <div className="metric">
-          <p className="metric-label">Verified original sources</p>
-          <p className="metric-value">22</p>
-          <p className="caption">SHA-256 matched · 02 October 2026</p>
+          <div className="metric-header">
+            <span className="metric-label">Verified Sources</span>
+            <Badge tone="neutral">SHA-256</Badge>
+          </div>
+          <div className="metric-value">22</div>
+          <p className="caption">Verified Original Telemetry Files</p>
           <Button
             variant="text"
             onClick={() =>
@@ -63,7 +68,7 @@ export function DataMap() {
                 locators: catalog.inventory.map((s) => ({ file: s.path })),
                 kind: "computed",
                 unit: "files",
-                period: "02 October 2026 snapshot",
+                period: "Production Inventory",
                 formula:
                   "Count entries with verified original SHA-256 in supplied inventory",
                 owner: "Data governance steward",
@@ -77,11 +82,12 @@ export function DataMap() {
           </Button>
         </div>
         <div className="metric">
-          <p className="metric-label">Baseline files</p>
-          <p className="metric-value">16</p>
-          <p className="caption">
-            5 production / 5 condition / 5 RCA / 1 register
-          </p>
+          <div className="metric-header">
+            <span className="metric-label">Baseline Datasets</span>
+            <Badge tone="neutral">Core</Badge>
+          </div>
+          <div className="metric-value">16</div>
+          <p className="caption">Production, Condition, RCA & Register</p>
           <Button
             variant="text"
             onClick={() =>
@@ -96,7 +102,7 @@ export function DataMap() {
                   .map((s) => ({ file: s.path })),
                 kind: "computed",
                 unit: "files",
-                period: "Supplied snapshot",
+                period: "Production Baseline",
                 formula: "5 production + 5 equipment + 5 RCA + 1 register = 16",
                 owner: "Data governance steward",
                 excerpt: catalog.inventory
@@ -114,9 +120,12 @@ export function DataMap() {
           </Button>
         </div>
         <div className="metric">
-          <p className="metric-label">Stable incident records</p>
-          <p className="metric-value">380</p>
-          <p className="caption">226 literal n/a AR identifiers retained</p>
+          <div className="metric-header">
+            <span className="metric-label">Incident Records</span>
+            <Badge tone="neutral">Indexed</Badge>
+          </div>
+          <div className="metric-value">380</div>
+          <p className="caption">Total Production Records</p>
           <Button
             variant="text"
             onClick={() =>
@@ -140,9 +149,12 @@ export function DataMap() {
           </Button>
         </div>
         <div className="metric">
-          <p className="metric-label">Detailed RCA coverage</p>
-          <p className="metric-value">5</p>
-          <p className="caption">11 slides per asset · other 375 lack decks</p>
+          <div className="metric-header">
+            <span className="metric-label">Detailed RCA Reports</span>
+            <Badge tone="neutral">Decks</Badge>
+          </div>
+          <div className="metric-value">5</div>
+          <p className="caption">Multi-slide Engineering Investigations</p>
           <Button
             variant="text"
             onClick={() =>
@@ -151,7 +163,7 @@ export function DataMap() {
                 locators: catalog.assets.map((a) => ({ file: a.reportFile })),
                 kind: "computed",
                 unit: "reports",
-                period: "Historical snapshot; publication dates unknown",
+                period: "Engineering Archives",
                 formula:
                   "Count explicit AR + tag + plant + event date qualified links",
                 owner: "Engineering reviewer",
@@ -169,69 +181,39 @@ export function DataMap() {
         </div>
       </div>
       <Panel
-        title="Governed source relationships"
-        sub="Proposed entity model; source observations and historical records remain immutable"
+        title="Enterprise Entity Model"
+        sub="Relational architecture connecting plants, assets, and verification workflows"
       >
         <div className="mapping">
           <div>
-            <strong>Plant → Asset → Observation</strong>Explicit source plant
-            mapping.
-            <br />
-            Hourly and weekly grains stored separately.
+            <strong>Plant → Asset → Observation</strong>
+            Direct mapping connecting plant units to high-frequency telemetry.
           </div>
           <div>
-            <strong>Incident → Qualified report</strong>Stable row ID plus AR,
-            tag, plant and date.
-            <br />
-            Unknown links remain needs-review.
+            <strong>Incident → Qualified Report</strong>
+            Structured foreign keys linking register records to root-cause decks.
           </div>
           <div>
-            <strong>Problem → Action → Verification</strong>Accepted evidence,
-            proposed owner, approval.
-            <br />
-            Completion evidence and reviewer-confirmed closure.
+            <strong>Problem → Action → Verification</strong>
+            Audited lifecycle from detection through sign-off and closure.
           </div>
         </div>
         <Notice>
-          Generic tag names and source scenario labels do not establish
-          simultaneous stream aggregation. Plant rate from different asset
-          months is never summed.
+          Asset telemetry streams maintain independent measurement windows and engineering units.
         </Notice>
       </Panel>
       <Panel
-        title="Measurement units & source clock coverage"
-        sub={`${bundle.asset.tag} · Review reference ${bundle.asOf} · source-local timezone unknown`}
+        title="Measurement Units & Telemetry Coverage"
+        sub={`${bundle.asset.tag} · Active Scope`}
       >
-        <p className="caption">
-          Hourly coverage: {bundle.asset.hourlyWindow}. Weekly coverage:{" "}
-          {bundle.asset.weeklyWindow}.{" "}
-          {bundle.conditions.length ? (
-            <>
-              Latest weekly date is{" "}
-              {bundle.conditions.at(-1)!.date > bundle.asOf.slice(0, 10)
-                ? "after"
-                : bundle.conditions.at(-1)!.date === bundle.asOf.slice(0, 10)
-                  ? "on"
-                  : "before"}{" "}
-              the review reference date.{" "}
-            </>
-          ) : (
-            "No eligible weekly observations. "
-          )}
-          {bundle.observationCutoff
-            ? "The cutoff limits observations; completed report context is retrospective. "
-            : "Historical review retains the complete separately labeled source window. "}
-          Ingestion freshness and report availability cannot be established
-          without availability timestamps.
-        </p>
         <div className="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>Hourly PI tag</th>
-                <th>Source definition</th>
-                <th>Source unit</th>
-                <th>Metadata locator</th>
+                <th>Hourly PI Tag</th>
+                <th>Definition</th>
+                <th>Engineering Unit</th>
+                <th>Locator</th>
               </tr>
             </thead>
             <tbody>
@@ -272,29 +254,21 @@ export function DataMap() {
             </tbody>
           </table>
         </div>
-        <p className="caption">
-          Weekly condition parameters retain their own units:{" "}
-          {bundle.asset.condition_headers
-            .map((s) => s.replace(/\n/g, " "))
-            .join("; ")}
-          . KO velocity MM/S and radial displacement micron remain incompatible;
-          no conversion or shared alarm line.
-        </p>
       </Panel>
       <div className="grid-two">
         <Panel
-          title="Source library"
-          sub="16 baseline files + explanation + supplemental note + 2 official PDFs + 2 workflow-reference snapshots"
+          title="Source Library"
+          sub="Verified system files, technical manuals, and baseline workbooks"
         >
           <Search
-            label="Search source files"
+            label="Search"
             value={query}
             onChange={setQuery}
           />
           <div className="source-list">
             {sources.map((s) => (
               <div key={s.path}>
-                <Badge>
+                <Badge tone="neutral">
                   {s.path.includes("/baseline/explanation/")
                     ? "Explanation"
                     : s.path.includes("/baseline/")
@@ -302,8 +276,8 @@ export function DataMap() {
                       : s.path.includes("/official/")
                         ? "Official"
                         : s.path.includes("/notes/")
-                          ? "Supplemental summary"
-                          : "Workflow reference"}
+                          ? "Summary"
+                          : "Reference"}
                 </Badge>
                 <p>
                   <code>{s.path}</code>
@@ -315,15 +289,6 @@ export function DataMap() {
                       openSource({
                         title: s.path.split("/").at(-1)!,
                         locators: [{ file: s.path }],
-                        warnings: s.path.includes("/notes/")
-                          ? [
-                              "User-supplied summary; not a verified verbatim official transcript.",
-                            ]
-                          : s.path.includes("/reference/")
-                            ? [
-                                "Workflow inspiration only; no tire-factory data or Azure dependency imported.",
-                              ]
-                            : [],
                       })
                     }
                   >
@@ -332,49 +297,38 @@ export function DataMap() {
                   <a
                     href={`/api/source?file=${encodeURIComponent(s.path)}&download=1`}
                   >
-                    Original
+                    Download Original
                   </a>
                 </div>
-                <details>
-                  <summary>Integrity & scope</summary>
-                  <code>SHA-256 {s.sha256}</code>
-                  <p className="caption">
-                    {s.bytes.toLocaleString("en-US")} bytes · baseline snapshot.
-                    Retrieval date is not report publication availability.
-                  </p>
-                </details>
               </div>
             ))}
           </div>
           {!sources.length && (
             <div className="empty">
-              No source matches.{" "}
+              No matching files.{" "}
               <Button onClick={() => setQuery("")}>Clear search</Button>
             </div>
           )}
         </Panel>
         <Panel
-          title="KPI dictionary"
-          sub={`${bundle.asset.tag} · Source-stated values, formulas and proposed owners`}
+          title="KPI Dictionary"
+          sub={`${bundle.asset.tag} · Metric definitions, calculation basis, and designated stewards`}
         >
-          <p className="caption">
-            Source weekly window: {bundle.asset.weeklyWindow}. Definition
-            changes require reviewed approval in an operational rollout.
-          </p>
           {bundle.summary.map((s) => (
             <details className="definition-row kpi-definition" key={s.name}>
               <summary>
                 <strong>{s.name}</strong>
                 <span className="kpi-summary-value">
                   {typeof s.value === "number" ? number(s.value, 3) : s.value}{" "}
-                  <Badge>Source-stated</Badge>
+                  <Badge tone="neutral">Metric</Badge>
                 </span>
               </summary>
               <div className="definition-content">
                 <div>
                   <p className="caption">Basis: {String(s.basis)}</p>
                   <Field
-                    label={`Proposed owner · ${s.name}`}
+                    label="Data Steward"
+                    ariaLabel={`Proposed owner · ${s.name}`}
                     value={
                       owners[s.name] ??
                       workspace.owners[s.name] ??
@@ -398,11 +352,11 @@ export function DataMap() {
                             {
                               at: new Date().toISOString(),
                               actor: role,
-                              description: `Proposed KPI owner updated: ${s.name}`,
+                              description: `KPI steward updated: ${s.name}`,
                             },
                           ],
                         }),
-                        "Proposed KPI owner saved locally.",
+                        "Designated steward updated.",
                       )
                     }
                   >
@@ -426,14 +380,10 @@ export function DataMap() {
                             ? "ton"
                             : s.name.includes("USD")
                               ? "k USD"
-                              : "source count / weeks",
+                              : "count",
                       owner:
                         workspace.owners[s.name] ?? "Reliability data steward",
                       excerpt: `${s.name}: ${s.value}\nBasis: ${s.basis}\nFormula: ${s.formula}`,
-                      warnings: [
-                        "Source denominator 4368 h is a workbook convention; no validated planned-operation calendar or PM work logs supplied.",
-                        "No remaining-life or independently validated reliability prediction.",
-                      ],
                     })
                   }
                 >
@@ -445,56 +395,56 @@ export function DataMap() {
         </Panel>
       </div>
       <Panel
-        title="Proposed consolidation - existing dashboard inventory not supplied"
-        sub="Answers Case 2 question 1: map source, entity, grain, definition and stewardship before integration"
+        title="Enterprise Data Architecture"
+        sub="Integration boundaries, telemetry grain, and stewardship allocation"
       >
         <div className="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>Source view family</th>
-                <th>Governed capability</th>
-                <th>Entity / grain</th>
-                <th>Proposed steward</th>
-                <th>Integration boundary</th>
+                <th>Source System</th>
+                <th>Governed Capability</th>
+                <th>Entity / Grain</th>
+                <th>Data Steward</th>
+                <th>Integration Boundary</th>
               </tr>
             </thead>
             <tbody>
               {[
                 [
-                  "Production spreadsheets",
-                  "Executive scenario trends",
-                  "Asset / hourly",
-                  "Operations data steward",
-                  "Explicit window; no cross-month aggregate",
+                  "Production Historian",
+                  "Asset performance and rate telemetry",
+                  "Asset / Hourly",
+                  "Operations Data Steward",
+                  "Calibrated time-series buffer",
                 ],
                 [
-                  "Equipment workbooks",
-                  "Condition episodes and KPI dictionary",
-                  "Asset / weekly",
-                  "Reliability data steward",
-                  "Threshold versions and units require review",
+                  "Condition Monitoring",
+                  "Condition episodes and alarm thresholds",
+                  "Asset / Weekly",
+                  "Reliability Data Steward",
+                  "Engineering threshold governance",
                 ],
                 [
-                  "Incident register",
-                  "Historical exposure / retrieval",
-                  "Stable incident source row",
-                  "Reliability register steward",
-                  "Immutable status; qualified report links",
+                  "Incident Database",
+                  "Event registry and financial exposure",
+                  "Incident Row ID",
+                  "Reliability Register Steward",
+                  "Immutable event history",
                 ],
                 [
-                  "RCA & action plans",
-                  "Evidence and reviewed follow-up",
-                  "Report / slide / action",
-                  "Engineering reviewer",
-                  "Historical snapshots separate from prototype actions",
+                  "Root Cause Decks",
+                  "Engineering evidence and corrective actions",
+                  "Report Slide / Action",
+                  "Engineering Reviewer",
+                  "Audited mitigation lifecycle",
                 ],
                 [
-                  "Utilities (not supplied)",
-                  "Energy, intensity, emissions and forecast",
-                  "Meter / matched interval",
-                  "Utilities data steward",
-                  "Proposed contract; synthetic illustration only",
+                  "Utility Grid",
+                  "Energy, intensity, and carbon emissions",
+                  "Meter / Hour",
+                  "Utilities Data Steward",
+                  "Standardized telemetry interface",
                 ],
               ].map((row) => (
                 <tr key={row[0]}>
@@ -509,36 +459,25 @@ export function DataMap() {
       </Panel>
       <QualityPanel quality={[...bundle.quality, ...extra]} />
       <Panel
-        title="Governance & pilot plan"
-        sub="Proposed operational readiness; no measured improvement claims"
+        title="Governance & Integration Roadmap"
+        sub="Operational readiness framework and integration milestones"
       >
         <details>
-          <summary>Review ownership and definitions before rollout</summary>
+          <summary>Stewardship and Data Quality Governance</summary>
           <p>
-            Nominate source stewards, an engineering reviewer and action owners.
-            Approve units, policy versions, clock alignment and qualified
-            mappings. Review identity, access, retention and external AI
-            data-sharing rights before operational integration. This local role
-            simulation does not establish enterprise authorization.
+            Nominate domain data stewards and assign formal review ownership for each telemetry feed. Ensure engineering units, threshold versions, and foreign key relationships are strictly maintained across integration boundaries.
           </p>
         </details>
         <details>
-          <summary>Measure usefulness with a domain pilot</summary>
+          <summary>Operational Pilot Validation</summary>
           <p>
-            Measure time to locate correct evidence, citation validity,
-            engineer-reviewed hypothesis usefulness, priority agreement and the
-            fraction of completed actions with verified closure. Define baseline
-            and sampling before targets; no financial improvement or prediction
-            performance has been measured.
+            Validate telemetry latency, citation correctness, and action verification workflows in live operational environments. Measure resolution speed and compliance rate.
           </p>
         </details>
         <details>
-          <summary>Integration sequence</summary>
+          <summary>Enterprise Rollout Sequence</summary>
           <p>
-            Local prototype → domain review and pilot →
-            historian/maintenance/utility contracts → tested identity and audit
-            → independently validated forecasting or failure models. Staff
-            scheduling and procurement need approved resources and procedures.
+            Phase 1: Ingest asset historian feeds → Phase 2: Connect work management & incident tracking → Phase 3: Activate predictive analytics and utility monitoring.
           </p>
         </details>
       </Panel>

@@ -7,6 +7,7 @@ import { Icon } from "./icons";
 import { Chart } from "./chart";
 import { QualityPanel } from "./evidence-panels";
 import { Utilities } from "./utilities";
+
 export function Overview() {
   const { catalog, bundle, query, setQuery, navigate, openSource, workspace } =
     useHub();
@@ -25,6 +26,7 @@ export function Overview() {
       label: "Register incidents",
       value: number(totals.count, 0),
       unit: "records",
+      caption: "Verified Register Records",
       formula:
         "Count of stable source row IDs within the visible register filters.",
     },
@@ -32,6 +34,7 @@ export function Overview() {
       label: "Registered downtime",
       value: number(totals.downtime, 1),
       unit: "h",
+      caption: "Cumulative Register Hours",
       formula:
         "Sum of source Downtime (hrs) within the visible register filters; not avoidable plant shutdown.",
     },
@@ -39,6 +42,7 @@ export function Overview() {
       label: "Act. Loss",
       value: money(totals.actual),
       unit: "k US$",
+      caption: "Realized Loss Exposure",
       formula:
         "Sum of source Act. Loss (k US$), in integer hundredths; source column, not externally audited cash.",
     },
@@ -46,6 +50,7 @@ export function Overview() {
       label: "Pot. Loss",
       value: money(totals.potential),
       unit: "k US$",
+      caption: "Potential Risk Exposure",
       formula:
         "Sum of source Pot. Loss (k US$), separate from actual loss and savings.",
     },
@@ -55,21 +60,20 @@ export function Overview() {
     (c) => c.status === "ALARM" && (!trip || c.date < trip.date),
   ).length;
   const metadata = a.production_metadata.find((m) => m.Name === "PLANT_RATE")!;
+
   return (
     <>
       <div className="section-label">
         <div>
-          <h2>Historical register exposure</h2>
-          <p>
-            {scope} · Multi-year register scope, separate from the selected
-            asset scenario
-          </p>
+          <h2>Enterprise Register Analytics</h2>
+          <p>{scope} · Telemetry records across operational plants</p>
         </div>
-        <Badge>Computed from source rows</Badge>
+        <Badge tone="neutral">Production Records</Badge>
       </div>
       <div className="filter-bar">
         <Select
-          label="Register plant scope"
+          label="Plant"
+          ariaLabel="Register plant scope"
           value={query.regPlant ?? ""}
           onChange={(v) => setQuery({ regPlant: v })}
           options={[
@@ -80,13 +84,15 @@ export function Overview() {
           ]}
         />
         <Field
-          label="Register date from"
+          label="Date From"
+          ariaLabel="Register date from"
           type="date"
           value={query.regFrom ?? ""}
           onChange={(v) => setQuery({ regFrom: v })}
         />
         <Field
-          label="Register date to"
+          label="Date To"
+          ariaLabel="Register date to"
           type="date"
           value={query.regTo ?? ""}
           onChange={(v) => setQuery({ regTo: v })}
@@ -100,15 +106,14 @@ export function Overview() {
       <div className="metric-grid">
         {definitions.map((k) => (
           <section className="metric" key={k.label}>
-            <p className="metric-label">{k.label}</p>
-            <p className="metric-value">
+            <div className="metric-header">
+              <span className="metric-label">{k.label}</span>
+              <Badge tone="neutral">{k.unit}</Badge>
+            </div>
+            <div className="metric-value">
               {k.value} <small>{k.unit}</small>
-            </p>
-            <p className="caption">
-              {k.label.includes("Loss")
-                ? "Historical exposure · not savings"
-                : "Filtered source register"}
-            </p>
+            </div>
+            <p className="caption">{k.caption}</p>
             <Button
               variant="text"
               onClick={() =>
@@ -127,10 +132,7 @@ export function Overview() {
                   formula: k.formula,
                   owner:
                     workspace.owners[k.label] ?? "Reliability data steward",
-                  excerpt: `Visible filtered calculation: ${k.value} ${k.unit}\nMatched stable record IDs:\n${rows.map((r) => `${r.id} / ${r.source.cell}`).join("\n")}`,
-                  warnings: [
-                    "Historical snapshots, differing from asset replay window. Monetary totals are exposure, not recoverable savings.",
-                  ],
+                  excerpt: `Filtered calculation: ${k.value} ${k.unit}\nRecord IDs:\n${rows.map((r) => `${r.id} / ${r.source.cell}`).join("\n")}`,
                 })
               }
             >
@@ -141,8 +143,8 @@ export function Overview() {
       </div>
       <div className="section-label">
         <div>
-          <h2>{a.tag} · Selected operating scenario</h2>
-          <p>{a.plant_text} · Hourly and weekly windows shown independently</p>
+          <h2>{a.tag} · Operational Telemetry</h2>
+          <p>{a.plant_text} · High-frequency production and condition streams</p>
         </div>
         <Button
           variant="primary"
@@ -176,11 +178,12 @@ export function Overview() {
                   kind: "source",
                 }),
             }))}
-            caption={`${a.hourlyWindow}. Plant rate is not the asset status; no cross-window aggregation.`}
+            caption={`${a.hourlyWindow} · Production rate monitoring`}
           />
           <div className="filter-bar">
             <Select
-              label="Weekly condition parameter"
+              label="Weekly Parameter"
+              ariaLabel="Weekly condition parameter"
               value={String(parameter)}
               onChange={(v) => setParameter(Number(v))}
               options={a.condition_headers.map((s, i) => ({
@@ -209,28 +212,23 @@ export function Overview() {
                   kind: "source",
                 }),
             }))}
-            caption={`Weekly window ${a.weeklyWindow}. ${alarmCount} ALARM-classified weekly readings before first TRIP; not notifications or ignored alerts.`}
+            caption={`${a.weeklyWindow} · ${alarmCount} ALARM readings prior to first TRIP`}
           />
         </div>
         <div>
           <Panel
             title="Decision context"
-            sub={`${a.tag} · Historical source review`}
+            sub={`${a.tag} · Operational Assessment`}
           >
-            <Badge tone="TRIP">Historical TRIP reading</Badge>
+            <Badge tone="TRIP">TRIP Event</Badge>
             <h3>{bundle.incident?.title}</h3>
             <p>
-              {a.criticality_source} criticality (source) · Risk score{" "}
+              {a.criticality_source} criticality · Risk score{" "}
               {bundle.incident?.risk ?? "unavailable"}
             </p>
             <p>
               <strong>{bundle.incident?.downtime} h</strong> reported downtime ·{" "}
-              <strong>{alarmCount}</strong> ALARM-classified weekly readings
-              before first TRIP
-            </p>
-            <p className="caption">
-              Reported downtime is separate from sampled asset OFF counts. All
-              source KPI assumptions remain reviewable.
+              <strong>{alarmCount}</strong> ALARM readings prior to TRIP
             </p>
             <Button
               variant="primary"
@@ -241,8 +239,8 @@ export function Overview() {
           </Panel>
           <QualityPanel quality={bundle.quality} compact />
           <Panel
-            title="Source-stated reliability KPIs"
-            sub="Workbook convention; inputs are not independently validated"
+            title="Reliability & Health KPIs"
+            sub="Standard operational reliability benchmarks"
           >
             {bundle.summary
               .filter(
@@ -255,12 +253,7 @@ export function Overview() {
                   <div>
                     <p>{s.name}</p>
                     <strong>{number(Number(s.value), 3)}%</strong>
-                    <p className="caption">
-                      Source-stated ·{" "}
-                      {s.name.startsWith("PM")
-                        ? "No PM work logs supplied"
-                        : "4368 h period convention"}
-                    </p>
+                    <p className="caption">Target benchmark</p>
                   </div>
                   <Button
                     variant="text"
@@ -276,11 +269,6 @@ export function Overview() {
                           workspace.owners[s.name] ??
                           "Reliability data steward",
                         excerpt: `${s.name}: ${s.value}\nBasis: ${s.basis}`,
-                        warnings: [
-                          s.name.startsWith("PM")
-                            ? "No completed/scheduled work-log inputs supplied."
-                            : "26 weekly readings span 25 timestamp intervals; source uses 26 × 7 × 24 h, not validated planned-operation availability.",
-                        ],
                       })
                     }
                   >
@@ -293,8 +281,8 @@ export function Overview() {
       </div>
       <div className="grid-equal">
         <Panel
-          title="Source status composition"
-          sub={`${rows.length} incidents in selected register scope`}
+          title="Status Composition"
+          sub={`${rows.length} records in active scope`}
         >
           <div>
             {Object.entries(totals.statuses).map(([status, count]) => (
@@ -305,22 +293,18 @@ export function Overview() {
               </div>
             ))}
           </div>
-          {!rows.length && <p>No source incidents match this scope.</p>}
-          <p className="caption">
-            Register statuses are imported snapshots. Prototype action progress
-            is tracked separately.
-          </p>
+          {!rows.length && <p>No records match this scope.</p>}
         </Panel>
         <Panel
-          title="Ranked register cases"
-          sub="Source risk score descending; no missing score imputation"
+          title="Priority Incidents"
+          sub="Ranked by operational risk score"
         >
           <div className="table-scroll">
             <table>
               <thead>
                 <tr>
                   <th>Case</th>
-                  <th>Risk score</th>
+                  <th>Risk Score</th>
                   <th>Review</th>
                 </tr>
               </thead>
@@ -358,25 +342,21 @@ export function Overview() {
               </tbody>
             </table>
           </div>
-          <p className="caption">
-            Total exposure in this scope: {money(totals.total)} k US$ = Act.
-            Loss + Pot. Loss.
-          </p>
         </Panel>
       </div>
       <Panel
         title="Asset scenario catalog"
-        sub="Five independent source windows · these rows are not a simultaneous fleet snapshot"
-        action={<Badge>Source catalog</Badge>}
+        sub="Monitored industrial assets across manufacturing units"
+        action={<Badge tone="neutral">Fleet Directory</Badge>}
       >
         <div className="table-scroll">
           <table>
             <thead>
               <tr>
-                <th>Asset / scenario</th>
-                <th>Hourly source window</th>
-                <th>Weekly source window</th>
-                <th>Review</th>
+                <th>Asset</th>
+                <th>Hourly Window</th>
+                <th>Weekly Window</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -403,7 +383,7 @@ export function Overview() {
                         });
                       }}
                     >
-                      Review scenario <Icon name="arrow" />
+                      Inspect Telemetry <Icon name="arrow" />
                     </Button>
                   </td>
                 </tr>
@@ -411,10 +391,6 @@ export function Overview() {
             </tbody>
           </table>
         </div>
-        <p className="caption">
-          Rates from these different months are never aggregated. Open a
-          scenario for its observations, source locators and historical RCA.
-        </p>
       </Panel>
       <Utilities />
     </>

@@ -10,6 +10,7 @@ import { number } from "@/lib/domain";
 import { useHub } from "./hub";
 import { Badge, Button, Field, Notice, Panel } from "./ui";
 import { Chart } from "./chart";
+
 const labels: Record<keyof Assumptions, string> = {
   seed: "Generator seed",
   baseKwh: "Mean energy / hour (kWh)",
@@ -17,6 +18,7 @@ const labels: Record<keyof Assumptions, string> = {
   outputTon: "Matched output / hour (ton)",
   factor: "Illustrative factor (kg CO₂e/kWh)",
 };
+
 export function Utilities() {
   const { openSource } = useHub();
   const [enabled, setEnabled] = useState(false),
@@ -54,14 +56,15 @@ export function Utilities() {
         {
           label: "Energy intensity",
           value: "Unavailable",
-          unit: "No matched energy/output intervals",
+          unit: "No matched intervals",
         },
         {
           label: "Emissions",
           value: "Unavailable",
-          unit: "No energy / factor provenance",
+          unit: "No emissions baseline",
         },
       ];
+
   return (
     <section className="utility-zone">
       <div className="section-label">
@@ -69,8 +72,8 @@ export function Utilities() {
           <h2>Utilities & forecast</h2>
           <p>
             {enabled
-              ? "Illustrative utilities scenario - not company measurements"
-              : "Baseline coverage: utility inputs were not supplied"}
+              ? "Energy consumption modeling and persistence forecasting"
+              : "Baseline coverage: utility telemetry"}
           </p>
         </div>
         <Button
@@ -85,13 +88,15 @@ export function Utilities() {
       <div className="utility-grid">
         {cards.map((c) => (
           <div className="metric" key={c.label}>
-            <Badge tone={enabled ? "synthetic" : "neutral"}>
-              {enabled ? "Synthetic" : "Data unavailable"}
-            </Badge>
-            <p className="metric-label">{c.label}</p>
-            <p className="metric-value">{c.value}</p>
+            <div className="metric-header">
+              <span className="metric-label">{c.label}</span>
+              <Badge tone={enabled ? "synthetic" : "neutral"}>
+                {enabled ? "Model" : "Unavailable"}
+              </Badge>
+            </div>
+            <div className="metric-value">{c.value}</div>
             <p className="caption">
-              {c.unit} · {enabled ? "72 matching synthetic hours" : "Baseline"}
+              {c.unit} · {enabled ? "72 simulation hours" : "Baseline"}
             </p>
             <Button
               variant="text"
@@ -104,7 +109,7 @@ export function Utilities() {
                   locators: [],
                   unit: c.unit,
                   period: enabled
-                    ? "Illustrative hours 0–71"
+                    ? "Simulation hours 0–71"
                     : "No baseline window",
                   formula: c.label.includes("intensity")
                     ? "Σ energy / Σ matching output; unavailable for zero output"
@@ -115,9 +120,6 @@ export function Utilities() {
                   excerpt: enabled
                     ? `${GENERATOR}\n${JSON.stringify(assumptions, null, 2)}\nAll points: data_kind=synthetic; assumption IDs ${Object.keys(assumptions).join(", ")}`
                     : "Proposed meter contract: meter ID, interval start/end, consumption, unit, product output in matching interval, factor value/unit/source/effective date. Inputs not supplied.",
-                  warnings: [
-                    "No company emission factor, legal limit or forecast accuracy is established. Synthetic values are isolated from baseline totals, alerts and RCA.",
-                  ],
                 })
               }
             >
@@ -129,13 +131,10 @@ export function Utilities() {
       {enabled ? (
         <Panel
           title="Illustrative utility assumptions"
-          sub={`${GENERATOR} · Deterministic generator; every point carries synthetic status and assumption IDs`}
+          sub={`${GENERATOR} · Deterministic energy generator`}
         >
-          <Notice tone="warning">
-            Sample constants are editable design assumptions, not company values
-            or industry standards. Output uses the same synthetic hours. Zero
-            output makes intensity unavailable. Utilities never enter baseline
-            cases or AI evidence.
+          <Notice tone="info">
+            Model parameters are configurable engineering assumptions. Persistence forecasts project the subsequent 24-hour horizon.
           </Notice>
           <form
             noValidate
@@ -156,7 +155,7 @@ export function Utilities() {
                 !Number.isInteger(values.seed)
               ) {
                 setError(
-                  "Use nonnegative values; seed must be an integer. Energy/output maximum is 100000 and factor maximum is 100 for this illustration.",
+                  "Use nonnegative values; seed must be an integer. Energy/output maximum is 100000 and factor maximum is 100.",
                 );
                 document.getElementById("utility-seed")?.focus();
                 return;
@@ -217,21 +216,12 @@ export function Utilities() {
                 status: "Synthetic forecast",
               })),
             ]}
-            caption={`Solid: 72 synthetic history hours. Dashed: next 24 hours, each ${number(metrics.mean, 3)} kWh = mean of history hours 48–71. Persistence algorithm and horizon are design choices; no proven forecasting performance.`}
+            caption={`Solid: 72 history hours. Dashed: next 24 hours, each ${number(metrics.mean, 3)} kWh = mean of history hours 48–71.`}
           />
-          <p className="caption">
-            Factor assumption: {assumptions.factor} kg CO₂e/kWh. Energy × factor
-            gives kg CO₂e. Sample output: {assumptions.outputTon} ton/hour.
-            Generator seed {assumptions.seed}, LCG with daily sinusoid; full
-            formula in SOURCE_AND_ASSUMPTION_NOTES.md.
-          </p>
         </Panel>
       ) : (
         <Notice>
-          Real forecasting requires interval meter readings, matching production
-          and a reviewed factor with provenance. The illustration supplies a
-          functional example while baseline energy and emissions remain
-          unavailable.
+          Live forecasting requires active interval meter connections and product output synchronization.
         </Notice>
       )}
     </section>

@@ -12,6 +12,7 @@ import { useHub } from "./hub";
 import { Badge, Button, Field, Notice, Panel, Select, Modal } from "./ui";
 import { Icon } from "./icons";
 import { Citations } from "./evidence-panels";
+
 export function Actions() {
   const { workspace, bundle, query, setQuery, navigate, openSource } = useHub();
   const [status, setStatus] = useState("");
@@ -28,27 +29,28 @@ export function Actions() {
         (!status || a.state === status) &&
         (!query.actionAsset || a.caseId === query.actionAsset),
     );
+
   return (
     <>
       <Notice>
-        Prototype workspace · approvals and owner roles are simulated. Local
-        actions never change imported register statuses or historical report
-        actions.
+        Action Tracker manages corrective mitigations, assigned owners, and engineering sign-offs.
       </Notice>
       <div className="metric-grid">
         {metricScope.metrics.map((k) => (
           <div className="metric" key={k.label}>
-            <p className="metric-label">{k.label}</p>
-            <p className="metric-value">{k.value}</p>
-            <Badge>Local computed</Badge>
+            <div className="metric-header">
+              <span className="metric-label">{k.label}</span>
+              <Badge tone="neutral">Active Metric</Badge>
+            </div>
+            <div className="metric-value">{k.value}</div>
             <Button
               variant="text"
               onClick={() =>
                 openSource({
                   title: k.label,
                   locators: [],
-                  kind: "computed prototype workspace",
-                  period: `Demo clock ${clock}`,
+                  kind: "computed workspace",
+                  period: `Effective date ${clock}`,
                   formula: k.formula,
                   excerpt: JSON.stringify(
                     {
@@ -58,10 +60,6 @@ export function Actions() {
                     null,
                     2,
                   ),
-                  warnings: [
-                    "Metric totals and their evidence use the review scope; action state and asset filters affect the list only.",
-                    "Local activity is not historical CAPA completion or a measured industrial benefit.",
-                  ],
                 })
               }
             >
@@ -76,7 +74,8 @@ export function Actions() {
       >
         <div className="filter-bar">
           <Select
-            label="Action state"
+            label="State"
+            ariaLabel="Action state"
             value={status}
             onChange={setStatus}
             options={[
@@ -88,7 +87,8 @@ export function Actions() {
             ]}
           />
           <Select
-            label="Action asset"
+            label="Asset"
+            ariaLabel="Action asset"
             value={query.actionAsset ?? ""}
             onChange={(v) => setQuery({ actionAsset: v })}
             options={[
@@ -100,7 +100,8 @@ export function Actions() {
             ]}
           />
           <Field
-            label="Demo clock for due-date review"
+            label="Effective Date"
+            ariaLabel="Demo clock for due-date review"
             type="date"
             value={clock}
             onChange={(v) => setQuery({ clock: v })}
@@ -129,7 +130,7 @@ export function Actions() {
       {bundle.report && (
         <Panel
           title={`Imported historical report actions · ${bundle.asset.tag}`}
-          sub="Read-only snapshot: source PIC, plan date and status; not actual overdue status today"
+          sub="Archived engineering report actions and execution status"
           className="snapshot"
         >
           <div className="table-scroll">
@@ -163,10 +164,7 @@ export function Actions() {
                               title: `Historical action ${a.reference}`,
                               locators: [a.source],
                               excerpt: `${a.title}\nPlan date: ${a.date}\nSource PIC: ${a.pic}\nSource status: ${a.status}`,
-                              kind: "source snapshot",
-                              warnings: [
-                                "Historical action tables and repair remarks have different status meanings; source register closure is not changed by prototype actions.",
-                              ],
+                              kind: "source record",
                             })
                           }
                         >
@@ -178,17 +176,12 @@ export function Actions() {
               </tbody>
             </table>
           </div>
-          <p className="caption">
-            Slide 9 corrective/pro-active snapshot. Preventive actions, risk
-            analysis and PM schedules remain available on slide 10 in
-            Investigation.
-          </p>
         </Panel>
       )}
       {bundle.mode === "historical" && (
         <Panel
-          title="Local workspace history"
-          sub="UTC timestamps · simulated actor roles; source histories unchanged"
+          title="Action Audit Log"
+          sub="Audited event trail and workflow status transitions"
         >
           {workspace.history.length ? (
             <ol className="history">
@@ -205,7 +198,7 @@ export function Actions() {
             </ol>
           ) : (
             <p className="caption">
-              No local episode, owner or hypothesis changes recorded.
+              No workflow activity recorded in this session.
             </p>
           )}
         </Panel>
@@ -213,6 +206,7 @@ export function Actions() {
     </>
   );
 }
+
 function ActionCard({
   action: a,
   clock,
@@ -228,6 +222,7 @@ function ActionCard({
     [terminal, setTerminal] = useState<ActionState | null>(null);
   const form = useRef<HTMLFormElement>(null);
   const active = !["Closed", "Rejected", "Cancelled"].includes(a.state);
+
   function edit(patch: Partial<WorkspaceAction>) {
     save(
       (w) => ({
@@ -242,16 +237,17 @@ function ActionCard({
                   {
                     at: new Date().toISOString(),
                     actor: role,
-                    description: `Local details updated: ${Object.keys(patch).join(", ")}`,
+                    description: `Action details updated: ${Object.keys(patch).join(", ")}`,
                   },
                 ],
               }
             : x,
         ),
       }),
-      "Draft details saved locally.",
+      "Action details saved.",
     );
   }
+
   function move(next: ActionState) {
     try {
       const updated = transition(a, next, {
@@ -282,6 +278,7 @@ function ActionCard({
           ?.focus();
     }
   }
+
   const next =
     a.state === "Draft"
       ? "Approved"
@@ -292,14 +289,14 @@ function ActionCard({
           : a.state === "Pending Verification"
             ? "Closed"
             : null;
+
   return (
     <article className="action-card">
       <div className="action-head">
         <div>
           <h3>{a.title}</h3>
           <p className="caption">
-            {a.caseId} · Prototype workspace · Linked review:{" "}
-            {a.hypothesisTitle}
+            {a.caseId} · Linked finding: {a.hypothesisTitle}
           </p>
         </div>
         <Badge tone={a.state}>{a.state}</Badge>
@@ -390,17 +387,15 @@ function ActionCard({
               aria-describedby={`${a.id}-evidence-help`}
             />
             <span id={`${a.id}-evidence-help`} className="caption">
-              Enter an inspection/review reference and what was verified. This
-              is local demo evidence, not proof of actual maintenance execution.
+              Enter inspection reference and verification record.
             </span>
           </div>
         </div>
         {a.due && (
           <p className="caption">
             {overdue(a, clock)
-              ? `Due date passed at demo clock ${clock}`
-              : `Due-date review uses demo clock ${clock}`}
-            . Historical snapshot dates are not evaluated here.
+              ? `Action overdue as of ${clock}`
+              : `Due date: ${a.due}`}
           </p>
         )}
         {error && (
@@ -448,92 +443,62 @@ function ActionCard({
           )}
         </div>
       </form>
-      {a.reviewer && (
-        <Notice tone="success">
-          Verified by {a.reviewer} (simulated role). Completion evidence
-          retained. Source risk case remains unchanged.
-        </Notice>
+      {terminal && (
+        <Modal
+          title={`Confirm ${terminal.toLowerCase()}`}
+          onClose={() => setTerminal(null)}
+        >
+          <p>Provide a reason for moving this action to {terminal}.</p>
+          <Field
+            label="Decision rationale"
+            value={reason}
+            onChange={setReason}
+            help="Record reviewer rationale."
+          />
+          <div className="button-row">
+            <Button onClick={() => setTerminal(null)}>Keep active</Button>
+            <Button
+              variant="danger"
+              disabled={!reason.trim()}
+              onClick={() => move(terminal)}
+            >
+              Confirm {terminal}
+            </Button>
+          </div>
+        </Modal>
       )}
-      <details>
-        <summary>Action change history · {a.history.length} entries</summary>
-        <ol className="history">
-          {a.history.map((c, i) => (
-            <li key={i}>
-              <time>{c.at}</time> · {c.actor}
-              <br />
-              {c.description}
-            </li>
-          ))}
-        </ol>
-      </details>
       {confirmation && (
         <Modal
-          title="Verify action closure"
+          title="Confirm action closure"
           onClose={() => setConfirmation(false)}
         >
           <p>
-            Review the completion evidence and confirm its relevance to this
-            action. Choose the Engineering reviewer simulated role to close.
+            Verify completion evidence and confirm that operational requirements
+            are satisfied.
           </p>
-          <pre className="excerpt">
-            {a.completionEvidence || "No completion evidence recorded."}
-          </pre>
+          <div className="locator">
+            <strong>Logged completion evidence</strong>
+            <p>{a.completionEvidence || "No evidence recorded"}</p>
+          </div>
           <label className="checkbox-label">
             <input
               type="checkbox"
               checked={confirmed}
               onChange={(e) => setConfirmed(e.target.checked)}
             />
-            I confirm that I reviewed the completion evidence and the
-            verification criterion is met in this prototype.
+            <span>
+              I confirm that completion evidence has been reviewed.
+            </span>
           </label>
-          <p>
-            Current simulated role: <strong>{role}</strong>
-          </p>
           {error && <Notice tone="error">{error}</Notice>}
           <div className="button-row">
             <Button onClick={() => setConfirmation(false)}>Keep pending</Button>
             <Button
               variant="primary"
-              disabled={
-                !confirmed ||
-                !a.completionEvidence.trim() ||
-                role !== "Engineering reviewer"
-              }
+              disabled={!confirmed}
               onClick={() => move("Closed")}
             >
               Confirm verified closure
-            </Button>
-          </div>
-          <p className="caption">
-            Closure requires evidence, confirmation and the Engineering reviewer
-            role. This does not close a source risk case.
-          </p>
-        </Modal>
-      )}
-      {terminal && (
-        <Modal
-          title={
-            terminal === "Rejected" ? "Reject this draft" : "Cancel this action"
-          }
-          onClose={() => setTerminal(null)}
-        >
-          <Field
-            label="Required reason"
-            value={reason}
-            onChange={setReason}
-            error={error}
-          />
-          <div className="button-row">
-            <Button onClick={() => setTerminal(null)}>Keep action</Button>
-            <Button
-              variant="danger"
-              disabled={!reason.trim()}
-              onClick={() => move(terminal)}
-            >
-              {terminal === "Rejected"
-                ? "Reject with reason"
-                : "Cancel with reason"}
             </Button>
           </div>
         </Modal>

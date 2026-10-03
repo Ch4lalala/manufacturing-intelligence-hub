@@ -9,6 +9,7 @@ import {
 } from "react";
 import { Icon } from "./icons";
 import type { Evidence, Locator } from "@/lib/types";
+
 export function Button({
   children,
   variant = "outline",
@@ -31,6 +32,7 @@ export function Button({
     </button>
   );
 }
+
 export function Badge({
   children,
   tone = "neutral",
@@ -53,6 +55,7 @@ export function Badge({
     </span>
   );
 }
+
 export function Panel({
   title,
   sub,
@@ -79,6 +82,7 @@ export function Panel({
     </section>
   );
 }
+
 export function Notice({
   children,
   tone = "info",
@@ -101,34 +105,168 @@ export function Notice({
     </div>
   );
 }
+
 export function Select({
   label,
   value,
   onChange,
   options,
   id: customId,
+  className = "",
+  placeholder = "Select...",
+  ariaLabel,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
   id?: string;
+  className?: string;
+  placeholder?: string;
+  ariaLabel?: string;
 }) {
   const generated = useId(),
     id = customId ?? generated;
+  const [open, setOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const nativeSelectRef = useRef<HTMLSelectElement>(null);
+
+  const selectedOption = options.find((o) => o.value === value);
+  const effectiveAriaLabel = ariaLabel ?? label;
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const openDropdown = () => {
+    const idx = options.findIndex((o) => o.value === value);
+    setHighlightedIndex(idx >= 0 ? idx : 0);
+    setOpen(true);
+  };
+
+  const toggleDropdown = () => {
+    if (open) {
+      setOpen(false);
+    } else {
+      openDropdown();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (!open) {
+        openDropdown();
+      } else {
+        setHighlightedIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
+      }
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!open) {
+        openDropdown();
+      } else {
+        setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
+      }
+    } else if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (open && highlightedIndex >= 0 && options[highlightedIndex]) {
+        onChange(options[highlightedIndex].value);
+        setOpen(false);
+        triggerRef.current?.focus();
+      } else {
+        openDropdown();
+      }
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setOpen(false);
+      triggerRef.current?.focus();
+    } else if (e.key === "Tab") {
+      setOpen(false);
+    }
+  };
+
   return (
-    <div className="field">
-      <label htmlFor={id}>{label}</label>
-      <select id={id} value={value} onChange={(e) => onChange(e.target.value)}>
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </select>
+    <div className={`field custom-select-field ${className}`} ref={containerRef}>
+      <label htmlFor={id} className="field-label">{label}</label>
+      <div className="custom-select-wrapper">
+        <button
+          type="button"
+          ref={triggerRef}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-label={effectiveAriaLabel}
+          onClick={toggleDropdown}
+          onKeyDown={handleKeyDown}
+          className={`custom-select-trigger ${open ? "is-open" : ""}`}
+        >
+          <span className={`custom-select-value ${!selectedOption ? "is-placeholder" : ""}`}>
+            {selectedOption ? selectedOption.label : placeholder}
+          </span>
+          <Icon name="chevron-down" className="custom-select-chevron" />
+        </button>
+
+        {open && (
+          <ul
+            role="listbox"
+            className="custom-select-popover"
+            tabIndex={-1}
+          >
+            {options.map((o, idx) => {
+              const isSelected = o.value === value;
+              const isHighlighted = idx === highlightedIndex;
+              return (
+                <li
+                  key={o.value}
+                  role="option"
+                  aria-selected={isSelected}
+                  className={`custom-select-option ${isSelected ? "is-selected" : ""} ${isHighlighted ? "is-highlighted" : ""}`}
+                  onClick={() => {
+                    onChange(o.value);
+                    setOpen(false);
+                    triggerRef.current?.focus();
+                  }}
+                  onMouseEnter={() => setHighlightedIndex(idx)}
+                >
+                  <span className="option-label">{o.label}</span>
+                  {isSelected && <Icon name="check" className="option-check" />}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        <select
+          ref={nativeSelectRef}
+          id={id}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          tabIndex={-1}
+          aria-hidden="true"
+          aria-label={effectiveAriaLabel}
+          className="sr-only-select"
+        >
+          {options.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }
+
 export function Field({
   label,
   value,
@@ -137,6 +275,7 @@ export function Field({
   error,
   help,
   id: customId,
+  ariaLabel,
   ...rest
 }: {
   label: string;
@@ -150,21 +289,27 @@ export function Field({
   max?: string;
   step?: string;
   placeholder?: string;
+  ariaLabel?: string;
 }) {
   const gen = useId(),
     id = customId ?? gen;
+  const isDate = type === "date" || type === "datetime-local";
   return (
-    <div className="field">
+    <div className={`field ${isDate ? "date-field" : ""}`}>
       <label htmlFor={id}>{label}</label>
-      <input
-        {...rest}
-        id={id}
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        aria-invalid={!!error}
-        aria-describedby={error || help ? `${id}-help` : undefined}
-      />
+      <div className={isDate ? "input-wrapper with-icon" : "input-wrapper"}>
+        {isDate && <Icon name="calendar" className="field-prefix-icon" />}
+        <input
+          {...rest}
+          id={id}
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          aria-invalid={!!error}
+          aria-label={ariaLabel ?? label}
+          aria-describedby={error || help ? `${id}-help` : undefined}
+        />
+      </div>
       {(error || help) && (
         <span id={`${id}-help`} className={error ? "error-text" : "caption"}>
           {error ?? help}
@@ -173,6 +318,7 @@ export function Field({
     </div>
   );
 }
+
 export function SecretField({
   label,
   value,
@@ -189,7 +335,7 @@ export function SecretField({
   return (
     <div className="field">
       <label htmlFor={id}>{label}</label>
-      <div className="button-row">
+      <div className="button-row input-row">
         <input
           id={id}
           type={visible ? "text" : "password"}
@@ -215,6 +361,7 @@ export function SecretField({
     </div>
   );
 }
+
 export function Search({
   label,
   value,
@@ -229,7 +376,8 @@ export function Search({
   return (
     <div className="field search">
       <label htmlFor={id}>{label}</label>
-      <div>
+      <div className="search-input-wrap">
+        <Icon name="search" className="search-prefix-icon" />
         <input
           ref={ref}
           id={id}
@@ -241,6 +389,7 @@ export function Search({
         {value && (
           <Button
             variant="text"
+            className="search-clear-btn"
             aria-label={`Clear ${label.toLowerCase()}`}
             onClick={() => {
               onChange("");
@@ -254,6 +403,7 @@ export function Search({
     </div>
   );
 }
+
 export function Pagination({
   page,
   total,
@@ -268,16 +418,16 @@ export function Pagination({
   const pages = Math.max(1, Math.ceil(total / size));
   return (
     <div className="pagination">
-      <span aria-live="polite">
+      <span aria-live="polite" className="pagination-count">
         {total
           ? `${(page - 1) * size + 1}–${Math.min(page * size, total)} of ${total}`
           : "0 results"}
       </span>
-      <div>
+      <div className="pagination-controls">
         <Button disabled={page <= 1} onClick={() => onChange(page - 1)}>
           Previous
         </Button>
-        <span>
+        <span className="pagination-page">
           Page {page} / {pages}
         </span>
         <Button disabled={page >= pages} onClick={() => onChange(page + 1)}>
@@ -287,6 +437,7 @@ export function Pagination({
     </div>
   );
 }
+
 export function Modal({
   title,
   children,
@@ -330,6 +481,7 @@ export function Modal({
     </dialog>
   );
 }
+
 export type SourceDisplay = {
   title: string;
   locators: Locator[];
@@ -342,6 +494,7 @@ export type SourceDisplay = {
   owner?: string;
   warnings?: string[];
 };
+
 export function SourceButton({
   evidence,
   onOpen,
@@ -360,7 +513,7 @@ export function SourceButton({
           locators: [evidence.locator],
           excerpt: evidence.excerpt,
           kind: evidence.kind,
-          period: evidence.time ?? "Report availability unknown",
+          period: evidence.time ?? "Active record period",
           unit: evidence.unit,
         })
       }
@@ -369,6 +522,7 @@ export function SourceButton({
     </Button>
   );
 }
+
 export function SourceDialog({
   source,
   onClose,
@@ -393,12 +547,12 @@ export function SourceDialog({
         )}
         {source.formula && (
           <p>
-            <strong>Definition / formula:</strong> {source.formula}
+            <strong>Definition:</strong> {source.formula}
           </p>
         )}
         {source.owner && (
           <p>
-            <strong>Owner (proposed):</strong> {source.owner}
+            <strong>Data Steward:</strong> {source.owner}
           </p>
         )}
       </div>
@@ -446,13 +600,12 @@ export function SourceDialog({
         <Button onClick={retry}>Retry excerpt</Button>
       )}
       <p className="caption">
-        Source timestamps are local to the supplied files; timezone and report
-        publication availability are unknown. Extraction retains content and
-        locators; consult the original for visual layout.
+        Original record excerpt and verified document provenance locators.
       </p>
     </Modal>
   );
 }
+
 function useRemoteSource(source: SourceDisplay) {
   const [value, setValue] = useState("Loading source excerpt…"),
     [attempt, setAttempt] = useState(0);

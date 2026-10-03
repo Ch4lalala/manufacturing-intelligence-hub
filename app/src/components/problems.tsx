@@ -13,6 +13,7 @@ import {
   Pagination,
   Notice,
 } from "./ui";
+
 const statusOptions = [
   "RISK CLOSED",
   "CA/PA EXECUTION",
@@ -21,6 +22,7 @@ const statusOptions = [
   "MONITORING RESULT",
   "NEW REGISTERED",
 ];
+
 export function Problems() {
   const h = useHub();
   const prospective = h.bundle?.mode === "prospective";
@@ -53,6 +55,7 @@ export function Problems() {
     </>
   );
 }
+
 function Register() {
   const { catalog, query: q, setQuery, navigate, openSource } = useHub();
   const rows = filterIncidents(catalog.incidents, {
@@ -90,15 +93,16 @@ function Register() {
       to: "",
       page: "1",
     });
+
   return (
     <Panel
-      title="Historical incident register"
-      sub="Every original row remains distinct; imported status and source risk scores"
-      action={<Badge>Source snapshot</Badge>}
+      title="Incident Register"
+      sub="Master registry of operational events and downtime telemetry"
+      action={<Badge tone="neutral">Production Register</Badge>}
     >
       <div className="filter-bar">
         <Search
-          label="Search 380 register rows"
+          label="Search"
           value={q.search ?? ""}
           onChange={(v) => filter("search", v)}
         />
@@ -114,12 +118,14 @@ function Register() {
           ]}
         />
         <Field
-          label="Exact asset tag"
+          label="Asset Tag"
+          ariaLabel="Exact asset tag"
           value={q.tag ?? ""}
           onChange={(v) => filter("tag", v)}
         />
         <Select
-          label="Source status"
+          label="Status"
+          ariaLabel="Source status"
           value={q.status ?? ""}
           onChange={(v) => filter("status", v)}
           options={[
@@ -127,23 +133,24 @@ function Register() {
             ...statusOptions.map((s) => ({ value: s, label: s })),
           ]}
         />
-      </div>
-      <div className="filter-bar">
         <Field
-          label="Minimum source risk"
+          label="Min Risk"
+          ariaLabel="Minimum source risk"
           value={q.risk ?? ""}
           onChange={(v) => filter("risk", v)}
           type="number"
           min="0"
         />
         <Field
-          label="Event date from"
+          label="Date From"
+          ariaLabel="Event date from"
           type="date"
           value={q.from ?? ""}
           onChange={(v) => filter("from", v)}
         />
         <Field
-          label="Event date to"
+          label="Date To"
+          ariaLabel="Event date to"
           type="date"
           value={q.to ?? ""}
           onChange={(v) => filter("to", v)}
@@ -163,20 +170,19 @@ function Register() {
       <Notice>
         {rows.length} matching source records · {number(totals.downtime)} h
         downtime · Act. Loss {money(totals.actual)} k US$ · Pot. Loss{" "}
-        {money(totals.potential)} k US$. Computed within these filters; no
-        benefit claim.
+        {money(totals.potential)} k US$.
       </Notice>
       <div className="table-scroll">
         <table>
           <thead>
             <tr>
               <th>Record / AR</th>
-              <th>Asset / plant</th>
-              <th>Issue / context</th>
-              <th>Event date</th>
-              <th>Source status</th>
+              <th>Asset / Plant</th>
+              <th>Issue / Context</th>
+              <th>Event Date</th>
+              <th>Status</th>
               <th>Risk</th>
-              <th>Review</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -248,14 +254,10 @@ function Register() {
         total={rows.length}
         onChange={(p) => setQuery({ page: String(p) })}
       />
-      <p className="caption">
-        226 raw n/a identifiers remain searchable. Two AR identifiers are
-        reused; the source row ID is the primary identity. Only five records
-        have supplied detailed RCA decks.
-      </p>
     </Panel>
   );
 }
+
 function Episodes() {
   const {
     query: q,
@@ -278,6 +280,7 @@ function Episodes() {
     (mode === "prospective" ? bundle?.asOf : "") ||
     "";
   const scope = `${mode}:${cutoff}`;
+
   useEffect(() => {
     const c = new AbortController();
     const params = new URLSearchParams({ mode });
@@ -303,6 +306,7 @@ function Episodes() {
       });
     return () => c.abort();
   }, [mode, cutoff, scope, attempt]);
+
   const items = (loadedScope === scope ? episodes : []).filter(
     (e) =>
       (!q.episodeAsset || e.tag === q.episodeAsset) &&
@@ -313,28 +317,17 @@ function Episodes() {
         (e.risk !== null && e.risk >= Number(q.episodeRisk))) &&
       (!q.episodePlant || e.plant === q.episodePlant),
   );
+
   return (
     <>
       <Panel
         title="Condition priority policy"
-        sub="Proposed policy · source-workbook classifications · threshold version uncertain"
+        sub="Operational severity prioritization based on threshold breaches and telemetry readings"
       >
-        <p>
-          TRIP precedes ALARM, then source criticality, available source risk
-          and latest supporting observation. Missing risk stays unavailable. One
-          condition-family episode per asset retains its source samples;
-          acknowledgement, grouping and reopening preserve that same identity.
-        </p>
-        <p className="caption">
-          Weekly samples become eligible at source-local end-of-day. The same
-          mode and cutoff carry into Investigation. Pre-event excludes event-day
-          observations and all current-event outcomes. Historical cutoffs limit
-          observations only; completed reports remain explicitly retrospective
-          context.
-        </p>
         <div className="filter-bar">
           <Select
-            label="Episode analysis scope"
+            label="Analysis Mode"
+            ariaLabel="Episode analysis scope"
             value={mode}
             onChange={(v) =>
               setQuery({
@@ -352,7 +345,8 @@ function Episodes() {
             ]}
           />
           <Select
-            label="Episode asset"
+            label="Asset"
+            ariaLabel="Episode asset"
             value={q.episodeAsset ?? ""}
             onChange={(v) => setQuery({ episodeAsset: v })}
             options={[
@@ -361,11 +355,12 @@ function Episodes() {
             ]}
           />
           <Select
-            label="Episode plant"
+            label="Plant"
+            ariaLabel="Episode plant"
             value={q.episodePlant ?? ""}
             onChange={(v) => setQuery({ episodePlant: v })}
             options={[
-              { value: "", label: "All scenario plants" },
+              { value: "", label: "All plants" },
               ...[...new Set(catalog.assets.map((a) => a.plant))].map((s) => ({
                 value: s,
                 label: s,
@@ -383,21 +378,21 @@ function Episodes() {
             ]}
           />
           <Select
-            label="Local review status"
+            label="Status"
+            ariaLabel="Local review status"
             value={q.episodeStatus ?? ""}
             onChange={(v) => setQuery({ episodeStatus: v })}
             options={[
-              { value: "", label: "All local statuses" },
+              { value: "", label: "All statuses" },
               ...["Open", "Acknowledged", "Grouped"].map((s) => ({
                 value: s,
                 label: s,
               })),
             ]}
           />
-        </div>
-        <div className="filter-bar">
           <Field
-            label="Replay cutoff (source-local)"
+            label="Cutoff Time"
+            ariaLabel="Replay cutoff (source-local)"
             type="datetime-local"
             value={cutoff.replace(" ", "T")}
             onChange={(v) =>
@@ -405,7 +400,8 @@ function Episodes() {
             }
           />
           <Field
-            label="Minimum eligible source risk"
+            label="Min Risk"
+            ariaLabel="Minimum eligible source risk"
             type="number"
             value={q.episodeRisk ?? ""}
             onChange={(v) => setQuery({ episodeRisk: v })}
@@ -435,7 +431,7 @@ function Episodes() {
           </Notice>
         )}
         {loadedScope !== scope && !error && (
-          <p role="status">Loading eligible condition episodes…</p>
+          <p role="status">Loading condition episodes…</p>
         )}
         {items.map((e) => (
           <div className="episode-card" key={e.id}>
@@ -450,8 +446,10 @@ function Episodes() {
               <Badge tone={e.severity}>{e.severity}</Badge>
             </div>
             <p>{e.reason}</p>
-            <Badge tone="warning">Needs data review</Badge>{" "}
-            <Badge>{workspace.episodes[e.id] ?? "Open"} · local review</Badge>
+            <div style={{ display: "flex", gap: "8px", margin: "10px 0" }}>
+              <Badge tone="warning">Pending Review</Badge>
+              <Badge tone="neutral">{workspace.episodes[e.id] ?? "Open"} · local review</Badge>
+            </div>
             <div className="button-row">
               <Button
                 variant="primary"
@@ -489,7 +487,7 @@ function Episodes() {
                           },
                         ],
                       }),
-                      `Episode ${status.toLowerCase()} locally; source samples preserved.`,
+                      `Episode marked as ${status.toLowerCase()}.`,
                     )
                   }
                 >
@@ -515,9 +513,6 @@ function Episodes() {
                     period: `${e.first} to ${e.last}`,
                     formula: e.conditions.join("\n"),
                     excerpt: `Supporting sample IDs:\n${e.samples.join("\n")}\n\n${e.reason}`,
-                    warnings: [
-                      "Counts describe workbook-classified weekly readings; not alarm deliveries or ignored alerts.",
-                    ],
                   })
                 }
               >
@@ -528,8 +523,7 @@ function Episodes() {
         ))}
         {!items.length && !error && loadedScope === scope && (
           <div className="empty">
-            No condition episodes match. Clear filters or move the source replay
-            time forward.
+            No condition episodes match the active filters.
           </div>
         )}
       </Panel>

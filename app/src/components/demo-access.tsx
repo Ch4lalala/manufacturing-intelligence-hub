@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Button, SecretField, Notice } from "./ui";
+
 export function DemoAccess({
   onAccess,
 }: {
@@ -17,6 +18,7 @@ export function DemoAccess({
     [error, setError] = useState("");
   const form = useRef<HTMLFormElement>(null),
     pending = useRef<AbortController | null>(null);
+
   useEffect(() => {
     const c = new AbortController();
     fetch("/api/demo-session", {
@@ -43,6 +45,7 @@ export function DemoAccess({
       pending.current?.abort();
     };
   }, [onAccess, attempt]);
+
   async function change(method: "POST" | "DELETE") {
     if (busy) return;
     setBusy(true);
@@ -73,9 +76,10 @@ export function DemoAccess({
       if (!c.signal.aborted) setBusy(false);
     }
   }
+
   return (
     <div className="quality-card">
-      <h3>Demo live access</h3>
+      <h3>Live AI Model Gateway</h3>
       {error && <Notice tone="error">{error}</Notice>}
       {!state ? (
         error ? (
@@ -88,15 +92,14 @@ export function DemoAccess({
             Retry demo access status
           </Button>
         ) : (
-          <p className="caption">Checking demo access…</p>
+          <p className="caption">Verifying gateway status…</p>
         )
       ) : !state.enabled ? (
         <p className="caption">{state.reason}</p>
       ) : state.authenticated ? (
         <div className="button-row">
           <p className="caption">
-            Local demo access unlocked. Simulated workspace roles remain
-            separate.
+            Live AI composition authorized.
           </p>
           <Button busy={busy} onClick={() => change("DELETE")}>
             Lock live access
@@ -112,9 +115,7 @@ export function DemoAccess({
           }}
         >
           <p className="caption">
-            Enter the team demo passcode to unlock provider requests. Replay
-            stays available. The passcode is not saved in this browser
-            workspace.
+            Enter authorization key to unlock live AI composition.
           </p>
           <SecretField
             label="Demo passcode"

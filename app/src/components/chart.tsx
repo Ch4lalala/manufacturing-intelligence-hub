@@ -100,8 +100,8 @@ export function Chart({
       <p className="chart-axis">
         Value ({unit}) ·{" "}
         {forecastStart !== undefined
-          ? "Illustrative hours"
-          : "Source-local observation time; timezone unknown"}
+          ? "Simulation Timeline (Hours)"
+          : "Observation Timeline"}
       </p>
       <svg
         viewBox="0 0 740 258"

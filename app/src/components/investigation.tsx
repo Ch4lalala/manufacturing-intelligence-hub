@@ -102,10 +102,15 @@ export function Investigation() {
       if (!r.ok && result.execution !== "replay") throw new Error();
       if (!controller.signal.aborted) {
         setAnalysis(result);
-        if (result.execution === "live")
-          setLiveStatus(
-            "Live response validated for this request; engineering review remains required",
-          );
+        setLiveStatus(
+          result.execution === "live"
+            ? "Live response validated for this request; engineering review remains required"
+            : result.liveState === "failed"
+              ? "Live attempt failed; evidence replay is shown"
+              : result.liveState === "blocked"
+                ? "Live access blocked; evidence replay is shown"
+                : "Evidence replay - no live AI call",
+        );
       }
     } catch {
       if (!controller.signal.aborted)

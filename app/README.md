@@ -104,6 +104,26 @@ Source scope, temporal eligibility, schema/citation/number validation, the fifte
 
 `npm run test:browser:direct` verifies an isolated production runtime with a local provider fixture and no Redis. No real API calls are made. See [direct AI report](DIRECT_AI_REPORT.md).
 
+## Diagnosing a failed live response
+
+A status response with `configured: true` and `liveAccess.enabled: true` means provider settings are present and direct access is enabled. It does not verify the key, model, endpoint or a provider result. `liveTested: false` is intentionally not a failure flag.
+
+Live failures now show a controlled diagnostic code, without raw provider content or secrets:
+
+| Code                                                            | Meaning                                                                     |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `endpoint`                                                      | Server base URL is malformed or unsupported.                                |
+| `network` / `timeout`                                           | Connection failure / the fifteen-second deadline expired.                   |
+| `provider_json` / `response_shape`                              | Provider body is not JSON / not the expected chat-completion text envelope. |
+| `provider_truncated` / `provider_refused`                       | Provider reported output cutoff / refusal or filtering.                     |
+| `content_json`                                                  | Message is not a complete JSON object.                                      |
+| `schema_invalid` / `fact_mismatch`                              | Analysis schema/narrative rules failed / exact fact bindings do not match.  |
+| `citation_ineligible` / `hypothesis_invalid` / `action_invalid` | Evidence outside scope / unsupported hypothesis or action requirements.     |
+
+Complete JSON code fences with surrounding whitespace are accepted before the same validator. Partial JSON, prose extraction and invalid evidence are not accepted. A compact output instruction reduces requested output length without raising the token cap or claiming proven improvement. No automatic retry or provider call is triggered by status checks. Each composition result updates its own live/replay status; an earlier success cannot label a later rejected response as live.
+
+Deploy the revised code to see these diagnostics, explicitly request composition once, and share only the diagnostic code/message for support. Do not share keys or raw provider errors. See [response repair report](AI_RESPONSE_REPORT.md).
+
 ## Protected live AI on Vercel
 
 The current implementation supports an explicitly enabled hosted demo. It retains passcode access, signed HttpOnly/Secure/SameSite=Strict sessions, expiry/revocation, evidence/citation validation and replay. Simulated workspace roles still do not authenticate provider access. Real SumoPod compatibility and the user's Vercel deployment remain untested; local hosted verification uses a provider fixture.

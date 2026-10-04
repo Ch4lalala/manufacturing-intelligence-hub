@@ -1,4 +1,14 @@
-# Implementation status — direct jury AI
+# Implementation status — live response diagnostics
+
+4 October 2026. Complete fenced JSON with trailing whitespace now parses correctly, provider/validation failures have sanitized diagnostic codes, and failed/replay results clear an earlier validated-live caption. User-supplied deployment status confirms direct settings are present; actual SumoPod failure cause remains unverified. External GET access was blocked by Vercel Authentication. See [response repair report](AI_RESPONSE_REPORT.md).
+
+- **35/35 domain/API**, **2/2 direct production browser**, **21/21 normal production browser**, **53/53 artifact runtime** checks PASS with local provider fixtures. Typecheck/lint/build/format/diff checks PASS. No real provider call or deployment.
+- Existing fact/citation validator, scope/action workflow, data, CSS/layout, private env, token cap and timeout unchanged. Six previous premium Select scanner findings remain.
+- Original hashes: 22 sources, zero discrepancies. Handoff verifier reports three files removed by the user's existing HEAD; deletions were preserved. Earlier report counts below describe their earlier runs.
+
+---
+
+# Earlier direct jury AI
 
 4 October 2026. At the user's explicit request, `AI_LIVE_MODE=direct` now enables visitor composition with existing server-only provider environment, without passcode, Redis or application usage quotas. Default disabled/local/protected public modes remain available. See [direct AI report](DIRECT_AI_REPORT.md) and [simple Vercel setup](README.md#direct-ai-on-vercel--no-redis-or-passcode).
 

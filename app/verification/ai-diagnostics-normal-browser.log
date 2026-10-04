@@ -1,0 +1,32 @@
+
+> caliber-decision-hub@1.0.0 test:browser:direct
+> tsx scripts/verify-direct-browser.ts --normal
+
+
+Running 21 tests using 1 worker
+
+(node:58145) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 tests/browser.spec.ts:60:5 › Action metric drawers explain only their scoped dataset; historical list filters do not change card totals (2.0s)
+  ✓   2 tests/browser.spec.ts:172:5 › Five operational views, desktop screenshots, source drawer keyboard and accessibility (4.4s)
+  ✓   3 tests/browser.spec.ts:225:5 › 380-row search/filter, n/a rows, empty state and qualified source detail (925ms)
+  ✓   4 tests/browser.spec.ts:256:5 › Every asset and all report slides navigable; HE/PM contradictions remain visible (18.2s)
+  ✓   5 tests/browser.spec.ts:299:5 › Pre-event UI and API exclude current report, future readings and outcome summaries (778ms)
+  ✓   6 tests/browser.spec.ts:351:5 › KO action loop, gated approval/verification, persistence, rejection reason and reset (2.9s)
+  ✓   7 tests/browser.spec.ts:500:5 › Synthetic utility assumptions, zero-output state and persistence forecast stay isolated (520ms)
+  ✓   8 tests/browser.spec.ts:534:5 › Live request without configuration is explicit replay; errors remain recoverable (625ms)
+  ✓   9 tests/browser.spec.ts:598:5 › Responsive layouts, keyboard navigation, reduced motion and source failure recovery (5.9s)
+  ✓  10 tests/browser.spec.ts:648:5 › Episode acknowledgement/group/reopen, owner edits, select keyboard and reset history (1.3s)
+  ✓  11 tests/browser.spec.ts:722:5 › Read-only server source whitelist and actual missing-config fallback expose no secrets (32ms)
+  ✓  12 tests/browser.spec.ts:757:5 › Problem Tank carries exact pre-event cutoff into Investigation at midnight and end-of-day (1.6s)
+  ✓  13 tests/browser.spec.ts:834:5 › Normal-only replay offers no diagnosis or draft; second hypothesis can create a scoped pre-event action (1.4s)
+  ✓  14 tests/browser.spec.ts:901:5 › Empty historical observation cutoff keeps Data Map metadata sources navigable (740ms)
+  ✓  15 tests/browser.spec.ts:936:5 › Demo access UI masks passcode, handles auth errors, unlocks explicitly and processes guarded quota fallback (1.2s)
+  ✓  16 tests/browser.spec.ts:1041:5 › Industrial light shell, independent catalog windows, source download, threshold direction and recoverable loading (1.9s)
+  ✓  17 tests/browser.spec.ts:1191:5 › Mocked live pending state preserves button width, cancels safely and returns to replay (602ms)
+  ✓  18 tests/browser.spec.ts:1267:5 › Sidebar branding/reset fit short viewports and require confirmation (470ms)
+  ✓  19 tests/browser.spec.ts:1334:5 › Status distribution uses filtered source counts, aligned bars and a zero-record state (502ms)
+  ✓  20 tests/browser.spec.ts:1398:5 › Data Map flows independently; governance disclosures, source search and KPI expansion stay accessible (1.4s)
+  ✓  21 tests/browser.spec.ts:1488:5 › Investigation embeds hourly selector and review flows without waiting for the evidence rail (824ms)
+
+  21 passed (48.9s)

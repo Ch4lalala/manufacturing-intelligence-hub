@@ -10,6 +10,7 @@ import { fakeCompletion } from "../tests/fixtures";
 async function main() {
   const normal = process.argv.includes("--normal");
   let calls = 0;
+  let mode = "valid";
   const provider = http.createServer(async (req, res) => {
     if (req.url === "/calls") {
       res.end(JSON.stringify({ calls }));
@@ -17,6 +18,12 @@ async function main() {
     }
     let body = "";
     for await (const chunk of req) body += chunk;
+    if (req.url === "/mode") {
+      mode = JSON.parse(body).mode;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({ mode }));
+      return;
+    }
     const context = JSON.parse(JSON.parse(body).messages[1].content);
     const asset = raw.assets.find((a) => a.tag === context.caseId)!;
     calls++;
@@ -31,7 +38,20 @@ async function main() {
       ),
     );
     res.setHeader("Content-Type", "application/json");
-    res.end(await reply.text());
+    const envelope = await reply.json();
+    if (mode === "fenced")
+      envelope.choices[0].message.content =
+        "\n```json\n" + envelope.choices[0].message.content + "\n```\n\n";
+    if (mode === "truncated") {
+      envelope.choices[0].finish_reason = "length";
+      envelope.choices[0].message.content = "private-fixture-partial-output";
+    }
+    if (mode === "citation") {
+      const payload = JSON.parse(envelope.choices[0].message.content);
+      payload.hypotheses[0].evidenceIds = ["private-fixture-ineligible-id"];
+      envelope.choices[0].message.content = JSON.stringify(payload);
+    }
+    res.end(JSON.stringify(envelope));
   });
   await new Promise<void>((r) => provider.listen(0, "127.0.0.1", r));
   const providerBase = `http://127.0.0.1:${(provider.address() as net.AddressInfo).port}`;

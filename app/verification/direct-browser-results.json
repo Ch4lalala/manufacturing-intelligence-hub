@@ -87,12 +87,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 1463,
+                  "duration": 2445,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-04T11:22:18.612Z",
+                  "startTime": "2026-10-04T12:28:25.403Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -104,15 +104,49 @@
           "file": "direct-browser.spec.ts",
           "line": 3,
           "column": 5
+        },
+        {
+          "title": "Production AI accepts fenced JSON and explains truncation/citation failures without stale live success",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1021,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-04T12:28:28.307Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b7ed07d5fee28e5d170a-3310f7d242c9cfbed9a0",
+          "file": "direct-browser.spec.ts",
+          "line": 111,
+          "column": 5
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-04T11:22:18.329Z",
-    "duration": 4157.504,
-    "expected": 1,
+    "startTime": "2026-10-04T12:28:25.027Z",
+    "duration": 4352.293000000001,
+    "expected": 2,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

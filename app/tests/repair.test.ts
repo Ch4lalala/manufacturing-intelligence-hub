@@ -853,3 +853,89 @@ test("Direct gateway status needs only provider configuration and never issues s
       else process.env[name] = value;
   }
 });
+
+test("Live completion accepts a complete fenced JSON object with surrounding whitespace", async () => {
+  const bundle = make();
+  const result = await analyze(
+    bundle,
+    true,
+    { key: "private-fixture", model: "fixture" },
+    (async () =>
+      Response.json({
+        choices: [
+          {
+            finish_reason: "stop",
+            message: {
+              content:
+                "\n```json\n" +
+                JSON.stringify(providerPayload(bundle)) +
+                "\n```\n\n",
+            },
+          },
+        ],
+      })) as typeof fetch,
+  );
+  assert.equal(result.liveState, "validated");
+});
+
+test("Live failure diagnostics separate transport, truncation, JSON and evidence rejection without leaking provider data", async () => {
+  const bundle = make(),
+    config = { key: "secret-fixture-key", model: "fixture" };
+  const citation = providerPayload(bundle);
+  citation.hypotheses[0].evidenceIds = ["private-provider-string"];
+  const cases: [string, typeof fetch][] = [
+    [
+      "provider_truncated",
+      (async () =>
+        Response.json({
+          choices: [
+            {
+              finish_reason: "length",
+              message: { content: "partial-private-provider-string" },
+            },
+          ],
+        })) as typeof fetch,
+    ],
+    [
+      "provider_json",
+      (async () => new Response("private-provider-string")) as typeof fetch,
+    ],
+    [
+      "response_shape",
+      (async () => Response.json({ choices: [] })) as typeof fetch,
+    ],
+    [
+      "content_json",
+      (async () =>
+        Response.json({
+          choices: [{ message: { content: "private-provider-string" } }],
+        })) as typeof fetch,
+    ],
+    [
+      "citation_ineligible",
+      (async () =>
+        Response.json({
+          choices: [{ message: { content: JSON.stringify(citation) } }],
+        })) as typeof fetch,
+    ],
+    [
+      "timeout",
+      (async () => {
+        throw new DOMException("secret-fixture-key", "TimeoutError");
+      }) as typeof fetch,
+    ],
+    [
+      "network",
+      (async () => {
+        throw new Error("secret-fixture-key private-provider-string");
+      }) as typeof fetch,
+    ],
+  ];
+  for (const [code, fetcher] of cases) {
+    const result = await analyze(bundle, true, config, fetcher);
+    assert.equal(result.liveState, "failed");
+    assert.ok(result.message.includes(code), result.message);
+    assert.equal(result.message.includes("private-provider-string"), false);
+    assert.equal(result.message.includes("secret-fixture-key"), false);
+  }
+});

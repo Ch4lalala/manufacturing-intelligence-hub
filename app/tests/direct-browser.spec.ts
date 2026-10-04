@@ -107,3 +107,87 @@ test("Direct production AI uses server provider without login, Redis or applicat
     JSON.stringify(await (await request.get("/api/status")).json()),
   ).not.toContain("direct-fixture-key");
 });
+
+test("Production AI accepts fenced JSON and explains truncation/citation failures without stale live success", async ({
+  page,
+  request,
+}) => {
+  await page.route("**/api/**", async (route) => {
+    const response = await route.fetch({
+      headers: {
+        ...(await route.request().allHeaders()),
+        "x-forwarded-proto": "https",
+        origin: process.env.CALIBER_TEST_HTTPS_ORIGIN!,
+      },
+    });
+    await route.fulfill({ response });
+  });
+  const mode = async (value: string) =>
+    expect(
+      (
+        await request.post(process.env.CALIBER_TEST_PROVIDER! + "/mode", {
+          data: { mode: value },
+        })
+      ).ok(),
+    ).toBe(true);
+  await mode("fenced");
+  try {
+    await page.goto(
+      "/?view=investigation&asset=KO-3201&mode=prospective&asOf=2026-04-22%2023:59:59",
+    );
+    const button = page.getByRole("button", {
+      name: "Request live AI composition",
+      exact: true,
+    });
+    await button.click();
+    await expect(
+      page.getByText(
+        "Live response validated for this request; engineering review remains required",
+        { exact: true },
+      ),
+    ).toBeVisible();
+    for (const [fixture, code] of [
+      ["truncated", "provider_truncated"],
+      ["citation", "citation_ineligible"],
+    ]) {
+      await mode(fixture);
+      await expect(button).toBeEnabled();
+      await button.click();
+      await expect(
+        page.locator(".notice").filter({ hasText: `[${code}]` }),
+      ).toBeVisible();
+      await expect(
+        page.getByText("Live attempt failed; evidence replay is shown", {
+          exact: true,
+        }),
+      ).toBeVisible();
+      await expect(
+        page.getByText(
+          "Live response validated for this request; engineering review remains required",
+          { exact: true },
+        ),
+      ).toHaveCount(0);
+      await expect(page.locator(".hypothesis-card").first()).toBeVisible();
+      await expect(page.locator("body")).not.toContainText("private-fixture");
+      await expect(
+        page.getByLabel("As of (source-local; timezone unknown)", {
+          exact: true,
+        }),
+      ).toHaveValue("2026-04-22T23:59:59");
+    }
+    await page
+      .locator(".notice")
+      .filter({ hasText: "[citation_ineligible]" })
+      .screenshot({ path: "screenshots/ai-citation-diagnostic.png" });
+    await mode("valid");
+    await button.click();
+    await expect(
+      page.getByText(
+        "Live response validated for this request; engineering review remains required",
+        { exact: true },
+      ),
+    ).toBeVisible();
+  } finally {
+    await mode("valid");
+  }
+});

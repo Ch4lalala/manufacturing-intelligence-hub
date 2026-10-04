@@ -4,6 +4,11 @@ import {
   timingSafeEqual,
   createHash,
 } from "node:crypto";
+import {
+  RedisLiveStore,
+  validRedisConfig,
+  type RedisConfig,
+} from "./shared-live-store";
 export const SESSION_COOKIE = "caliber-live-demo";
 const TTL = 30 * 60 * 1000;
 export type LiveConfig = {
@@ -14,7 +19,25 @@ export type LiveConfig = {
   dailyLimit: number;
   concurrencyLimit: number;
   platformPublic: boolean;
+  allowedOrigins?: string[];
+  redis?: RedisConfig;
 };
+type MaybePromise<T> = T | Promise<T>;
+export type QuotaSlot =
+  | { ok: true; release: () => MaybePromise<void> }
+  | { ok: false; reason: string; status: number };
+export interface LiveStore {
+  readonly kind: "local" | "shared";
+  health(): MaybePromise<void>;
+  loginAllowed(now?: number): MaybePromise<boolean>;
+  revoke(id: string, now?: number): MaybePromise<void>;
+  isRevoked(id: string, now?: number): MaybePromise<boolean>;
+  acquire(
+    config: LiveConfig,
+    now?: number,
+    id?: string,
+  ): MaybePromise<QuotaSlot>;
+}
 export function liveConfig(): LiveConfig {
   const positive = (s: string | undefined, max: number) =>
     s && /^\d+$/.test(s) && Number(s) > 0 && Number(s) <= max ? Number(s) : 0;
@@ -30,16 +53,41 @@ export function liveConfig(): LiveConfig {
       process.env.NETLIFY ||
       process.env.AWS_LAMBDA_FUNCTION_NAME
     ),
+    allowedOrigins: (process.env.AI_ALLOWED_ORIGINS ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean),
+    redis: {
+      url: process.env.UPSTASH_REDIS_REST_URL ?? "",
+      token: process.env.UPSTASH_REDIS_REST_TOKEN ?? "",
+      namespace: process.env.AI_QUOTA_NAMESPACE ?? "caliber-production",
+    },
   };
 }
+function validPublicOrigin(origin: string) {
+  try {
+    const url = new URL(origin);
+    return (
+      url.protocol === "https:" &&
+      url.origin === origin &&
+      !url.username &&
+      !url.password &&
+      !url.search &&
+      !url.hash &&
+      !origin.includes("*")
+    );
+  } catch {
+    return false;
+  }
+}
 export function liveAvailability(config: LiveConfig) {
-  if (config.platformPublic || config.mode === "public")
+  if (config.platformPublic && config.mode !== "public")
     return {
       enabled: false,
       reason:
-        "Public live analysis is disabled: a verified shared quota/access backing is not configured. Evidence replay is available.",
+        "Hosted live analysis requires public mode and shared access configuration. Evidence replay is available.",
     };
-  if (config.mode !== "local")
+  if (!["local", "public"].includes(config.mode))
     return {
       enabled: false,
       reason: "Live demo access is disabled. Evidence replay is available.",
@@ -49,19 +97,39 @@ export function liveAvailability(config: LiveConfig) {
     config.passcode.length < 12 ||
     !config.sessionSecret ||
     config.sessionSecret.length < 32 ||
-    !config.minuteLimit ||
-    !config.dailyLimit ||
-    !config.concurrencyLimit
+    !Number.isInteger(config.minuteLimit) ||
+    config.minuteLimit < 1 ||
+    config.minuteLimit > 10 ||
+    !Number.isInteger(config.dailyLimit) ||
+    config.dailyLimit < 1 ||
+    config.dailyLimit > 100 ||
+    !Number.isInteger(config.concurrencyLimit) ||
+    config.concurrencyLimit < 1 ||
+    config.concurrencyLimit > 2
   )
     return {
       enabled: false,
       reason:
         "Live demo access and usage limits need server configuration. Evidence replay is available.",
     };
+  if (
+    config.mode === "public" &&
+    (!config.allowedOrigins?.length ||
+      config.allowedOrigins.length > 10 ||
+      !config.allowedOrigins.every(validPublicOrigin) ||
+      !validRedisConfig(config.redis))
+  )
+    return {
+      enabled: false,
+      reason:
+        "Hosted live access needs an exact HTTPS origin and shared quota store. Evidence replay is available.",
+    };
   return {
     enabled: true,
     reason:
-      "Local demo access only; usage limits apply to this one server process.",
+      config.mode === "public"
+        ? "Protected demo access; shared usage limits apply. Evidence replay remains available."
+        : "Local demo access only; usage limits apply to this one server process.",
   };
 }
 export function sameOrigin(request: Request) {
@@ -142,6 +210,8 @@ export function sessionCookie(token: string, request: Request, clear = false) {
   return `${SESSION_COOKIE}=${clear ? "" : token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${clear ? 0 : TTL / 1000}${new URL(request.url).protocol === "https:" ? "; Secure" : ""}`;
 }
 export class DemoLimiter {
+  readonly kind = "local" as const;
+  health() {}
   private minuteStart = 0;
   private minuteCalls = 0;
   private day = "";
@@ -217,32 +287,92 @@ const globalState = globalThis as typeof globalThis & {
 };
 export const demoLimiter = (globalState.caliberDemoLimiter ??=
   new DemoLimiter());
-export function authorizeLive(
+export function liveStore(config: LiveConfig): LiveStore {
+  return config.mode === "public" && validRedisConfig(config.redis)
+    ? new RedisLiveStore(config.redis!)
+    : demoLimiter;
+}
+export async function checkedLiveAvailability(
+  config: LiveConfig,
+  store = liveStore(config),
+) {
+  const availability = liveAvailability(config);
+  if (!availability.enabled) return availability;
+  try {
+    if (config.mode === "public" && store.kind !== "shared") throw new Error();
+    await store.health();
+    return availability;
+  } catch {
+    return {
+      enabled: false,
+      reason:
+        "Shared live access store is unavailable. Evidence replay remains available.",
+    };
+  }
+}
+export function allowedLiveOrigin(request: Request, config: LiveConfig) {
+  if (config.mode !== "public") return loopbackRequest(request);
+  const url = new URL(request.url);
+  if (
+    !config.allowedOrigins?.includes(url.origin) ||
+    !validPublicOrigin(url.origin)
+  )
+    return false;
+  // Host and Origin must agree with the server URL. Forwarded headers are never trusted.
+  if ((request.headers.get("host") ?? url.host) !== url.host) return false;
+  const origin = request.headers.get("origin");
+  if (
+    request.method !== "GET" &&
+    request.method !== "HEAD" &&
+    origin !== url.origin
+  )
+    return false;
+  return !origin || origin === url.origin;
+}
+export async function authorizeLive(
   request: Request,
   config: LiveConfig,
-  limiter = demoLimiter,
+  limiter: LiveStore = liveStore(config),
   now = Date.now(),
 ) {
   const availability = liveAvailability(config);
   if (!availability.enabled)
     return { ok: false as const, status: 403, reason: availability.reason };
-  if (!loopbackRequest(request))
+  if (
+    !allowedLiveOrigin(request, config) ||
+    (config.mode === "public" && limiter.kind !== "shared")
+  )
     return {
       ok: false as const,
       status: 403,
       reason:
-        "Live analysis is limited to the configured local demo origin. Evidence replay is available.",
+        "Live analysis is limited to the configured demo origin and access store. Evidence replay is available.",
     };
   const id = sessionId(cookieToken(request), config, now);
-  if (!id || limiter.isRevoked(id, now))
+  if (!id)
     return {
       ok: false as const,
       status: 401,
       reason:
         "Unlock demo live access before requesting a provider call. Workspace roles are simulations.",
     };
+  try {
+    if (await limiter.isRevoked(id, now))
+      return {
+        ok: false as const,
+        status: 401,
+        reason: "Demo session expired or was locked. Unlock live access again.",
+      };
+  } catch {
+    return {
+      ok: false as const,
+      status: 503,
+      reason:
+        "Shared live access store is unavailable. Evidence replay remains available.",
+    };
+  }
   return { ok: true as const, id };
 }
 export function sessionRequestAllowed(request: Request, config: LiveConfig) {
-  return liveAvailability(config).enabled && loopbackRequest(request);
+  return liveAvailability(config).enabled && allowedLiveOrigin(request, config);
 }

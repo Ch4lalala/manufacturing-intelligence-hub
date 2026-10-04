@@ -1,0 +1,14 @@
+
+> caliber-decision-hub@1.0.0 test:browser:hosted
+> tsx scripts/verify-hosted-browser.ts
+
+
+Running 3 tests using 1 worker
+
+(node:26209) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/hosted-browser.spec.ts:59:5 › Hosted production login, validated fixture composition, Secure cookie, keyboard and logout (2.4s)
+  ✓  2 tests/hosted-browser.spec.ts:118:5 › Revoked hosted session returns to the passcode form without a provider call or losing the selected cutoff (1.1s)
+  ✓  3 tests/hosted-browser.spec.ts:158:5 › Shared hosted quota and Redis outage preserve replay and recoverable access at a narrow viewport (1.2s)
+
+  3 passed (5.9s)

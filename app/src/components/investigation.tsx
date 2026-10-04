@@ -41,6 +41,7 @@ export function Investigation() {
     [failure, setFailure] = useState("");
   const [liveStatus, setLiveStatus] = useState("Live API not-tested");
   const [liveAllowed, setLiveAllowed] = useState(false);
+  const [accessRevision, setAccessRevision] = useState(0);
   const [weekly, setWeekly] = useState(0),
     [hourly, setHourly] = useState("PLANT_RATE"),
     [slide, setSlide] = useState(7);
@@ -90,10 +91,14 @@ export function Investigation() {
         }),
         signal: AbortSignal.any([
           controller.signal,
-          AbortSignal.timeout(20000),
+          AbortSignal.timeout(live ? 30000 : 20000),
         ]),
       });
       const result = await r.json();
+      if (live && [401, 403, 503].includes(r.status)) {
+        setLiveAllowed(false);
+        setAccessRevision((n) => n + 1);
+      }
       if (!r.ok && result.execution !== "replay") throw new Error();
       if (!controller.signal.aborted) {
         setAnalysis(result);
@@ -322,7 +327,7 @@ export function Investigation() {
                 sub="Evidence-backed indications; no definitive diagnosis before inspection"
               >
                 <p className="caption">{liveStatus}</p>
-                <DemoAccess onAccess={setLiveAllowed} />
+                <DemoAccess key={accessRevision} onAccess={setLiveAllowed} />
                 <div className="button-row">
                   <Button
                     variant="primary"

@@ -143,6 +143,8 @@ export async function analyze(
       url.toString().replace(/\/$/, "") + "/chat/completions",
       {
         method: "POST",
+        redirect: "error",
+        cache: "no-store",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${config.key}`,

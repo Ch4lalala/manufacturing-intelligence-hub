@@ -12,9 +12,11 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests",
     "test": "tsx --test tests/domain.test.ts tests/repair.test.ts",
+    "test:hosted": "tsx --test tests/hosted.test.ts",
+    "test:browser:hosted": "tsx scripts/verify-hosted-browser.ts",
     "test:browser": "playwright test",
-    "format": "prettier --write src tests scripts/*.mjs *.ts *.json *.md",
-    "format:check": "prettier --check src tests scripts/*.mjs *.ts *.json *.md",
+    "format": "prettier --write src tests scripts/*.mjs scripts/*.ts *.ts *.json *.md",
+    "format:check": "prettier --check src tests scripts/*.mjs scripts/*.ts *.ts *.json *.md",
     "normalize": "python scripts/normalize.py",
     "test:deploy": "node scripts/verify-deploy.mjs"
   },

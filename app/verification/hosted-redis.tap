@@ -1,0 +1,63 @@
+
+> caliber-decision-hub@1.0.0 test:hosted
+> tsx --test tests/hosted.test.ts
+
+TAP version 13
+# Subtest: Hosted shared guard integration against an isolated real Redis
+    # Subtest: Explicit opt-in, HTTPS origin, signed session, shared-only store and absent/forged Origin guards
+    ok 1 - Explicit opt-in, HTTPS origin, signed session, shared-only store and absent/forged Origin guards
+      ---
+      duration_ms: 46.182
+      type: 'test'
+      ...
+    # Subtest: Atomic concurrency and daily quota hold across independent store instances; release cannot refund
+    ok 2 - Atomic concurrency and daily quota hold across independent store instances; release cannot refund
+      ---
+      duration_ms: 69.693166
+      type: 'test'
+      ...
+    # Subtest: UTC bucket rollover and expired concurrency leases recover; current daily count survives minute rollover
+    ok 3 - UTC bucket rollover and expired concurrency leases recover; current daily count survives minute rollover
+      ---
+      duration_ms: 85.422959
+      type: 'test'
+      ...
+    # Subtest: Login attempts and revocation survive instance replacement; reservation rechecks logout
+    ok 4 - Login attempts and revocation survive instance replacement; reservation rechecks logout
+      ---
+      duration_ms: 48.034125
+      type: 'test'
+      ...
+    # Subtest: Only validated live compositions consume provider calls; normal-only and exhausted quota stay replay
+    ok 5 - Only validated live compositions consume provider calls; normal-only and exhausted quota stay replay
+      ---
+      duration_ms: 79.764375
+      type: 'test'
+      ...
+    # Subtest: Store outages, invalid replies, and bounded transport timeout fail closed without provider calls or secrets
+    ok 6 - Store outages, invalid replies, and bounded transport timeout fail closed without provider calls or secrets
+      ---
+      duration_ms: 3030.908916
+      type: 'test'
+      ...
+    # Subtest: Real hosted session/status handlers issue Secure cookies, persist logout, and reject cross-origin/config errors
+    ok 7 - Real hosted session/status handlers issue Secure cookies, persist logout, and reject cross-origin/config errors
+      ---
+      duration_ms: 81.174458
+      type: 'test'
+      ...
+    1..7
+ok 1 - Hosted shared guard integration against an isolated real Redis
+  ---
+  duration_ms: 3546.618291
+  type: 'test'
+  ...
+1..1
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4571.986542

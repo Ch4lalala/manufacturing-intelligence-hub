@@ -1,0 +1,12 @@
+{
+  "comparison": "SHA256 equality of existing normal-view screenshots vs latest production regression captures",
+  "matches": {
+    "overview-1440.png": true,
+    "data-1440.png": true,
+    "problems-1440.png": true,
+    "investigation-1440.png": true,
+    "actions-1440.png": true
+  },
+  "matched": 5,
+  "total": 5
+}

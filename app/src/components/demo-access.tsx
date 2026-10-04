@@ -35,10 +35,12 @@ export function DemoAccess({
         }
       })
       .catch(() => {
-        if (!c.signal.aborted)
+        if (!c.signal.aborted) {
+          onAccess(false);
           setError(
             "Demo access status could not load. Evidence replay remains available.",
           );
+        }
       });
     return () => {
       c.abort();
@@ -60,7 +62,17 @@ export function DemoAccess({
         signal: AbortSignal.any([c.signal, AbortSignal.timeout(10000)]),
       });
       const s = await r.json();
-      if (!r.ok) throw Error(s.error ?? "Demo access could not change.");
+      if (!r.ok) {
+        if ([401, 403, 503].includes(r.status)) {
+          onAccess(false);
+          setState((current) =>
+            r.status === 401 && current
+              ? { ...current, authenticated: false }
+              : null,
+          );
+        }
+        throw Error(s.error ?? "Demo access could not change.");
+      }
       if (c.signal.aborted) return;
       setState((current) =>
         current ? { ...current, authenticated: s.authenticated } : current,
@@ -113,7 +125,7 @@ export function DemoAccess({
           }}
         >
           <p className="caption">
-            Enter authorization key to unlock live AI composition.
+            Enter the demo passcode to unlock live AI composition.
           </p>
           <SecretField
             label="Demo passcode"

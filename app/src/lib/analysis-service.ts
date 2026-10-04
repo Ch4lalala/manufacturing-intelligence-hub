@@ -2,9 +2,9 @@ import type { Bundle } from "./types";
 import { analyze, replay } from "./analysis";
 import {
   authorizeLive,
-  demoLimiter,
+  liveStore,
   type LiveConfig,
-  type DemoLimiter,
+  type LiveStore,
 } from "./live-access";
 export async function guardedAnalysis(
   request: Request,
@@ -13,10 +13,10 @@ export async function guardedAnalysis(
   access: LiveConfig,
   provider: { key?: string; model?: string; base?: string },
   fetcher: typeof fetch = fetch,
-  limiter: DemoLimiter = demoLimiter,
+  limiter: LiveStore = liveStore(access),
 ) {
   if (!live) return { status: 200, analysis: replay(bundle) };
-  const auth = authorizeLive(request, access, limiter);
+  const auth = await authorizeLive(request, access, limiter);
   if (!auth.ok)
     return {
       status: auth.status,
@@ -44,7 +44,19 @@ export async function guardedAnalysis(
         "not_requested",
       ),
     };
-  const quota = limiter.acquire(access);
+  let quota;
+  try {
+    quota = await limiter.acquire(access, undefined, auth.id);
+  } catch {
+    return {
+      status: 503,
+      analysis: replay(
+        bundle,
+        "Evidence replay - no live AI call. Shared live access store is unavailable.",
+        "blocked",
+      ),
+    };
+  }
   if (!quota.ok)
     return {
       status: quota.status,
@@ -60,6 +72,12 @@ export async function guardedAnalysis(
       analysis: await analyze(bundle, true, provider, fetcher, request.signal),
     };
   } finally {
-    quota.release();
+    // A crashed instance or failed release retains a conservative slot for at
+    // most sixty seconds. It never refunds an attempted provider call.
+    try {
+      await quota.release();
+    } catch {
+      /* Redis lease expiry recovers the slot. */
+    }
   }
 }

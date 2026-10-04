@@ -54,7 +54,7 @@ Useful routes on the default port:
 
 ## Optional local live AI
 
-Replay is always available and makes **no provider call**. Server guards default to disabled, even if an existing private file contains a key/model. Workspace roles do not unlock provider access.
+Replay is always available and makes **no provider call**. Server guards default to disabled, even if an existing private file contains a key/model. Explicit public mode is supported only with shared Redis access guards; see the hosted setup below. Workspace roles do not unlock provider access.
 
 Create `.env.local` **only if it does not already exist**:
 
@@ -81,17 +81,53 @@ Supply the team's valid key and **exact provider model ID**; none is guessed. Ch
 
 In Investigation, unlock **Demo live access** with the passcode, then explicitly choose **Request live AI composition**. The server issues a signed, expiring, HttpOnly, SameSite=Strict cookie. Loopback/origin checks, login-attempt limits, request/minute, UTC-day quota and concurrency run before provider fetch. The default example permits at most two attempted calls/minute, twenty/day and one active request, with `max_tokens: 1600`, 15-second deadline, bounded context/response, cancellation and no automatic retry. Failed/invalid attempts conservatively consume quota. These are operational caps, **not a dollar spending guarantee**; provider pricing/billing caps remain unknown.
 
-Limits and revocation apply to **one server process**, reset on restart and are not shared between instances. `AI_LIVE_MODE=public`, recognized serverless platforms, incomplete guard configuration or non-loopback origin disable live access. Public live cannot be enabled by supplying only a key. A verified shared quota/access backing would require a separate implementation; no paid service was created.
+In **local** mode, limits and revocation apply to one process and reset on restart. Hosted environments require explicit **public** mode, exact HTTPS allowed origins and shared Redis guards; local mode on Vercel remains blocked. Missing/invalid configuration or unavailable shared storage fails closed. No paid service was created.
 
 Composition uses ordinary `/chat/completions`, without streaming, embeddings or special response formats. A structured response can supply different engineering inference prose. Observations must bind exact source/derived fact IDs, values, units, source times and asset; hypotheses must cite eligible abnormal signals and counter-evidence. Unsupported facts/strength/schema or provider failures produce labeled replay. Validation checks arithmetic/provenance and conservative text restrictions; it does not establish causal correctness or industrial safety.
 
 The UI distinguishes **no live request**, **blocked**, **attempted but failed**, and **validated live response**. Configuration alone is never shown as successful integration. **Real SumoPod support/model behavior: NOT TESTED** in this repair. Existing `.env.local` was preserved and not opened; local guard configuration and an explicitly authorized minimal real call are still needed for external verification.
 
+## Protected live AI on Vercel
+
+The current implementation supports an explicitly enabled hosted demo. It retains passcode access, signed HttpOnly/Secure/SameSite=Strict sessions, expiry/revocation, evidence/citation validation and replay. Simulated workspace roles still do not authenticate provider access. Real SumoPod compatibility and the user's Vercel deployment remain untested; local hosted verification uses a provider fixture.
+
+1. Connect an Upstash Redis database or compatible Redis REST service to the Vercel project. Use its HTTPS REST endpoint and **write-capable** token; a TCP `REDIS_URL` or read-only token is insufficient. No database/account is provisioned by this repository.
+2. Under **Project → Settings → Environment Variables**, select **Production**. Preserve your existing provider settings; add/verify the variables below. Store credentials as **Secret**, never `NEXT_PUBLIC_*`.
+3. Set your exact production URL in `AI_ALLOWED_ORIGINS`, with `https://`, no path or trailing slash. Multiple explicitly approved domains are comma-separated. Do not use a wildcard or automatically trust arbitrary preview/forwarded hosts.
+4. Redeploy the reviewed code and environment configuration. New variables do not modify an existing deployment.
+5. Open Investigation, enter **Demo passcode**, unlock live access and explicitly request composition. The passcode is not the provider API key. A validated response applies to that request only; configuration is not proof of successful integration.
+
+```dotenv
+AI_BASE_URL=https://ai.sumopod.com/v1
+AI_API_KEY=<your-private-provider-key>
+AI_MODEL=<exact-model-id-from-your-provider-account>
+AI_LIVE_MODE=public
+AI_ALLOWED_ORIGINS=https://your-project.vercel.app
+DEMO_PASSCODE=<private-passcode-at-least-12-characters>
+DEMO_SESSION_SECRET=<separate-random-secret-at-least-32-characters>
+AI_MAX_CALLS_PER_MINUTE=2
+AI_MAX_CALLS_PER_DAY=20
+AI_MAX_CONCURRENT=1
+UPSTASH_REDIS_REST_URL=https://<your-redis-rest-endpoint>
+UPSTASH_REDIS_REST_TOKEN=<private-write-capable-rest-token>
+AI_QUOTA_NAMESPACE=caliber-production
+```
+
+Place actual values privately in Vercel; the angle-bracket strings above are placeholders. Keep Preview live disabled unless explicitly configured with separate access/namespace/storage. The namespace must remain stable across production builds/cold starts. Rotating the signing secret invalidates old sessions but does not reset the same namespace's daily budget.
+
+Public guards use atomic Redis Lua reservation for UTC minute buckets, UTC day budget and shared concurrent leases. Login attempts are limited to five per sixty-second shared window. Logout persists revocation for the session lifetime; reservation rechecks revocation. A lease expires after sixty seconds if an instance crashes or release fails. Budget is conservatively consumed before the provider attempt and is never refunded on failure. These are call caps, **not dollar billing limits**; configure provider-side spending controls separately if available. Redis command usage has its own provider terms.
+
+Each Redis command has a three-second deadline and bounded response; store errors are sanitized and make **zero provider calls**. Provider work retains the fifteen-second deadline and no automatic retries/redirects. The live browser deadline and analyze function duration are thirty seconds to allow guard round trips. Expired/revoked access returns to the passcode form; storage failures provide explicit status retry plus replay without discarding the case or local actions.
+
+Diagnostics: `/api/status` exposes only booleans/sanitized availability, not keys, model IDs, Redis endpoints/tokens or passcodes. `/api/demo-session` checks configured origin and shared-store readiness. Neither status check contacts the AI provider. Replay remains available without Redis or credentials.
+
+References: [Vercel environment variables](https://vercel.com/docs/environment-variables), [Upstash REST command format](https://upstash.com/docs/redis/features/restapi), [atomic Lua execution](https://redis.io/docs/latest/develop/programmability/eval-intro/). See [hosted implementation report](HOSTED_AI_REPORT.md) for actual checks and deployment limits.
+
 ## Sources and deployment preparation
 
 `npm run build` runs `prepare:runtime`: all 22 originals must match inventory SHA-256/size, and workbook extraction must match the original manifest. It creates ignored server-only `runtime/sources/...`, `runtime/workbook-excerpts.json` and `runtime/manifest.json`. Canonical originals stay unchanged. `next.config.ts` traces runtime files into `/api/source` and normalized data into server routes; environment files, screenshots and verification reports are excluded.
 
-For **Vercel configuration**, use repository **Root Directory `app`**, Install Command `npm ci`, Build Command `npm run build`, framework Next.js. Include files outside Root Directory in the build checkout so preparation can read canonical handoff files. Leave public live disabled. Verify source routes in the actual deployment before presenting it: Vercel deployment size/routing/function tracing remain **NOT TESTED**. No deployment or push was performed.
+For **Vercel configuration**, use repository **Root Directory `app`**, Install Command `npm ci`, Build Command `npm run build`, framework Next.js. Include files outside Root Directory in the build checkout so preparation can read canonical handoff files. Live is disabled by default; enable it only using the protected hosted setup above. Verify source routes in the actual deployment before presenting it: Vercel deployment size/routing/function tracing remain **NOT TESTED**. No deployment or push was performed.
 
 For an artifact-only local runtime:
 
@@ -104,7 +140,7 @@ cd /path/to/isolated-runtime
 PORT=3102 HOSTNAME=127.0.0.1 AI_LIVE_MODE=disabled node server.js
 ```
 
-Do not copy `.env.local` into artifacts. Supply private variables separately only for an approved local live demo. `npm run test:deploy` automatically creates a temporary artifact-only directory, starts the production server, verifies all source downloads/excerpts and controlled missing-source states, then removes its own temporary files.
+Do not copy `.env.local` into artifacts. Supply private variables separately for an explicitly configured local or protected hosted demo. `npm run test:deploy` automatically creates a temporary artifact-only directory, starts the production server, verifies all source downloads/excerpts and controlled missing-source states, then removes its own temporary files.
 
 ## Evidence and action workflow
 
@@ -137,6 +173,18 @@ npm run format:check
 
 Without the override Playwright uses/starts port 3100 dev; that is not the final production verification path. Tests use fake provider transport and mock browser access/failure states, never real credentials. Results/screenshots are in `verification/` and `screenshots/`.
 
+Hosted Redis integration requires a local `redis-server` and `redis-cli`, separate from app production dependencies:
+
+```bash
+# From app/, with Redis binaries available on PATH:
+npm run test:hosted
+# After npm run build:
+npm run test:browser:hosted
+# Or pass binary paths with CALIBER_TEST_REDIS_SERVER and CALIBER_TEST_REDIS_CLI.
+```
+
+The Redis suite is marked skipped if Redis is unavailable; that is not a passing integration claim. The hosted browser command fails explicitly without Redis. Both create private temporary Redis instances with persistence disabled, never use the application database, and remove their own runtime after testing. Hosted browser tests proxy genuine production API responses through simulated HTTPS ingress, with TLS Redis/provider fixtures; they are not a Vercel or paid-provider test.
+
 Optional normalization after checking originals:
 
 ```bash
@@ -151,7 +199,7 @@ The full package verifier still exits 1 for the **pre-existing `CODEX_PROMPT.md`
 
 ## Implementation and reference
 
-Modular UI in `src/components/`; pure temporal/signals/evidence/action modules in `src/lib/`; server AI/access/source routes in `src/app/api/`. No framework migration, database, Azure, vector store or new service. Existing dependency lock retained. ESLint 9 is deprecated upstream but remains compatible with the installed lint stack.
+Modular UI in `src/components/`; pure temporal/signals/evidence/action modules in `src/lib/`; server AI/access/source routes in `src/app/api/`. No framework migration, application database, Azure, vector store or separate app service. Optional hosted live access requires external Redis REST storage for shared guards. Existing dependency lock retained. ESLint 9 is deprecated upstream but remains compatible with the installed lint stack.
 
 The supplied Microsoft workflow snapshot at commit `26b906d3e2e3f073ced52bd15ee2ae6c150625fe` inspired sequential evidence/review/action. No reference implementation code, tire-factory data or Azure dependencies were imported. Canonical license remains in `../sources/reference/Microsoft_LICENSE`.
 

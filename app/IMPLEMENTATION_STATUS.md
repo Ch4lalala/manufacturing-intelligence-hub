@@ -1,4 +1,16 @@
-# Implementation status — UI layout refinement A–E
+# Implementation status — protected hosted AI
+
+4 October 2026. Hosted live support is now explicitly opt-in through public mode, exact HTTPS origins, signed passcode sessions and shared Redis quotas/revocation. The user has **not yet connected Redis**. Default access stays disabled and replay remains available. See [hosted AI report](HOSTED_AI_REPORT.md) and [Vercel setup](README.md#protected-live-ai-on-vercel).
+
+- Typecheck, lint, production build, formatting and diff checks PASS. **31/31 domain/API**, **8/8 actual isolated Redis**, **21/21 normal production Chromium**, **3/3 hosted production Chromium with TLS fixtures**, **53/53 artifact runtime** checks PASS; no real AI provider calls.
+- Five normal-view screenshots are byte-identical to the previous checkout captures. CSS/assets/layout, source data, temporal eligibility, metric/drawer scope and action closure remain preserved.
+- DESIGN lint 0 errors / 23 advisory warnings. Premium strict scanner still exits 1 for six previously reviewed Select findings; no clean audit claim.
+- Original integrity: 22 sources, zero discrepancies. Existing CODEX_PROMPT.md handoff size/hash discrepancy remains. Private environment and provider credentials were not opened/edited; dependency versions/lockfile remain unchanged.
+- Real Vercel/Upstash/SumoPod integration and external model compatibility **NOT TESTED**. No commit, push, deployment or provisioning performed. Reports below are earlier records, including their earlier public-disabled policy.
+
+---
+
+# Earlier UI layout refinement A–E
 
 Initial checkout: **main / 16acb7b81f0b106c7c9ad930c2064e3df464254b**, clean. Existing user changes and authored Select retained. No commit/push/deployment. See [Indonesian refinement report](UI_REFINEMENT_REPORT.md) for changed files, exact commands, screenshots and verification limits.
 

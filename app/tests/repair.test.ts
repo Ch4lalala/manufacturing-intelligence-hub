@@ -129,6 +129,36 @@ const authenticated = () =>
       origin: "http://127.0.0.1:3100",
     },
   });
+test("Hosted live mode accepts explicit HTTPS origins only with configured shared storage", () => {
+  const hosted = {
+    ...config,
+    mode: "public",
+    platformPublic: true,
+    allowedOrigins: ["https://caliber.example.test"],
+    redis: {
+      url: "https://redis.example.test",
+      token: "test-only-redis-token",
+      namespace: "caliber-test",
+    },
+  };
+  assert.equal(liveAvailability(hosted).enabled, true);
+  assert.equal(
+    liveAvailability({ ...hosted, redis: undefined }).enabled,
+    false,
+  );
+  assert.equal(
+    liveAvailability({ ...hosted, allowedOrigins: [] }).enabled,
+    false,
+  );
+  assert.equal(
+    liveAvailability({
+      ...hosted,
+      allowedOrigins: ["http://caliber.example.test"],
+    }).enabled,
+    false,
+  );
+  assert.equal(liveAvailability({ ...hosted, mode: "local" }).enabled, false);
+});
 test("API episode and case gates agree at midnight/end-of-day; calendar and event-day exclusions hold", async () => {
   for (const [time, last] of [
     ["2026-04-22 00:00:00", "2026-04-15"],
@@ -508,7 +538,7 @@ test("Unauthorized/public/missing-config/quota/concurrency rejection produces ze
   finish();
   await running;
 });
-test("Sessions are signed/expiring/HttpOnly/origin-bound; login/revocation and limits are single-process and conservative", () => {
+test("Sessions are signed/expiring/HttpOnly/origin-bound; login/revocation and limits are single-process and conservative", async () => {
   const now = Date.now(),
     token = issueSession(config, now),
     id = sessionId(token, config, now);
@@ -533,18 +563,21 @@ test("Sessions are signed/expiring/HttpOnly/origin-bound; login/revocation and l
       origin: "https://unrelated.example",
     },
   });
-  assert.equal(authorizeLive(cross, config, new DemoLimiter(), now).ok, false);
+  assert.equal(
+    (await authorizeLive(cross, config, new DemoLimiter(), now)).ok,
+    false,
+  );
   const lim = new DemoLimiter();
   lim.revoke(id!, now);
   const different = new Request("http://127.0.0.1:3100/api/analyze", {
     headers: { cookie: "caliber-live-demo=" + issueSession(config, now) },
   });
-  assert.equal(authorizeLive(different, config, lim, now).ok, true);
+  assert.equal((await authorizeLive(different, config, lim, now)).ok, true);
   assert.ok(lim.isRevoked(id!, now));
   const same = new Request("http://127.0.0.1:3100/api/analyze", {
     headers: { cookie: "caliber-live-demo=" + token },
   });
-  assert.equal(authorizeLive(same, config, lim, now).ok, false);
+  assert.equal((await authorizeLive(same, config, lim, now)).ok, false);
   for (let i = 0; i < 5; i++) assert.equal(lim.loginAllowed(now), true);
   assert.equal(lim.loginAllowed(now), false);
   assert.equal(liveAvailability({ ...config, mode: "public" }).enabled, false);

@@ -178,7 +178,7 @@ npx next start --hostname 127.0.0.1 --port 3102
 
 ### AI opsional
 
-**Evidence replay** selalu tersedia dan tidak melakukan live AI call. Live default tetap disabled. Mode public di Vercel dapat diaktifkan secara eksplisit setelah domain HTTPS dan shared Redis guards dikonfigurasi. Live lokal memerlukan konfigurasi server-only di **`app/.env.local`**, exact model ID, API key, demo passcode/session secret, dan quota guards; pemilihan Simulated role tidak membuka akses provider.
+**Evidence replay** selalu tersedia dan tidak melakukan live AI call. Live default tetap disabled. Mode direct di Vercel dapat diaktifkan hanya dengan konfigurasi provider, tanpa passcode, Redis atau quota aplikasi; lihat [panduan direct AI](app/README.md#direct-ai-on-vercel--no-redis-or-passcode). Mode public dengan guard tetap tersedia sebagai pilihan. Live lokal memerlukan konfigurasi server-only di **`app/.env.local`**, exact model ID, API key, demo passcode/session secret, dan quota guards; pemilihan Simulated role tidak membuka akses provider.
 
 Jangan menimpa `.env.local` yang sudah ada, memakai suffix `.txt`, atau menaruh secrets dalam README, Git, dan `NEXT_PUBLIC_*`. Lihat [Optional local live AI](app/README.md#optional-local-live-ai) dan [Protected live AI on Vercel](app/README.md#protected-live-ai-on-vercel) untuk konfigurasi lengkap. Dukungan endpoint/model dan hasil real provider tidak dianggap terbukti hanya karena konfigurasi tersedia; error atau hasil invalid ditampilkan sebagai fallback replay yang jelas.
 

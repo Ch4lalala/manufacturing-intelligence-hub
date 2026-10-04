@@ -13,6 +13,7 @@ export const SESSION_COOKIE = "caliber-live-demo";
 const TTL = 30 * 60 * 1000;
 export type LiveConfig = {
   mode: string;
+  providerConfigured?: boolean;
   passcode?: string;
   sessionSecret?: string;
   minuteLimit: number;
@@ -43,6 +44,7 @@ export function liveConfig(): LiveConfig {
     s && /^\d+$/.test(s) && Number(s) > 0 && Number(s) <= max ? Number(s) : 0;
   return {
     mode: process.env.AI_LIVE_MODE ?? "disabled",
+    providerConfigured: Boolean(process.env.AI_API_KEY && process.env.AI_MODEL),
     passcode: process.env.DEMO_PASSCODE,
     sessionSecret: process.env.DEMO_SESSION_SECRET,
     minuteLimit: positive(process.env.AI_MAX_CALLS_PER_MINUTE, 10),
@@ -81,6 +83,13 @@ function validPublicOrigin(origin: string) {
   }
 }
 export function liveAvailability(config: LiveConfig) {
+  if (config.mode === "direct")
+    return {
+      enabled: config.providerConfigured === true,
+      reason: config.providerConfigured
+        ? "Live AI composition is available without a demo passcode."
+        : "Live AI needs a server API key and exact model ID. Evidence replay is available.",
+    };
   if (config.platformPublic && config.mode !== "public")
     return {
       enabled: false,
@@ -297,7 +306,7 @@ export async function checkedLiveAvailability(
   store = liveStore(config),
 ) {
   const availability = liveAvailability(config);
-  if (!availability.enabled) return availability;
+  if (!availability.enabled || config.mode === "direct") return availability;
   try {
     if (config.mode === "public" && store.kind !== "shared") throw new Error();
     await store.health();
@@ -311,6 +320,17 @@ export async function checkedLiveAvailability(
   }
 }
 export function allowedLiveOrigin(request: Request, config: LiveConfig) {
+  if (config.mode === "direct") {
+    const url = new URL(request.url);
+    const origin = request.headers.get("origin");
+    return (
+      (request.headers.get("host") ?? url.host) === url.host &&
+      (!config.platformPublic || url.protocol === "https:") &&
+      (["GET", "HEAD"].includes(request.method)
+        ? !origin || origin === url.origin
+        : origin === url.origin)
+    );
+  }
   if (config.mode !== "public") return loopbackRequest(request);
   const url = new URL(request.url);
   if (
@@ -348,6 +368,7 @@ export async function authorizeLive(
       reason:
         "Live analysis is limited to the configured demo origin and access store. Evidence replay is available.",
     };
+  if (config.mode === "direct") return { ok: true as const, id: "" };
   const id = sessionId(cookieToken(request), config, now);
   if (!id)
     return {

@@ -44,6 +44,11 @@ export async function guardedAnalysis(
         "not_requested",
       ),
     };
+  if (access.mode === "direct")
+    return {
+      status: 200,
+      analysis: await analyze(bundle, true, provider, fetcher, request.signal),
+    };
   let quota;
   try {
     quota = await limiter.acquire(access, undefined, auth.id);

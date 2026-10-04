@@ -18,7 +18,8 @@
     "format": "prettier --write src tests scripts/*.mjs scripts/*.ts *.ts *.json *.md",
     "format:check": "prettier --check src tests scripts/*.mjs scripts/*.ts *.ts *.json *.md",
     "normalize": "python scripts/normalize.py",
-    "test:deploy": "node scripts/verify-deploy.mjs"
+    "test:deploy": "node scripts/verify-deploy.mjs",
+    "test:browser:direct": "tsx scripts/verify-direct-browser.ts"
   },
   "dependencies": {
     "next": "16.3.8",

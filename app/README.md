@@ -54,7 +54,7 @@ Useful routes on the default port:
 
 ## Optional local live AI
 
-Replay is always available and makes **no provider call**. Server guards default to disabled, even if an existing private file contains a key/model. Explicit public mode is supported only with shared Redis access guards; see the hosted setup below. Workspace roles do not unlock provider access.
+Replay is always available and makes **no provider call**. Server guards default to disabled, even if an existing private file contains a key/model. Direct mode needs only provider settings and no Redis/passcode; protected public mode uses shared Redis guards. See the hosted setup below. Workspace roles do not unlock provider access.
 
 Create `.env.local` **only if it does not already exist**:
 
@@ -86,6 +86,23 @@ In **local** mode, limits and revocation apply to one process and reset on resta
 Composition uses ordinary `/chat/completions`, without streaming, embeddings or special response formats. A structured response can supply different engineering inference prose. Observations must bind exact source/derived fact IDs, values, units, source times and asset; hypotheses must cite eligible abnormal signals and counter-evidence. Unsupported facts/strength/schema or provider failures produce labeled replay. Validation checks arithmetic/provenance and conservative text restrictions; it does not establish causal correctness or industrial safety.
 
 The UI distinguishes **no live request**, **blocked**, **attempted but failed**, and **validated live response**. Configuration alone is never shown as successful integration. **Real SumoPod support/model behavior: NOT TESTED** in this repair. Existing `.env.local` was preserved and not opened; local guard configuration and an explicitly authorized minimal real call are still needed for external verification.
+
+## Direct AI on Vercel — no Redis or passcode
+
+For the jury demo, keep your existing server-only provider values and set **Production** environment:
+
+```dotenv
+AI_BASE_URL=https://ai.sumopod.com/v1
+AI_API_KEY=<your-existing-private-key>
+AI_MODEL=<your-existing-exact-model-id>
+AI_LIVE_MODE=direct
+```
+
+Deploy this code and the new environment together. Vercel environment changes apply to new deployments. Open Investigation and select **Request live AI composition** directly. No demo passcode, session secret, allowed-origin list, Redis, minute/day cap or concurrency quota is required in direct mode; old guard variables are ignored by this mode. It is explicitly opt-in, and every visitor can request provider work billed to your account. Provider/platform limits still apply. The API key stays on the server and must never use `NEXT_PUBLIC_`.
+
+Source scope, temporal eligibility, schema/citation/number validation, the fifteen-second provider timeout, no automatic retries, busy-state duplicate prevention and evidence replay remain unchanged. Missing key/model disables direct access. Normal-only evidence does not request an AI diagnosis. A configured gateway does not prove real provider/model compatibility.
+
+`npm run test:browser:direct` verifies an isolated production runtime with a local provider fixture and no Redis. No real API calls are made. See [direct AI report](DIRECT_AI_REPORT.md).
 
 ## Protected live AI on Vercel
 

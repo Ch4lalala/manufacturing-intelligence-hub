@@ -743,3 +743,113 @@ test("Provider deadline actually aborts hanging transport; caller cancellation b
     clearInterval(keepAlive);
   }
 });
+
+test("Explicit direct hosted mode composes without passcode, Redis or application quotas", async () => {
+  const access: LiveConfig = {
+    mode: "direct",
+    platformPublic: true,
+    minuteLimit: 0,
+    dailyLimit: 0,
+    concurrencyLimit: 0,
+    providerConfigured: true,
+  };
+  assert.equal(liveAvailability(access).enabled, true);
+  const bundle = makeBundle(
+    raw.assets.find((a) => a.tag === "KO-3201")!,
+    incidents,
+    raw.version,
+    "prospective",
+    "2026-04-22 23:59:59",
+  );
+  let calls = 0;
+  const fetcher: typeof fetch = async () => {
+    calls++;
+    return fakeCompletion(bundle);
+  };
+  const request = (origin = "https://caliber.test") =>
+    new Request("https://caliber.test/api/analyze", {
+      method: "POST",
+      headers: { origin },
+    });
+  for (let i = 0; i < 12; i++) {
+    const result = await guardedAnalysis(
+      request(),
+      bundle,
+      true,
+      access,
+      { key: "fixture-only", model: "fixture-model" },
+      fetcher,
+    );
+    assert.equal(result.status, 200);
+    assert.equal(result.analysis.liveState, "validated");
+  }
+  assert.equal(calls, 12);
+  assert.equal(
+    (
+      await guardedAnalysis(
+        request("https://other.test"),
+        bundle,
+        true,
+        access,
+        { key: "fixture-only", model: "fixture-model" },
+        fetcher,
+      )
+    ).status,
+    403,
+  );
+  assert.equal(calls, 12);
+  assert.equal(
+    liveAvailability({ ...access, providerConfigured: false }).enabled,
+    false,
+  );
+  await guardedAnalysis(request(), bundle, false, access, {}, fetcher);
+  assert.equal(calls, 12);
+});
+
+test("Direct gateway status needs only provider configuration and never issues session cookies", async () => {
+  const names = [
+    "AI_LIVE_MODE",
+    "AI_API_KEY",
+    "AI_MODEL",
+    "VERCEL",
+    "DEMO_PASSCODE",
+    "DEMO_SESSION_SECRET",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN",
+  ];
+  const saved = names.map((name) => [name, process.env[name]] as const);
+  try {
+    for (const name of names) delete process.env[name];
+    Object.assign(process.env, {
+      AI_LIVE_MODE: "direct",
+      AI_API_KEY: "direct-test-private-key",
+      AI_MODEL: "direct-test-model",
+      VERCEL: "1",
+    });
+    const response = await sessionGET(
+      new Request("https://caliber.test/api/demo-session"),
+    );
+    const body = await response.json();
+    assert.equal(body.enabled, true);
+    assert.equal(body.authenticated, true);
+    assert.equal(body.accessMode, "direct");
+    assert.equal(response.headers.get("set-cookie"), null);
+    assert.equal(
+      JSON.stringify(body).includes("direct-test-private-key"),
+      false,
+    );
+    delete process.env.AI_MODEL;
+    assert.equal(
+      (
+        await (
+          await sessionGET(new Request("https://caliber.test/api/demo-session"))
+        ).json()
+      ).enabled,
+      false,
+    );
+  } finally {
+    for (const [name, value] of saved)
+      if (value === undefined) delete process.env[name];
+      else process.env[name] = value;
+  }
+});

@@ -1,4 +1,15 @@
-# Implementation status — protected hosted AI
+# Implementation status — direct jury AI
+
+4 October 2026. At the user's explicit request, `AI_LIVE_MODE=direct` now enables visitor composition with existing server-only provider environment, without passcode, Redis or application usage quotas. Default disabled/local/protected public modes remain available. See [direct AI report](DIRECT_AI_REPORT.md) and [simple Vercel setup](README.md#direct-ai-on-vercel--no-redis-or-passcode).
+
+- Typecheck/lint/build PASS; **33/33 domain/API**, **1/1 direct production browser**, **21/21 normal production browser**, **53/53 artifact checks** PASS using local provider fixtures, no real AI calls.
+- Normal five-view screenshots are byte-identical. Data/provenance, temporal rules, action metric/drawer scope and verified closure unchanged. CSS/assets/layout, private env and lockfile unchanged.
+- DESIGN lint 0 errors / 23 advisory warnings; premium strict audit retains six previously reviewed Select findings. Original integrity 22/22; existing CODEX_PROMPT.md handoff discrepancy remains.
+- Real Vercel/SumoPod compatibility and billing are NOT TESTED. No commit, push or deployment. Previous hosted report below records the optional protected mode, whose Redis requirement does not apply to direct mode.
+
+---
+
+# Earlier protected hosted AI
 
 4 October 2026. Hosted live support is now explicitly opt-in through public mode, exact HTTPS origins, signed passcode sessions and shared Redis quotas/revocation. The user has **not yet connected Redis**. Default access stays disabled and replay remains available. See [hosted AI report](HOSTED_AI_REPORT.md) and [Vercel setup](README.md#protected-live-ai-on-vercel).
 

@@ -26,6 +26,11 @@ export async function GET(request: Request) {
       },
       { headers },
     );
+  if (config.mode === "direct")
+    return Response.json(
+      { ...configured, authenticated: true, accessMode: "direct" },
+      { headers },
+    );
   const store = liveStore(config),
     availability = await checkedLiveAvailability(config, store);
   if (!availability.enabled)
@@ -66,6 +71,11 @@ function unavailable(clearCookie?: string) {
 }
 export async function POST(request: Request) {
   const config = liveConfig();
+  if (config.mode === "direct")
+    return Response.json(
+      { error: "Direct live mode does not use demo sessions." },
+      { status: 403, headers },
+    );
   if (!sessionRequestAllowed(request, config))
     return Response.json(
       {
@@ -114,6 +124,11 @@ export async function POST(request: Request) {
 }
 export async function DELETE(request: Request) {
   const config = liveConfig();
+  if (config.mode === "direct")
+    return Response.json(
+      { error: "Direct live mode does not use demo sessions." },
+      { status: 403, headers },
+    );
   if (!sessionRequestAllowed(request, config))
     return Response.json(
       { error: "Demo session change is unavailable for this origin." },

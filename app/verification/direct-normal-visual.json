@@ -1,0 +1,11 @@
+{
+  "normalScreenshotSHA256Matches": {
+    "overview": true,
+    "data": true,
+    "problems": true,
+    "investigation": true,
+    "actions": true
+  },
+  "matches": 5,
+  "total": 5
+}

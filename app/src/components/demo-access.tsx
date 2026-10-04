@@ -11,6 +11,7 @@ export function DemoAccess({
       enabled: boolean;
       authenticated: boolean;
       reason: string;
+      accessMode?: "direct";
     } | null>(null),
     [passcode, setPasscode] = useState(""),
     [busy, setBusy] = useState(false),
@@ -108,6 +109,10 @@ export function DemoAccess({
         )
       ) : !state.enabled ? (
         <p className="caption">{state.reason}</p>
+      ) : state.accessMode === "direct" ? (
+        <p className="caption">
+          Live AI composition available. No demo passcode required.
+        </p>
       ) : state.authenticated ? (
         <div className="button-row">
           <p className="caption">Live AI composition authorized.</p>

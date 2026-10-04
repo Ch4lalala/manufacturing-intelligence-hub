@@ -1,0 +1,12 @@
+
+> caliber-decision-hub@1.0.0 test:browser:direct
+> tsx scripts/verify-direct-browser.ts
+
+
+Running 1 test using 1 worker
+
+(node:16908) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/direct-browser.spec.ts:3:5 › Direct production AI uses server provider without login, Redis or application quota (1.5s)
+
+  1 passed (4.2s)

@@ -939,3 +939,109 @@ test("Live failure diagnostics separate transport, truncation, JSON and evidence
     assert.equal(result.message.includes("secret-fixture-key"), false);
   }
 });
+
+test("Every asset receives a directly valid source-bound output template instead of enum descriptions", () => {
+  for (const asset of raw.assets) {
+    for (const mode of ["historical", "prospective"] as const) {
+      const bundle = makeBundle(
+        asset,
+        incidents,
+        raw.version,
+        mode,
+        "2026-04-22 23:59:59",
+      );
+      const context = compositionContext(bundle);
+      const result = validateAnalysis(context.schema, bundle);
+      assert.equal(result.liveState, "validated");
+      assert.equal(result.caseId, asset.tag);
+      assert.equal(result.mode, mode);
+      for (const h of result.hypotheses.filter(
+        (h) => h.kind === "Hypothesis",
+      )) {
+        assert.ok(
+          h.signalIds.every((id) =>
+            context.signals.some(
+              (s) => s.id === id && s.mechanisms.includes(h.mechanism),
+            ),
+          ),
+        );
+        assert.ok(
+          h.evidenceIds.every((id) =>
+            context.evidence.some((e) => e.id === id),
+          ),
+        );
+      }
+    }
+  }
+});
+
+test("Hypothesis diagnostics identify the failed invariant without accepting malformed model hypotheses", async () => {
+  const cases: [string, (p: ReturnType<typeof providerPayload>) => void][] = [
+    [
+      "hypothesis_identity",
+      (p) => {
+        p.hypotheses[0].id = "hypothesis_1";
+      },
+    ],
+    [
+      "hypothesis_narrative",
+      (p) => {
+        p.hypotheses[0].explanation = "The condition is not confirmed.";
+      },
+    ],
+    [
+      "hypothesis_missing_checks",
+      (p) => {
+        p.hypotheses[0].missingChecks = ["Request inspection review."];
+      },
+    ],
+    [
+      "hypothesis_metadata",
+      (p) => {
+        p.hypotheses[0].kind = "Engineering hypothesis";
+      },
+    ],
+    [
+      "hypothesis_strength",
+      (p) => {
+        p.hypotheses[0].strength = "plausible for source breaches";
+      },
+    ],
+    [
+      "hypothesis_signal_ids",
+      (p) => {
+        p.hypotheses[0].signalIds = [];
+      },
+    ],
+    [
+      "hypothesis_signal_link",
+      (p) => {
+        p.hypotheses[0].mechanism = "unsupported";
+      },
+    ],
+    [
+      "hypothesis_counter_evidence",
+      (p) => {
+        p.hypotheses[0].counterEvidenceIds = [];
+      },
+    ],
+  ];
+  const bundle = make();
+  for (const [code, mutate] of cases) {
+    const payload = providerPayload(bundle);
+    mutate(payload);
+    assert.throws(() => validateAnalysis(payload, bundle));
+    const result = await analyze(
+      bundle,
+      true,
+      { key: "test-only", model: "test-only" },
+      (async () =>
+        Response.json({
+          choices: [{ message: { content: JSON.stringify(payload) } }],
+        })) as typeof fetch,
+    );
+    assert.equal(result.liveState, "failed");
+    assert.ok(result.message.includes(`[${code}]`), result.message);
+    assert.equal(result.message.includes("hypothesis_1"), false);
+  }
+});

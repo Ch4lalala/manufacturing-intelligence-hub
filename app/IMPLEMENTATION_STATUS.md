@@ -1,4 +1,14 @@
-# Implementation status — live response diagnostics
+# Implementation status — hypothesis output contract
+
+4 October 2026. The model now receives a directly valid, source-bound shape example and explicit constraints instead of descriptive strings in enum fields. Hypothesis failures identify the exact invariant. Domain validation remains equally strict. See [hypothesis repair report](HYPOTHESIS_CONTRACT_REPORT.md).
+
+- **37/37 domain/API**, **3/3 direct production browser**, **21/21 normal production browser**, **53/53 artifact runtime** checks PASS with local fixtures. Typecheck/lint/build/format/diff checks PASS. Five assets × historical/prospective template coverage verified.
+- No real SumoPod call, deployed-model compliance claim, commit, push or deployment. No private environment, source data, action workflow, CSS/layout or lockfile change. Existing direct configuration needs no additional variable.
+- Source originals 22/22; three existing deleted handoff files remain missing. Six reviewed premium Select scanner findings remain. Previous counts below describe earlier work.
+
+---
+
+# Earlier live response diagnostics
 
 4 October 2026. Complete fenced JSON with trailing whitespace now parses correctly, provider/validation failures have sanitized diagnostic codes, and failed/replay results clear an earlier validated-live caption. User-supplied deployment status confirms direct settings are present; actual SumoPod failure cause remains unverified. External GET access was blocked by Vercel Authentication. See [response repair report](AI_RESPONSE_REPORT.md).
 

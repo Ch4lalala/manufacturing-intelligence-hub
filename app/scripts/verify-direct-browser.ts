@@ -39,6 +39,16 @@ async function main() {
     );
     res.setHeader("Content-Type", "application/json");
     const envelope = await reply.json();
+    if (["contract", "strength", "checks"].includes(mode)) {
+      const payload = structuredClone(context.schema);
+      payload.summary =
+        "The observed pattern may support an engineering condition review. The cause remains unconfirmed.";
+      if (mode === "strength")
+        payload.hypotheses[0].strength = "plausible for source breaches";
+      if (mode === "checks")
+        payload.hypotheses[0].missingChecks = ["Request inspection review."];
+      envelope.choices[0].message.content = JSON.stringify(payload);
+    }
     if (mode === "fenced")
       envelope.choices[0].message.content =
         "\n```json\n" + envelope.choices[0].message.content + "\n```\n\n";

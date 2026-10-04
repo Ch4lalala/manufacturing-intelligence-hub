@@ -16,15 +16,16 @@ const list = (x: unknown, max = 12): x is string[] =>
   x.length <= max &&
   x.every((s) => typeof s === "string" && s.length <= 1400);
 // Narrative is hypothesis/inference only. Exact observations live in typed bindings.
+export const INFERENCE_TOKEN_PATTERN = /\d|%|https?:\/\//;
+export const INFERENCE_WORD_PATTERN =
+  /\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|percent|ppm|micron|barg|confirmed|definitive diagnosis|certain|probability|confidence|predictive accuracy|will fail|is caused by|caused by|has failed|fault proven|technician|in stock|spare stock|trip (?:the )?(?:compressor|pump|asset)|shut ?down|bypass|retube|plug (?:the )?tube|purchase|procure|order parts|replace (?:the )?(?:bearing|seal)|start (?:the )?(?:compressor|pump)|stop (?:the )?(?:compressor|pump))\b/i;
 export function inferenceText(x: unknown, max = 1400): x is string {
   return (
     typeof x === "string" &&
     x.trim().length > 0 &&
     x.length <= max &&
-    !/\d|%|https?:\/\//.test(x) &&
-    !/\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|percent|ppm|micron|barg|confirmed|definitive diagnosis|certain|probability|confidence|predictive accuracy|will fail|is caused by|caused by|has failed|fault proven|technician|in stock|spare stock|trip (?:the )?(?:compressor|pump|asset)|shut ?down|bypass|retube|plug (?:the )?tube|purchase|procure|order parts|replace (?:the )?(?:bearing|seal)|start (?:the )?(?:compressor|pump)|stop (?:the )?(?:compressor|pump))\b/i.test(
-      x,
-    )
+    !INFERENCE_TOKEN_PATTERN.test(x) &&
+    !INFERENCE_WORD_PATTERN.test(x)
   );
 }
 export function validateAnalysis(value: unknown, bundle: Bundle): Analysis {
@@ -111,25 +112,35 @@ export function validateAnalysis(value: unknown, bundle: Bundle): Analysis {
         "kind",
         "signalIds",
         "knowledgeBasis",
-      ]) ||
+      ])
+    )
+      throw new Error("Hypothesis schema invalid");
+    if (
       typeof h.id !== "string" ||
       !/^[a-zA-Z_-]{1,60}$/.test(h.id) ||
-      h.id === "finding" ||
+      h.id === "finding"
+    )
+      throw new Error("Hypothesis identity invalid");
+    if (
       !inferenceText(h.title, 220) ||
       !inferenceText(h.explanation) ||
-      !inferenceText(h.strengthReason) ||
+      !inferenceText(h.strengthReason)
+    )
+      throw new Error("Hypothesis narrative invalid");
+    if (
       !list(h.missingChecks) ||
       !h.missingChecks.length ||
       !h.missingChecks.every((c) => inferenceText(c)) ||
       !h.missingChecks.some((c) => /calibrat|unit|timing/i.test(c)) ||
-      !h.missingChecks.some((c) => /review|inspect/i.test(c)) ||
-      h.kind !== "Hypothesis" ||
-      h.knowledgeBasis !== "Engineering inference" ||
-      !["plausible", "insufficient"].includes(String(h.strength)) ||
-      !list(h.signalIds) ||
-      !h.signalIds.length
+      !h.missingChecks.some((c) => /review|inspect/i.test(c))
     )
-      throw new Error("Unsupported hypothesis or inflated strength");
+      throw new Error("Hypothesis missing checks invalid");
+    if (h.kind !== "Hypothesis" || h.knowledgeBasis !== "Engineering inference")
+      throw new Error("Hypothesis metadata invalid");
+    if (!["plausible", "insufficient"].includes(String(h.strength)))
+      throw new Error("Hypothesis strength invalid");
+    if (!list(h.signalIds) || !h.signalIds.length)
+      throw new Error("Hypothesis signal IDs invalid");
     if (
       !/may|could|possible|candidate|requires? (?:inspection|review)|unconfirmed|unknown/i.test(
         h.title + " " + h.explanation,

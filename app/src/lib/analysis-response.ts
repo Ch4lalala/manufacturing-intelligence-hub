@@ -25,6 +25,30 @@ const reasons = {
     "A model observation did not match a supplied fact, value, unit, asset or source time.",
   citation_ineligible:
     "The model cited unknown evidence or evidence outside this review scope.",
+  hypothesis_schema:
+    "A hypothesis has unsupported fields or an invalid object shape.",
+  hypothesis_identity:
+    "Hypothesis IDs must be unique alphabetic identifiers without digits, and actions must use the same ID.",
+  hypothesis_narrative:
+    "Hypothesis prose violates inference-only rules. Keep quantities in observations and use unconfirmed rather than blocked certainty terms, even when negated.",
+  hypothesis_missing_checks:
+    "Every hypothesis needs both unit/calibration/timing verification and engineering inspection/review checks.",
+  hypothesis_metadata:
+    "Hypothesis kind must be Hypothesis and knowledgeBasis must be Engineering inference.",
+  hypothesis_strength:
+    "Hypothesis strength must be the literal plausible or insufficient.",
+  hypothesis_signal_ids:
+    "A hypothesis must cite a nonempty list of supplied signal IDs.",
+  hypothesis_signal_link:
+    "The hypothesis mechanism must be allowed by every cited signal.",
+  hypothesis_support:
+    "Each cited signal requires its own supporting evidence in the hypothesis.",
+  hypothesis_strength_rule:
+    "Plausible strength requires a source weekly breach; proposed review signals require insufficient strength.",
+  hypothesis_counter_evidence:
+    "The hypothesis omitted the supplied normal baseline counter-evidence.",
+  hypothesis_inference:
+    "The hypothesis must be phrased as an unconfirmed inference with may, could or equivalent qualifying language.",
   hypothesis_invalid:
     "A model hypothesis did not meet the signal, strength or missing-check requirements.",
   action_invalid:
@@ -81,12 +105,19 @@ export function validationFailure(error: unknown): LiveFailureCode {
     "Unknown or ineligible citation": "citation_ineligible",
     "Insufficient anomaly evidence": "hypothesis_invalid",
     "Unsupported hypothesis or inflated strength": "hypothesis_invalid",
-    "Hypothesis must be expressed as an inference": "hypothesis_invalid",
-    "Mechanism not linked to observed signals": "hypothesis_invalid",
-    "Hypothesis lacks abnormal supporting context": "hypothesis_invalid",
-    "Strength exceeds proposed review signals": "hypothesis_invalid",
-    "Normal baseline counter-evidence omitted": "hypothesis_invalid",
-    "Duplicate hypothesis identity": "hypothesis_invalid",
+    "Hypothesis schema invalid": "hypothesis_schema",
+    "Hypothesis identity invalid": "hypothesis_identity",
+    "Hypothesis narrative invalid": "hypothesis_narrative",
+    "Hypothesis missing checks invalid": "hypothesis_missing_checks",
+    "Hypothesis metadata invalid": "hypothesis_metadata",
+    "Hypothesis strength invalid": "hypothesis_strength",
+    "Hypothesis signal IDs invalid": "hypothesis_signal_ids",
+    "Hypothesis must be expressed as an inference": "hypothesis_inference",
+    "Mechanism not linked to observed signals": "hypothesis_signal_link",
+    "Hypothesis lacks abnormal supporting context": "hypothesis_support",
+    "Strength exceeds proposed review signals": "hypothesis_strength_rule",
+    "Normal baseline counter-evidence omitted": "hypothesis_counter_evidence",
+    "Duplicate hypothesis identity": "hypothesis_identity",
     "Unsupported action guidance": "action_invalid",
     "Action must link to its reviewed hypothesis and supporting evidence":
       "action_invalid",

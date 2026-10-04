@@ -1,0 +1,47 @@
+TAP version 13
+# Subtest: Every asset receives a directly valid source-bound output template instead of enum descriptions
+not ok 1 - Every asset receives a directly valid source-bound output template instead of enum descriptions
+  ---
+  duration_ms: 23.398792
+  type: 'test'
+  location: '/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/repair.test.ts:943:1'
+  failureType: 'testCodeFailure'
+  error: 'Unsupported fact, number, unit, asset or timestamp'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    <anonymous> (/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/src/lib/analysis-validation.ts:75:13)
+    Array.map (<anonymous>)
+    validateAnalysis (/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/src/lib/analysis-validation.ts:60:60)
+    TestContext.<anonymous> (/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/repair.test.ts:948:22)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: Hypothesis diagnostics identify the failed invariant without accepting malformed model hypotheses
+not ok 2 - Hypothesis diagnostics identify the failed invariant without accepting malformed model hypotheses
+  ---
+  duration_ms: 42.755292
+  type: 'test'
+  location: '/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/repair.test.ts:960:1'
+  failureType: 'testCodeFailure'
+  error: 'Evidence replay - live attempted but failed [hypothesis_invalid]. A model hypothesis did not meet the signal, strength or missing-check requirements. No live result accepted.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/Users/acit/Documents/MyWork/CALIBER_Codex_Handoff/app/tests/repair.test.ts:977:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 341.879042

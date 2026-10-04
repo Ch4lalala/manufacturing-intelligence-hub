@@ -191,3 +191,85 @@ test("Production AI accepts fenced JSON and explains truncation/citation failure
     await mode("valid");
   }
 });
+
+test("Source-bound composition template validates and strength/missing-check violations remain rejected in production", async ({
+  page,
+  request,
+}) => {
+  await page.route("**/api/**", async (route) => {
+    const response = await route.fetch({
+      headers: {
+        ...(await route.request().allHeaders()),
+        "x-forwarded-proto": "https",
+        origin: process.env.CALIBER_TEST_HTTPS_ORIGIN!,
+      },
+    });
+    await route.fulfill({ response });
+  });
+  const mode = async (value: string) =>
+    expect(
+      (
+        await request.post(process.env.CALIBER_TEST_PROVIDER! + "/mode", {
+          data: { mode: value },
+        })
+      ).ok(),
+    ).toBe(true);
+  await mode("contract");
+  try {
+    await page.goto(
+      "/?view=investigation&asset=KO-3201&mode=prospective&asOf=2026-04-22%2023:59:59",
+    );
+    const button = page.getByRole("button", {
+      name: "Request live AI composition",
+      exact: true,
+    });
+    await button.click();
+    await expect(
+      page.getByText(
+        "Live response validated for this request; engineering review remains required",
+        { exact: true },
+      ),
+    ).toBeVisible();
+    for (const [fixture, code] of [
+      ["strength", "hypothesis_strength"],
+      ["checks", "hypothesis_missing_checks"],
+    ]) {
+      await mode(fixture);
+      await expect(button).toBeEnabled();
+      await button.click();
+      await expect(
+        page.locator(".notice").filter({ hasText: `[${code}]` }),
+      ).toBeVisible();
+      await expect(
+        page.getByText("Live attempt failed; evidence replay is shown", {
+          exact: true,
+        }),
+      ).toBeVisible();
+      await expect(
+        page.getByText(
+          "Live response validated for this request; engineering review remains required",
+          { exact: true },
+        ),
+      ).toHaveCount(0);
+      await expect(
+        page.getByLabel("As of (source-local; timezone unknown)", {
+          exact: true,
+        }),
+      ).toHaveValue("2026-04-22T23:59:59");
+    }
+    await page
+      .locator(".notice")
+      .filter({ hasText: "[hypothesis_missing_checks]" })
+      .screenshot({ path: "screenshots/hypothesis-missing-checks.png" });
+    await mode("contract");
+    await button.click();
+    await expect(
+      page.getByText(
+        "Live response validated for this request; engineering review remains required",
+        { exact: true },
+      ),
+    ).toBeVisible();
+  } finally {
+    await mode("valid");
+  }
+});

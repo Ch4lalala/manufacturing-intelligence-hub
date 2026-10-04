@@ -122,6 +122,10 @@ Live failures now show a controlled diagnostic code, without raw provider conten
 
 Complete JSON code fences with surrounding whitespace are accepted before the same validator. Partial JSON, prose extraction and invalid evidence are not accepted. A compact output instruction reduces requested output length without raising the token cap or claiming proven improvement. No automatic retry or provider call is triggered by status checks. Each composition result updates its own live/replay status; an earlier success cannot label a later rejected response as live.
 
+The model now receives a source-bound output shape with valid literal metadata instead of descriptive strings in enum fields. Explicit `outputRules` include permitted mechanisms/strength per signal, exact supporting IDs, normal counter-evidence, required checks, alphabetic hypothesis IDs and the same narrative restrictions used by the server. The provider still composes its own inference; template validity is not proof of a correct diagnosis or actual provider compliance.
+
+Hypothesis rejections identify the rule: `hypothesis_identity`, `hypothesis_narrative`, `hypothesis_missing_checks`, `hypothesis_metadata`, `hypothesis_strength`, `hypothesis_signal_ids`, `hypothesis_signal_link`, `hypothesis_support`, `hypothesis_strength_rule` or `hypothesis_counter_evidence`. No invalid output is silently fixed, accepted or automatically retried. See [hypothesis contract report](HYPOTHESIS_CONTRACT_REPORT.md).
+
 Deploy the revised code to see these diagnostics, explicitly request composition once, and share only the diagnostic code/message for support. Do not share keys or raw provider errors. See [response repair report](AI_RESPONSE_REPORT.md).
 
 ## Protected live AI on Vercel
